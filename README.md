@@ -7,9 +7,8 @@ farms and coffee education, district by district. Built with three.js
 ## Deploy on GitHub Pages — three steps
 
 1. **Create a new repository** on GitHub (public).
-2. **Upload all five files** in this zip to the root of that repository —
-   `index.html`, `favicon.ico`, `robots.txt`, `sitemap.xml`, plus the two
-   docs. Easiest way: on the repo page, *Add file → Upload files*, drag
+2. **Upload all nine files** in this zip to the root of that repository.
+   Easiest way: on the repo page, *Add file → Upload files*, drag
    everything in, commit to `main`.
 3. **Turn on Pages.** *Settings → Pages.* Under *Build and deployment*,
    set **Source: Deploy from a branch**, **Branch: main**, folder
@@ -35,7 +34,10 @@ and `sitemap.xml`.
 | File | What it is |
 |---|---|
 | `index.html` | The site. This is the only file GitHub Pages strictly needs. |
-| `favicon.ico` | Legacy favicon fallback — some browsers and crawlers request `/favicon.ico` directly regardless of the `<link>` tags in the page, so this covers that case. The favicon also loads inline from inside `index.html` itself, so the site works correctly even without this file present. |
+| `favicon.ico` | Legacy browser-tab fallback — built from the supplied 32px tab icon. Some browsers and crawlers request `/favicon.ico` directly regardless of `<link>` tags, so this covers that case. |
+| `apple-touch-icon.png` | 180×180, derived from the supplied 512px master. Used when the site is saved to an iOS home screen. |
+| `icon-192.png` / `icon-512.png` | Android/PWA home-screen icons, referenced by `manifest.webmanifest`. Also derived from the 512px master. |
+| `manifest.webmanifest` | Web app manifest — tells Android what icon and name to use if the site is added to a home screen. No service worker, so this doesn't make the site an installable offline app, just gives it a proper icon if someone adds it manually. |
 | `robots.txt` | Tells search engines they're allowed to crawl the site and where to find the sitemap. |
 | `sitemap.xml` | One-page sitemap, points at the homepage. |
 | `README.md` | This file. |
@@ -53,8 +55,11 @@ and `sitemap.xml`.
   search engines have a machine-readable description of the page
   alongside the human-readable one.
 - **Favicon** — the Kerala state outline in the site's brand green,
-  transparent background, inlined as a data URI so it loads with the
-  page itself, no separate image request.
+  transparent background. The 32px browser-tab icon is inlined directly
+  in `index.html` (loads with the page, no separate request). The
+  larger sizes — Apple touch icon, Android/PWA icons — are real files
+  in the repo, since iOS and Android need an actual fetchable URL for
+  those rather than an inlined data URI to work reliably.
 
 **Not included yet:** an Open Graph preview image — the thumbnail that
 shows up when the link is shared on WhatsApp, X, etc. Right now a shared

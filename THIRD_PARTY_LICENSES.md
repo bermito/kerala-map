@@ -38,9 +38,13 @@ breaks.
 
 ## Favicon
 
-Derived from a Kerala state outline graphic supplied directly for this
-project, recoloured to the site's brand green and processed to a
-transparent background. Not sourced from a third party.
+Two assets were supplied directly for this project — a 32×32 browser-tab
+icon and a 512×512 master used for the larger sizes — both the Kerala
+state outline in the site's brand green on a transparent background,
+already production-ready. Used as-is; `apple-touch-icon.png`,
+`icon-192.png` and `icon-512.png` are plain resizes of the 512px master,
+`favicon.ico` is built from the 32px tab icon. Not sourced from a third
+party.
 
 ## District boundaries
 
