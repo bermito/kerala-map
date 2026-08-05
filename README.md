@@ -94,16 +94,26 @@ re-upload it to the repo (or `git add / git commit / git push` if you're
 working from a clone). Pages redeploys automatically on every push to
 `main`, usually live again within a minute.
 
-## Email signup — not wired to anything yet
+## Email signup — live, sends to Formspree
 
-The email box on the page collects an address in the browser's memory
-only — it's forgotten the moment the page reloads. It isn't connected to
-Gmail or any inbox yet. GitHub Pages only serves static files, so getting
-submissions into an inbox needs a small third-party form service
-(Formspree, Web3Forms, or similar) sitting between the form and email —
-sign up for a free account there, then the form's submit handler in
-`index.html` points at that service's endpoint. Intentionally left
-unwired for now; wire it in whenever that's ready to be set up.
+The email box on the page submits to a Formspree endpoint
+(`https://formspree.io/f/xrpzgeky`) via `fetch()`, so it stays on the
+page and shows the site's own success/error message rather than
+redirecting to Formspree. Every submission lands as an email in whatever
+Gmail address is set as that Formspree form's recipient.
+
+**Free tier caps at 50 submissions a month.** If that's outgrown,
+upgrading is a plan change on Formspree's side only — nothing in
+`index.html` needs to change when that happens.
+
+**To change which inbox receives signups:** log into the Formspree
+dashboard, open this form, and update the recipient email there — no
+code change needed.
+
+**To swap to a different form service entirely:** the endpoint is a
+single constant near the top of the signup script —
+`const FORM_ENDPOINT = 'https://formspree.io/f/xrpzgeky';` — replace
+that string with a new provider's endpoint URL.
 
 ## Known limitations, unchanged from earlier builds
 

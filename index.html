@@ -200,7 +200,8 @@
   <h1>Kerala Specialty Coffee Map</h1>
   <p class="tagline">The rising of specialty coffee in <i>Kerala</i>.</p>
   <form id="signup" novalidate>
-    <input id="email" type="email" inputmode="email" autocomplete="email" placeholder="your@email.com" aria-label="Email address" />
+    <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="your@email.com" aria-label="Email address" />
+    <input type="hidden" name="_subject" value="New signup — Kerala Specialty Coffee Map" />
     <button type="submit" aria-label="Join the list">
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
         <path d="M1 6h9M6.5 2.5 10 6l-3.5 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
@@ -330,17 +331,31 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
   const NAMES = ["Kasaragod","Kannur","Wayanad","Kozhikode","Malappuram","Palakkad","Thrissur",
                  "Ernakulam","Idukki","Kottayam","Alappuzha","Pathanamthitta","Kollam","Thiruvananthapuram"];
 
-  /* ---------- sign-up (in memory only) ---------- */
-  const joined=[];
+  /* ---------- sign-up: sends to Formspree, lands in Gmail ---------- */
+  const FORM_ENDPOINT = 'https://formspree.io/f/xrpzgeky';
   const form=document.getElementById('signup'), emailEl=document.getElementById('email'), msg=document.getElementById('msg');
+  const joinBtn = form.querySelector('button[type="submit"]');
   form.addEventListener('submit',function(e){
     e.preventDefault();
     const v=(emailEl.value||'').trim();
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)){
       msg.className='msg mono err'; msg.textContent='That address needs an @ and a domain.'; emailEl.focus(); return;
     }
-    joined.push(v); msg.className='msg mono ok'; msg.textContent='Joined. Next drop lands in your inbox.';
-    emailEl.value=''; emailEl.blur();
+    joinBtn.disabled=true; joinBtn.style.opacity='.45';
+    msg.className='msg mono'; msg.textContent='Sending…';
+    fetch(FORM_ENDPOINT,{method:'POST',headers:{'Accept':'application/json'},body:new FormData(form)})
+      .then(function(res){
+        if(res.ok){
+          msg.className='msg mono ok'; msg.textContent='Joined. Next drop lands in your inbox.';
+          emailEl.value=''; emailEl.blur();
+        }else{
+          msg.className='msg mono err'; msg.textContent="Couldn't send — try again in a moment.";
+        }
+      })
+      .catch(function(){
+        msg.className='msg mono err'; msg.textContent="Couldn't send — check your connection and try again.";
+      })
+      .finally(function(){ joinBtn.disabled=false; joinBtn.style.opacity=''; });
   });
 
   /* ---------- panel ---------- */
