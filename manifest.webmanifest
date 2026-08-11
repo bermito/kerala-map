@@ -1,12 +1,23 @@
 {
   "name": "Kerala Specialty Coffee Map",
-  "short_name": "Kerala Coffee Map",
+  "short_name": "Kerala Coffee",
+  "description": "Find specialty coffee in Kerala — cafés, roasters, farms and coffee education, mapped district by district.",
   "start_url": "/",
-  "display": "browser",
+  "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#00a83f",
   "icons": [
-    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
   ]
 }
