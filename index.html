@@ -12,6 +12,7 @@
 <meta property="og:description" content="Find specialty coffee in Kerala — cafés, roasters, farms and coffee education, mapped district by district and updated as new places are confirmed." />
 <meta property="og:url" content="https://www.specialtycoffeekerala.com/" />
 <meta property="og:site_name" content="Kerala Specialty Coffee Map" />
+<meta property="og:locale" content="en_IN" />
 <meta property="og:image" content="https://www.specialtycoffeekerala.com/og-image.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
@@ -32,6 +33,7 @@
   "@type": "WebSite",
   "name": "Kerala Specialty Coffee Map",
   "url": "https://www.specialtycoffeekerala.com/",
+  "inLanguage": "en",
   "description": "Find specialty coffee in Kerala — cafés, roasters, farms and coffee education, mapped district by district and updated as new places are confirmed."
 }
 </script>
@@ -152,11 +154,16 @@
   .add-form .af-input:focus{outline:none;border-bottom-color:var(--green)}
   .add-form .af-textarea{resize:vertical;font-family:"Inter Tight",sans-serif}
   .add-form select.af-input{appearance:none;-webkit-appearance:none;cursor:pointer}
-  .add-form .af-submit{margin-top:20px;align-self:flex-start;padding:10px 20px;border-radius:20px;border:1px solid var(--ink);
+  .af-submit{margin-top:20px;align-self:flex-start;padding:10px 20px;border-radius:20px;border:1px solid var(--ink);
     background:none;color:var(--ink);font:600 11px/1 "Inter Tight",sans-serif;letter-spacing:.08em;text-transform:uppercase;
     cursor:pointer;transition:background .2s ease,color .2s ease}
-  .add-form .af-submit:hover{background:var(--ink);color:#eafff0}
-  .add-form .af-submit:disabled{cursor:default}
+  .af-submit:hover{background:var(--ink);color:#eafff0}
+  .af-submit:disabled{cursor:default}
+  .cta-green{margin-top:18px;display:inline-block;padding:11px 24px;border-radius:20px;border:1px solid var(--green);
+    background:var(--green);color:#fff;font:600 11px/1 "Inter Tight",sans-serif;letter-spacing:.1em;text-transform:uppercase;
+    cursor:pointer;transition:background .15s ease,border-color .15s ease,transform .1s ease}
+  .cta-green:hover{background:#008f34;border-color:#008f34}
+  .cta-green:active{transform:scale(.97)}
   .item .lnk:hover,.item .lnk:focus-visible{opacity:1;text-decoration:underline}
   .empty{padding:0 0 16px;font:400 11px/1.5 "IBM Plex Mono",monospace;opacity:.5}
   .p-foot{margin-top:26px;font:400 10px/1.6 "IBM Plex Mono",monospace;opacity:.4;letter-spacing:.04em}
@@ -211,7 +218,7 @@
   <nav>
     <button id="navEvents" type="button">Events</button>
     <button id="navAbout" type="button">About</button>
-    <button id="navLang" type="button">മലയാളം</button>
+    <button id="navLang" type="button">ML</button>
   </nav>
 </header>
 
@@ -345,7 +352,12 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
 
   /* Events — the next one whose date hasn't passed is shown automatically.
      Add only genuine, confirmed events here — date, title, venue, blurb. */
-  const EVENTS = [];
+  const EVENTS = [
+    {date:'2026-09-05', title:'Kerala Masters — Pour Over Combat, Season 2', venue:'Cochin · hosted by The Brew School',
+      blurb:"Kerala's biggest pour-over battle returns. Open to baristas and home brewers — partnered with Benki Brewing Tools, Caffinary and Sanstown Cafe."},
+    {date:'2026-11-07', title:'Kerala Coffee Festival', venue:'Aspin Courtyards, Beach Road, Calicut · 07–08 Nov',
+      blurb:"Kerala's first-ever coffee festival — two days celebrating the state's coffee culture, from farm to cup."}
+  ];
 
   const NAMES = ["Kasaragod","Kannur","Wayanad","Kozhikode","Malappuram","Palakkad","Thrissur",
                  "Ernakulam","Idukki","Kottayam","Alappuzha","Pathanamthitta","Kollam","Thiruvananthapuram"];
@@ -356,6 +368,10 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
      expose client-side; row-level security only allows inserts here. */
   const SUPABASE_URL = 'https://uxmkcnavtzejyiptpenj.supabase.co';
   const SUPABASE_ANON_KEY = 'sb_publishable_jvr6FL01n6KIPU5OFF0bsw_uNt2_qj2';
+  /* Email ping to the site owner whenever someone submits a place — separate
+     Formspree form from the newsletter signup so quotas don't compete.
+     Swap in your real endpoint ID once the form is created at formspree.io. */
+  const SUBMISSION_NOTIFY_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID_HERE';
 
   /* ---------- bilingual UI strings (English/Malayalam toggle) ----------
      Only interface chrome is translated — place names, brand names and
@@ -363,7 +379,7 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
      English always; the person switches manually, no auto-detection. */
   const STR = {
     en: {
-      navEvents:'Events', navAbout:'About', navLang:'മലയാളം',
+      navEvents:'Events', navAbout:'About', navLang:'ML',
       hint:'Click a district to explore',
       tagline:'The rising of specialty coffee in',
       emailPlaceholder:'your@email.com',
@@ -399,7 +415,7 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
       addPlaceFoot:'Thank you. We verify every submission before it appears on the Kerala Specialty Coffee Map.'
     },
     ml: {
-      navEvents:'ഇവന്റുകൾ', navAbout:'വിവരം', navLang:'English',
+      navEvents:'ഇവന്റുകൾ', navAbout:'വിവരം', navLang:'EN',
       hint:'പര്യവേക്ഷണം ചെയ്യാൻ ഒരു ജില്ല ക്ലിക്ക് ചെയ്യുക',
       tagline:'കേരളത്തിൽ സ്പെഷ്യാലിറ്റി കോഫിയുടെ ഉയർച്ച',
       emailPlaceholder:'your@email.com',
@@ -524,7 +540,7 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
       '<div class="p-sub mono">'+L('aboutSub')+'</div>'+
       '<p style="font-size:14px;line-height:1.6;opacity:.85">'+L('aboutP1')+'</p>'+
       '<p style="font-size:14px;line-height:1.6;opacity:.85;margin-top:14px">'+L('aboutP2')+'</p>'+
-      '<button class="af-submit" id="aboutAddPlaceBtn" type="button" style="margin-top:16px">'+L('aboutAddBtn')+'</button>'+
+      '<button class="cta-green" id="aboutAddPlaceBtn" type="button">'+L('aboutAddBtn')+'</button>'+
       '<div class="p-foot mono">'+L('aboutFoot')+'</div>';
     panel.scrollTop=0;
     const addBtn=document.getElementById('aboutAddPlaceBtn');
@@ -588,6 +604,15 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
       }
       btn.disabled=true; btn.style.opacity='.5';
       msg.className='msg mono'; msg.textContent=L('sending');
+      /* Notify the site owner by email — fire-and-forget, never blocks the
+         Supabase save and never surfaces an error to the visitor even if
+         the Formspree endpoint is misconfigured or unreachable. */
+      if(SUBMISSION_NOTIFY_ENDPOINT.indexOf('YOUR_FORM_ID_HERE')===-1){
+        const notifyBody=new FormData();
+        notifyBody.append('_subject','New place submitted — '+payload.place_name);
+        Object.keys(payload).forEach(function(k){ notifyBody.append(k, payload[k]==null?'':payload[k]); });
+        fetch(SUBMISSION_NOTIFY_ENDPOINT,{method:'POST',headers:{'Accept':'application/json'},body:notifyBody}).catch(function(){});
+      }
       fetch(SUPABASE_URL+'/rest/v1/submissions',{
         method:'POST',
         headers:{
