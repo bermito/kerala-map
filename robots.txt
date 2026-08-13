@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.specialtycoffeekerala.com/sitemap.xml
+Sitemap: https://specialtycoffeekerala.com/sitemap.xml
