@@ -12,6 +12,7 @@
 <meta property="og:description" content="Find specialty coffee in Kerala — cafés, roasters, farms and coffee education, mapped district by district and updated as new places are confirmed." />
 <meta property="og:url" content="https://www.specialtycoffeekerala.com/" />
 <meta property="og:site_name" content="Kerala Specialty Coffee Map" />
+<meta property="og:locale" content="en_IN" />
 <meta property="og:image" content="https://www.specialtycoffeekerala.com/og-image.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
@@ -32,6 +33,7 @@
   "@type": "WebSite",
   "name": "Kerala Specialty Coffee Map",
   "url": "https://www.specialtycoffeekerala.com/",
+  "inLanguage": "en",
   "description": "Find specialty coffee in Kerala — cafés, roasters, farms and coffee education, mapped district by district and updated as new places are confirmed."
 }
 </script>
@@ -152,11 +154,16 @@
   .add-form .af-input:focus{outline:none;border-bottom-color:var(--green)}
   .add-form .af-textarea{resize:vertical;font-family:"Inter Tight",sans-serif}
   .add-form select.af-input{appearance:none;-webkit-appearance:none;cursor:pointer}
-  .add-form .af-submit{margin-top:20px;align-self:flex-start;padding:10px 20px;border-radius:20px;border:1px solid var(--ink);
+  .af-submit{margin-top:20px;align-self:flex-start;padding:10px 20px;border-radius:20px;border:1px solid var(--ink);
     background:none;color:var(--ink);font:600 11px/1 "Inter Tight",sans-serif;letter-spacing:.08em;text-transform:uppercase;
     cursor:pointer;transition:background .2s ease,color .2s ease}
-  .add-form .af-submit:hover{background:var(--ink);color:#eafff0}
-  .add-form .af-submit:disabled{cursor:default}
+  .af-submit:hover{background:var(--ink);color:#eafff0}
+  .af-submit:disabled{cursor:default}
+  .cta-green{margin-top:18px;display:inline-block;padding:11px 24px;border-radius:20px;border:1px solid var(--green);
+    background:var(--green);color:#fff;font:600 11px/1 "Inter Tight",sans-serif;letter-spacing:.1em;text-transform:uppercase;
+    cursor:pointer;transition:background .15s ease,border-color .15s ease,transform .1s ease}
+  .cta-green:hover{background:#008f34;border-color:#008f34}
+  .cta-green:active{transform:scale(.97)}
   .item .lnk:hover,.item .lnk:focus-visible{opacity:1;text-decoration:underline}
   .empty{padding:0 0 16px;font:400 11px/1.5 "IBM Plex Mono",monospace;opacity:.5}
   .p-foot{margin-top:26px;font:400 10px/1.6 "IBM Plex Mono",monospace;opacity:.4;letter-spacing:.04em}
@@ -209,9 +216,9 @@
 <header class="top">
   <div class="wordmark">Specialty Coffee Kerala <span class="wordmark-green">Map</span></div>
   <nav>
-    <button id="navAdd" type="button">Add a Place</button>
     <button id="navEvents" type="button">Events</button>
     <button id="navAbout" type="button">About</button>
+    <button id="navLang" type="button">ML</button>
   </nav>
 </header>
 
@@ -225,10 +232,9 @@
 
 <section class="br" id="signupBlock">
   <h1>Kerala Specialty Coffee Map</h1>
-  <p class="tagline">The rising of specialty coffee in <i>Kerala</i>.</p>
+  <p class="tagline" id="tagline">The rising of specialty coffee in <i>Kerala</i>.</p>
   <form id="signup" novalidate>
     <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="your@email.com" aria-label="Email address" />
-    <input type="hidden" name="_subject" value="New signup — Kerala Specialty Coffee Map" />
     <button type="submit" aria-label="Join the list">
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
         <path d="M1 6h9M6.5 2.5 10 6l-3.5 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
@@ -345,46 +351,151 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
 
   /* Events — the next one whose date hasn't passed is shown automatically.
      Add only genuine, confirmed events here — date, title, venue, blurb. */
-  const EVENTS = [];
+  const EVENTS = [
+    {date:'2026-09-05', title:'Kerala Masters — Pour Over Combat, Season 2', venue:'Cochin · hosted by The Brew School',
+      blurb:"Kerala's biggest pour-over battle returns. Open to baristas and home brewers — partnered with Benki Brewing Tools, Caffinary and Sanstown Cafe."},
+    {date:'2026-11-07', title:'Kerala Coffee Festival', venue:'Aspin Courtyards, Beach Road, Calicut · 07–08 Nov',
+      blurb:"Kerala's first-ever coffee festival — two days celebrating the state's coffee culture, from farm to cup."},
+    {date:'2026-11-07', title:'V60 Brewers Cup India 2026 — Calicut Regional Round', venue:'Calicut · powered by ThreeSixty, presented by HARIO India',
+      blurb:"The Malabar coast's route to the national stage. Open to café professionals and home brewers — registrations are open."}
+  ];
 
   const NAMES = ["Kasaragod","Kannur","Wayanad","Kozhikode","Malappuram","Palakkad","Thrissur",
                  "Ernakulam","Idukki","Kottayam","Alappuzha","Pathanamthitta","Kollam","Thiruvananthapuram"];
 
-  /* ---------- sign-up: sends to Formspree, lands in Gmail ---------- */
-  const FORM_ENDPOINT = 'https://formspree.io/f/xrpzgeky';
+  /* ---------- sign-up -> Supabase subscribers table ----------
+     Was Formspree (50/month free cap); moved to Supabase so signups and
+     place submissions live in one dashboard with no monthly ceiling.
+     Duplicate addresses are allowed by design — de-dupe on export. */
   /* Add-a-Place -> Supabase submissions table. Publishable key is safe to
      expose client-side; row-level security only allows inserts here. */
   const SUPABASE_URL = 'https://uxmkcnavtzejyiptpenj.supabase.co';
   const SUPABASE_ANON_KEY = 'sb_publishable_jvr6FL01n6KIPU5OFF0bsw_uNt2_qj2';
+  /* Email ping to the site owner whenever someone submits a place — separate
+     Formspree form from the newsletter signup so quotas don't compete.
+     Swap in your real endpoint ID once the form is created at formspree.io. */
+  const SUBMISSION_NOTIFY_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID_HERE';
+
+  /* ---------- bilingual UI strings (English/Malayalam toggle) ----------
+     Only interface chrome is translated — place names, brand names and
+     district names stay as-is per the site's editorial rules. Defaults to
+     English always; the person switches manually, no auto-detection. */
+  const STR = {
+    en: {
+      navEvents:'Events', navAbout:'About', navLang:'ML',
+      hint:'Click a district to explore',
+      tagline:'The rising of specialty coffee in',
+      emailPlaceholder:'your@email.com',
+      signupOk:'Joined. Next drop lands in your inbox.',
+      signupInvalid:'That address needs an @ and a domain.',
+      sendErr:"Couldn't send — try again in a moment.",
+      connErr:"Couldn't send — check your connection and try again.",
+      sending:'Sending…',
+      catCafes:'Specialty cafés', catRoasters:'Specialty roasters',
+      catFarms:'Specialty farms', catEducation:'Coffee education',
+      emptyCat:'None listed yet — know one? Write to us.',
+      districtKicker:'District', elevation:'Elevation',
+      elevationNote:'Elevation is modelled from published point heights, not survey data.',
+      visit:'Visit →',
+      eventsKicker:"What's on", eventsTitle:'Events',
+      eventsSub:'Cuppings, producer days and training across the state',
+      eventsEmpty:"Nothing scheduled right now. Join the list and we'll send the next one.",
+      aboutKicker:'About', aboutSub:"A working map of the state's coffee",
+      aboutP1:"Kerala grows coffee in the Ghats and drinks it on the coast. The map is the state's real terrain — the green strip is the coastal plain, the brown and white wall on the right is the Western Ghats, and the green notch halfway up is the Palakkad Gap.",
+      aboutP2:'Run a place that belongs here? Send it in and it goes on the map.',
+      aboutAddBtn:'Add a Place',
+      aboutFoot:'District boundaries: census district polygons. Elevation: modelled from published point heights.',
+      contributeKicker:'Contribute', addPlaceTitle:'Add a Place',
+      addPlaceSub:'Know a café, roaster, farm or coffee educator that belongs here?',
+      lblName:'Place name *', lblCategory:'Category *', lblCity:'City', lblDistrict:'District',
+      lblAddr:'Address or Google Maps link', lblWeb:'Website', lblIg:'Instagram',
+      lblDesc:'Short description', lblEmail:'Your email *', lblPhone:'Phone (optional)',
+      optCafe:'Café', optRoaster:'Roaster', optFarm:'Farm / Producer',
+      optEducation:'Coffee education', optEquipment:'Equipment / Supplier',
+      submitBtn:'Submit for review',
+      requiredMsg:'Place name and your email are required.',
+      addOkMsg:'Thank you. We verify every submission before it appears on the map.',
+      addPlaceFoot:'Thank you. We verify every submission before it appears on the Kerala Specialty Coffee Map.'
+    },
+    ml: {
+      navEvents:'ഇവന്റുകൾ', navAbout:'വിവരം', navLang:'EN',
+      hint:'പര്യവേക്ഷണം ചെയ്യാൻ ഒരു ജില്ല ക്ലിക്ക് ചെയ്യുക',
+      tagline:'കേരളത്തിൽ സ്പെഷ്യാലിറ്റി കോഫിയുടെ ഉയർച്ച',
+      emailPlaceholder:'your@email.com',
+      signupOk:'ചേർന്നു. അടുത്ത ലക്കം നിങ്ങളുടെ ഇൻബോക്സിൽ എത്തും.',
+      signupInvalid:'@ ഉം ഡൊമെയ്‌നും ആവശ്യമാണ്.',
+      sendErr:'അയയ്ക്കാൻ കഴിഞ്ഞില്ല — അൽപ്പസമയം കഴിഞ്ഞ് വീണ്ടും ശ്രമിക്കുക.',
+      connErr:'അയയ്ക്കാൻ കഴിഞ്ഞില്ല — നിങ്ങളുടെ കണക്ഷൻ പരിശോധിച്ച് വീണ്ടും ശ്രമിക്കുക.',
+      sending:'അയയ്ക്കുന്നു…',
+      catCafes:'സ്പെഷ്യാലിറ്റി കഫേകൾ', catRoasters:'സ്പെഷ്യാലിറ്റി റോസ്റ്ററുകൾ',
+      catFarms:'സ്പെഷ്യാലിറ്റി ഫാമുകൾ', catEducation:'കോഫി വിദ്യാഭ്യാസം',
+      emptyCat:'ഇതുവരെ ലിസ്റ്റ് ചെയ്തിട്ടില്ല — ഒരെണ്ണം അറിയാമോ? ഞങ്ങൾക്ക് എഴുതുക.',
+      districtKicker:'ജില്ല', elevation:'ഉയരം',
+      elevationNote:'ഉയരം പ്രസിദ്ധീകരിച്ച പോയിന്റ് ഡാറ്റയിൽ നിന്ന് മാതൃകയാക്കിയതാണ്, സർവേ ഡാറ്റയല്ല.',
+      visit:'സന്ദർശിക്കുക →',
+      eventsKicker:'എന്താണ് നടക്കുന്നത്', eventsTitle:'ഇവന്റുകൾ',
+      eventsSub:'സംസ്ഥാനത്തുടനീളമുള്ള കപ്പിംഗുകൾ, പ്രൊഡ്യൂസർ ദിനങ്ങൾ, പരിശീലനങ്ങൾ',
+      eventsEmpty:'ഇപ്പോൾ ഒന്നും ഷെഡ്യൂൾ ചെയ്തിട്ടില്ല. ലിസ്റ്റിൽ ചേരൂ, അടുത്തത് ഞങ്ങൾ അയയ്ക്കാം.',
+      aboutKicker:'വിവരം', aboutSub:'സംസ്ഥാനത്തിന്റെ കോഫിയുടെ ഒരു പ്രവർത്തന ഭൂപടം',
+      aboutP1:'കേരളം ഘട്ടുകളിൽ കോഫി വളർത്തുന്നു, തീരത്ത് അത് കുടിക്കുന്നു. ഭൂപടം സംസ്ഥാനത്തിന്റെ യഥാർത്ഥ ഭൂപ്രകൃതിയാണ് — പച്ച വരമ്പ് തീരപ്രദേശമാണ്, വലതുവശത്തെ തവിട്ട്-വെള്ള മതിൽ പശ്ചിമഘട്ടമാണ്, പകുതി ഉയരത്തിലുള്ള പച്ച വിടവ് പാലക്കാട് ചുരമാണ്.',
+      aboutP2:'ഇവിടെ ഉൾപ്പെടേണ്ട ഒരു സ്ഥലം അറിയാമോ? അയച്ചുതരൂ, അത് ഭൂപടത്തിൽ ഇടം നേടും.',
+      aboutAddBtn:'ഒരു സ്ഥലം ചേർക്കുക',
+      aboutFoot:'ജില്ലാ അതിരുകൾ: സെൻസസ് ജില്ലാ പോളിഗണുകൾ. ഉയരം: പ്രസിദ്ധീകരിച്ച പോയിന്റ് ഉയരങ്ങളിൽ നിന്ന് മാതൃകയാക്കിയത്.',
+      contributeKicker:'സംഭാവന ചെയ്യുക', addPlaceTitle:'ഒരു സ്ഥലം ചേർക്കുക',
+      addPlaceSub:'ഇവിടെ ഉൾപ്പെടേണ്ട ഒരു കഫേ, റോസ്റ്റർ, ഫാം അല്ലെങ്കിൽ കോഫി അധ്യാപകൻ അറിയാമോ?',
+      lblName:'സ്ഥലത്തിന്റെ പേര് *', lblCategory:'വിഭാഗം *', lblCity:'നഗരം', lblDistrict:'ജില്ല',
+      lblAddr:'വിലാസം അല്ലെങ്കിൽ ഗൂഗിൾ മാപ്സ് ലിങ്ക്', lblWeb:'വെബ്സൈറ്റ്', lblIg:'ഇൻസ്റ്റാഗ്രാം',
+      lblDesc:'ഹ്രസ്വ വിവരണം', lblEmail:'നിങ്ങളുടെ ഇമെയിൽ *', lblPhone:'ഫോൺ (ഓപ്ഷണൽ)',
+      optCafe:'കഫേ', optRoaster:'റോസ്റ്റർ', optFarm:'ഫാം / ഉത്പാദകൻ',
+      optEducation:'കോഫി വിദ്യാഭ്യാസം', optEquipment:'ഉപകരണം / വിതരണക്കാരൻ',
+      submitBtn:'അവലോകനത്തിനായി സമർപ്പിക്കുക',
+      requiredMsg:'സ്ഥലത്തിന്റെ പേരും നിങ്ങളുടെ ഇമെയിലും ആവശ്യമാണ്.',
+      addOkMsg:'നന്ദി. ഭൂപടത്തിൽ പ്രത്യക്ഷപ്പെടുന്നതിന് മുമ്പ് ഓരോ സമർപ്പണവും ഞങ്ങൾ പരിശോധിക്കുന്നു.',
+      addPlaceFoot:'നന്ദി. കേരള സ്പെഷ്യാലിറ്റി കോഫി ഭൂപടത്തിൽ പ്രത്യക്ഷപ്പെടുന്നതിന് മുമ്പ് ഓരോ സമർപ്പണവും ഞങ്ങൾ പരിശോധിക്കുന്നു.'
+    }
+  };
+  let LANG='en';
+  function L(k){ return STR[LANG][k]; }
   const form=document.getElementById('signup'), emailEl=document.getElementById('email'), msg=document.getElementById('msg');
   const joinBtn = form.querySelector('button[type="submit"]');
   form.addEventListener('submit',function(e){
     e.preventDefault();
     const v=(emailEl.value||'').trim();
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)){
-      msg.className='msg mono err'; msg.textContent='That address needs an @ and a domain.'; emailEl.focus(); return;
+      msg.className='msg mono err'; msg.textContent=L('signupInvalid'); emailEl.focus(); return;
     }
     joinBtn.disabled=true; joinBtn.style.opacity='.45';
-    msg.className='msg mono'; msg.textContent='Sending…';
-    fetch(FORM_ENDPOINT,{method:'POST',headers:{'Accept':'application/json'},body:new FormData(form)})
+    msg.className='msg mono'; msg.textContent=L('sending');
+    fetch(SUPABASE_URL+'/rest/v1/subscribers',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'apikey':SUPABASE_ANON_KEY,
+        'Authorization':'Bearer '+SUPABASE_ANON_KEY,
+        'Prefer':'return=minimal'
+      },
+      body:JSON.stringify({email:v})
+    })
       .then(function(res){
         if(res.ok){
-          msg.className='msg mono ok'; msg.textContent='Joined. Next drop lands in your inbox.';
+          msg.className='msg mono ok'; msg.textContent=L('signupOk');
           emailEl.value=''; emailEl.blur();
         }else{
-          msg.className='msg mono err'; msg.textContent="Couldn't send — try again in a moment.";
+          msg.className='msg mono err'; msg.textContent=L('sendErr');
         }
       })
       .catch(function(){
-        msg.className='msg mono err'; msg.textContent="Couldn't send — check your connection and try again.";
+        msg.className='msg mono err'; msg.textContent=L('connErr');
       })
       .finally(function(){ joinBtn.disabled=false; joinBtn.style.opacity=''; });
   });
 
   /* ---------- panel ---------- */
   const panel=document.getElementById('panel'), panelBody=document.getElementById('panelBody');
-  const CATS=[{k:'cafes',t:'Specialty cafés'},{k:'roasters',t:'Specialty roasters'},
-              {k:'farms',t:'Specialty farms'},{k:'education',t:'Coffee education'}];
+  function getCats(){
+    return [{k:'cafes',t:L('catCafes')},{k:'roasters',t:L('catRoasters')},
+            {k:'farms',t:L('catFarms')},{k:'education',t:L('catEducation')}];
+  }
   const esc=function(s){return String(s).replace(/[&<>"]/g,function(c){
     return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
   function chev(){return '<svg class="chev" width="7" height="10" viewBox="0 0 7 10" fill="none" aria-hidden="true">'+
@@ -394,9 +505,9 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
   function renderDistrict(i){
     const name=NAMES[i], rec=DATA[name]||{sub:'',cafes:[],roasters:[],farms:[],education:[]};
     const er=(typeof ERANGE!=='undefined'&&ERANGE[name])?ERANGE[name]:null;
-    let html='<div class="p-kicker mono">District</div><h2 class="p-title">'+esc(name)+'</h2>'+
-      '<div class="p-sub mono">'+esc(rec.sub||'')+(er?'<br>Elevation '+nf(er[0])+'–'+nf(er[1])+' m':'')+'</div>';
-    CATS.forEach(function(cat,idx){
+    let html='<div class="p-kicker mono">'+L('districtKicker')+'</div><h2 class="p-title">'+esc(name)+'</h2>'+
+      '<div class="p-sub mono">'+esc(rec.sub||'')+(er?'<br>'+L('elevation')+' '+nf(er[0])+'–'+nf(er[1])+' m':'')+'</div>';
+    getCats().forEach(function(cat,idx){
       const list=rec[cat.k]||[];
       html+='<div class="row'+(idx===0&&list.length?' open':'')+'">'+
         '<button class="row-head" type="button" aria-expanded="'+(idx===0&&list.length?'true':'false')+'">'+
@@ -406,12 +517,12 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
         html+='<div class="item"><div class="n">'+esc(it.n)+
           (it.v==='probable'?' <span class="tag mono">probable</span>':'')+
           '</div><div class="m mono">'+esc(it.m||'')+'</div>'+
-          (it.w?'<div class="m mono"><a class="lnk" href="'+esc(it.w)+'" target="_blank" rel="noopener noreferrer">Visit →</a></div>':'')+
+          (it.w?'<div class="m mono"><a class="lnk" href="'+esc(it.w)+'" target="_blank" rel="noopener noreferrer">'+L('visit')+'</a></div>':'')+
           '</div>'; });
-      }else{ html+='<div class="empty mono">None listed yet — know one? Write to us.</div>'; }
+      }else{ html+='<div class="empty mono">'+L('emptyCat')+'</div>'; }
       html+='</div></div></div>';
     });
-    html+='<div class="p-foot mono">Elevation is modelled from published point heights, not survey data.</div>';
+    html+='<div class="p-foot mono">'+L('elevationNote')+'</div>';
     panelBody.innerHTML=html; wireRows(); panel.scrollTop=0;
   }
   function fmtDate(iso){
@@ -427,9 +538,9 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
   }
   function renderEvents(){
     const list=upcoming();
-    let html='<div class="p-kicker mono">What\'s on</div><h2 class="p-title">Events</h2>'+
-             '<div class="p-sub mono">Cuppings, producer days and training across the state</div>';
-    if(!list.length){ html+='<div class="empty mono" style="padding-top:8px">Nothing scheduled right now. Join the list and we\'ll send the next one.</div>'; }
+    let html='<div class="p-kicker mono">'+L('eventsKicker')+'</div><h2 class="p-title">'+L('eventsTitle')+'</h2>'+
+             '<div class="p-sub mono">'+L('eventsSub')+'</div>';
+    if(!list.length){ html+='<div class="empty mono" style="padding-top:8px">'+L('eventsEmpty')+'</div>'; }
     else list.forEach(function(e){
       html+='<div class="ev"><div class="d mono">'+fmtDate(e.date).full+'</div><div class="t">'+esc(e.title)+
             '</div><div class="v mono">'+esc(e.venue)+'</div><div class="b">'+esc(e.blurb)+'</div></div>';
@@ -437,49 +548,47 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
     panelBody.innerHTML=html; panel.scrollTop=0;
   }
   function renderAbout(){
-    panelBody.innerHTML='<div class="p-kicker mono">About</div><h2 class="p-title">Specialty Coffee Kerala <span class="wordmark-green">Map</span></h2>'+
-      '<div class="p-sub mono">A working map of the state\'s coffee</div>'+
-      '<p style="font-size:14px;line-height:1.6;opacity:.85">Kerala grows coffee in the Ghats and drinks it on the coast. '+
-      'The map is the state\'s real terrain — the green strip is the coastal plain, the brown and white wall on the right is the Western Ghats, '+
-      'and the green notch halfway up is the Palakkad Gap.</p>'+
-      '<p style="font-size:14px;line-height:1.6;opacity:.85;margin-top:14px">Run a place that belongs here? Send it in and it goes on the map.</p>'+
-      '<button class="af-submit" id="aboutAddPlaceBtn" type="button" style="margin-top:16px">Add a Place</button>'+
-      '<div class="p-foot mono">District boundaries: census district polygons. Elevation: modelled from published point heights.</div>';
+    panelBody.innerHTML='<div class="p-kicker mono">'+L('aboutKicker')+'</div><h2 class="p-title">Specialty Coffee Kerala <span class="wordmark-green">Map</span></h2>'+
+      '<div class="p-sub mono">'+L('aboutSub')+'</div>'+
+      '<p style="font-size:14px;line-height:1.6;opacity:.85">'+L('aboutP1')+'</p>'+
+      '<p style="font-size:14px;line-height:1.6;opacity:.85;margin-top:14px">'+L('aboutP2')+'</p>'+
+      '<button class="cta-green" id="aboutAddPlaceBtn" type="button">'+L('aboutAddBtn')+'</button>'+
+      '<div class="p-foot mono">'+L('aboutFoot')+'</div>';
     panel.scrollTop=0;
     const addBtn=document.getElementById('aboutAddPlaceBtn');
     if(addBtn) addBtn.addEventListener('click',function(){ renderAddPlace(); openPanel('add'); });
   }
   function renderAddPlace(){
-    panelBody.innerHTML='<div class="p-kicker mono">Contribute</div><h2 class="p-title">Add a Place</h2>'+
-      '<div class="p-sub mono">Know a café, roaster, farm or coffee educator that belongs here?</div>'+
+    panelBody.innerHTML='<div class="p-kicker mono">'+L('contributeKicker')+'</div><h2 class="p-title">'+L('addPlaceTitle')+'</h2>'+
+      '<div class="p-sub mono">'+L('addPlaceSub')+'</div>'+
       '<form id="addPlaceForm" class="add-form" novalidate>'+
-        '<label class="af-label mono" for="ap-name">Place name *</label>'+
+        '<label class="af-label mono" for="ap-name">'+L('lblName')+'</label>'+
         '<input class="af-input" id="ap-name" name="place_name" type="text" required />'+
-        '<label class="af-label mono" for="ap-category">Category *</label>'+
+        '<label class="af-label mono" for="ap-category">'+L('lblCategory')+'</label>'+
         '<select class="af-input" id="ap-category" name="category" required>'+
-          '<option value="cafe">Café</option><option value="roaster">Roaster</option>'+
-          '<option value="farm">Farm / Producer</option><option value="education">Coffee education</option>'+
-          '<option value="equipment">Equipment / Supplier</option></select>'+
-        '<label class="af-label mono" for="ap-city">City</label>'+
+          '<option value="cafe">'+L('optCafe')+'</option><option value="roaster">'+L('optRoaster')+'</option>'+
+          '<option value="farm">'+L('optFarm')+'</option><option value="education">'+L('optEducation')+'</option>'+
+          '<option value="equipment">'+L('optEquipment')+'</option></select>'+
+        '<label class="af-label mono" for="ap-city">'+L('lblCity')+'</label>'+
         '<input class="af-input" id="ap-city" name="city" type="text" />'+
-        '<label class="af-label mono" for="ap-district">District</label>'+
+        '<label class="af-label mono" for="ap-district">'+L('lblDistrict')+'</label>'+
         '<input class="af-input" id="ap-district" name="district" type="text" />'+
-        '<label class="af-label mono" for="ap-addr">Address or Google Maps link</label>'+
+        '<label class="af-label mono" for="ap-addr">'+L('lblAddr')+'</label>'+
         '<input class="af-input" id="ap-addr" name="address_or_maps_link" type="text" />'+
-        '<label class="af-label mono" for="ap-web">Website</label>'+
+        '<label class="af-label mono" for="ap-web">'+L('lblWeb')+'</label>'+
         '<input class="af-input" id="ap-web" name="website" type="url" />'+
-        '<label class="af-label mono" for="ap-ig">Instagram</label>'+
+        '<label class="af-label mono" for="ap-ig">'+L('lblIg')+'</label>'+
         '<input class="af-input" id="ap-ig" name="instagram" type="text" />'+
-        '<label class="af-label mono" for="ap-desc">Short description</label>'+
+        '<label class="af-label mono" for="ap-desc">'+L('lblDesc')+'</label>'+
         '<textarea class="af-input af-textarea" id="ap-desc" name="description" rows="3"></textarea>'+
-        '<label class="af-label mono" for="ap-email">Your email *</label>'+
+        '<label class="af-label mono" for="ap-email">'+L('lblEmail')+'</label>'+
         '<input class="af-input" id="ap-email" name="submitter_email" type="email" required />'+
-        '<label class="af-label mono" for="ap-phone">Phone (optional)</label>'+
+        '<label class="af-label mono" for="ap-phone">'+L('lblPhone')+'</label>'+
         '<input class="af-input" id="ap-phone" name="phone" type="tel" />'+
-        '<button class="af-submit" type="submit">Submit for review</button>'+
+        '<button class="af-submit" type="submit">'+L('submitBtn')+'</button>'+
         '<div class="msg mono" id="apMsg" role="status"></div>'+
       '</form>'+
-      '<div class="p-foot mono">Thank you. We verify every submission before it appears on the Kerala Specialty Coffee Map.</div>';
+      '<div class="p-foot mono">'+L('addPlaceFoot')+'</div>';
     panel.scrollTop=0;
     wireAddPlaceForm();
   }
@@ -503,10 +612,19 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
         phone:form.phone.value.trim()||null
       };
       if(!payload.place_name||!payload.submitter_email){
-        msg.className='msg mono err'; msg.textContent='Place name and your email are required.'; return;
+        msg.className='msg mono err'; msg.textContent=L('requiredMsg'); return;
       }
       btn.disabled=true; btn.style.opacity='.5';
-      msg.className='msg mono'; msg.textContent='Sending…';
+      msg.className='msg mono'; msg.textContent=L('sending');
+      /* Notify the site owner by email — fire-and-forget, never blocks the
+         Supabase save and never surfaces an error to the visitor even if
+         the Formspree endpoint is misconfigured or unreachable. */
+      if(SUBMISSION_NOTIFY_ENDPOINT.indexOf('YOUR_FORM_ID_HERE')===-1){
+        const notifyBody=new FormData();
+        notifyBody.append('_subject','New place submitted — '+payload.place_name);
+        Object.keys(payload).forEach(function(k){ notifyBody.append(k, payload[k]==null?'':payload[k]); });
+        fetch(SUBMISSION_NOTIFY_ENDPOINT,{method:'POST',headers:{'Accept':'application/json'},body:notifyBody}).catch(function(){});
+      }
       fetch(SUPABASE_URL+'/rest/v1/submissions',{
         method:'POST',
         headers:{
@@ -518,13 +636,13 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
         body:JSON.stringify(payload)
       }).then(function(res){
         if(res.ok){
-          msg.className='msg mono ok'; msg.textContent='Thank you. We verify every submission before it appears on the map.';
+          msg.className='msg mono ok'; msg.textContent=L('addOkMsg');
           form.reset();
         }else{
-          msg.className='msg mono err'; msg.textContent="Couldn't send — try again in a moment.";
+          msg.className='msg mono err'; msg.textContent=L('sendErr');
         }
       }).catch(function(){
-        msg.className='msg mono err'; msg.textContent="Couldn't send — check your connection and try again.";
+        msg.className='msg mono err'; msg.textContent=L('connErr');
       }).finally(function(){ btn.disabled=false; btn.style.opacity=''; });
     });
   }
@@ -541,9 +659,28 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
   function closePanel(){ panelMode=null; document.body.classList.remove('panel-open'); selectDistrict(-1,true); }
   document.getElementById('panelClose').addEventListener('click',closePanel);
   document.addEventListener('keydown',function(e){ if(e.key==='Escape'){ closePanel(); hideCard(); } });
-  document.getElementById('navAdd').addEventListener('click',function(){ selectDistrict(-1,true); renderAddPlace(); openPanel('add'); });
   document.getElementById('navEvents').addEventListener('click',function(){ selectDistrict(-1,true); renderEvents(); openPanel('events'); });
   document.getElementById('navAbout').addEventListener('click',function(){ selectDistrict(-1,true); renderAbout(); openPanel('about'); });
+
+  /* language toggle: swaps nav/tagline/hint text immediately, re-renders
+     the open panel (if any) in the new language, no page reload */
+  function applyLang(){
+    document.getElementById('navEvents').textContent=L('navEvents');
+    document.getElementById('navAbout').textContent=L('navAbout');
+    document.getElementById('navLang').textContent=L('navLang');
+    document.getElementById('email').setAttribute('placeholder',L('emailPlaceholder'));
+    const tagEl=document.getElementById('tagline');
+    tagEl.innerHTML=(LANG==='en')?(L('tagline')+' <i>Kerala</i>.'):('<i>'+L('tagline')+'</i>');
+    document.getElementById('hintToast').textContent=L('hint');
+    if(panelMode==='district'&&selected>=0) renderDistrict(selected);
+    else if(panelMode==='events') renderEvents();
+    else if(panelMode==='about') renderAbout();
+    else if(panelMode==='add') renderAddPlace();
+  }
+  document.getElementById('navLang').addEventListener('click',function(){
+    LANG = (LANG==='en') ? 'ml' : 'en';
+    applyLang();
+  });
 
   const card=document.getElementById('eventCard');
   function hideCard(){ card.classList.remove('show'); }
@@ -617,8 +754,17 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
     extensions:{derivatives:true},
     vertexShader:'varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',
     fragmentShader:['varying vec2 vUv;uniform vec2 uScale;uniform vec3 uLine;uniform vec3 uBg;uniform float uDim;',
-      'void main(){vec2 g=vUv*uScale;vec2 d=abs(fract(g-0.5)-0.5)/fwidth(g);',
-      'float l=1.0-min(min(d.x,d.y),1.0);float r=length((vUv-0.5)*vec2(1.6,1.0));',
+      'float ghash(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}',
+      'float vnoise(vec2 p){vec2 i=floor(p);vec2 f=fract(p);',
+      'float a=ghash(i),b=ghash(i+vec2(1.0,0.0)),c=ghash(i+vec2(0.0,1.0)),d=ghash(i+vec2(1.0,1.0));',
+      'vec2 u=f*f*f*(f*(f*6.0-15.0)+10.0);',
+      'return (a+(b-a)*u.x)+(c-a)*u.y*(1.0-u.x)+(d-b)*u.x*u.y;}',
+      'float fbm(vec2 p){float v=0.0;float amp=0.62;',
+      'for(int i=0;i<3;i++){v+=amp*vnoise(p);p*=2.0;amp*=0.42;}return v;}',
+      'void main(){vec2 p=vUv*uScale*0.045;',
+      'float h=fbm(p);',
+      'float v=h*18.0;float f=fract(v);float dd=min(f,1.0-f);float w=fwidth(v);',
+      'float l=1.0-smoothstep(0.0,w*1.4,dd);float r=length((vUv-0.5)*vec2(1.6,1.0));',
       'float fade=smoothstep(0.06,0.30,r)*(1.0-smoothstep(0.60,0.92,r)*0.55);',
       'gl_FragColor=vec4(mix(uBg,uLine,l*0.55*fade*uDim),1.0);}'].join('\n')
   });
