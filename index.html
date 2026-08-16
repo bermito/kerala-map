@@ -961,6 +961,7 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
     return (h&&h.object)?h.object.userData.d:-1;
   }
   let dragging=false,moved=0,px0=0,py0=0,velX=0,velY=0,rotX=0,rotY=0,idle=0;
+  let autoGlow=-1, glowTimer=0;
   const el=renderer.domElement;
   el.addEventListener('pointerdown',function(e){ dragging=true;moved=0;px0=e.clientX;py0=e.clientY;idle=0;
     el.setPointerCapture(e.pointerId); });
@@ -1016,6 +1017,23 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
       }
     }
     mapGroup.rotation.y=rotY; mapGroup.rotation.x=rotX;
+
+    /* idle glow loop: when nothing is touched, hovered, or open, sweep the
+       hover glow through the districts north to south, same paint as hover */
+    if(!open && !panelMode && !dragging && hovered<0 && idle>200 && !reduce){
+      glowTimer++;
+      if(autoGlow<0){ autoGlow=0; glowTimer=0; paint(autoGlow,'green'); }
+      else if(glowTimer>80){
+        paint(autoGlow,'base');
+        autoGlow=(autoGlow+1)%14;
+        paint(autoGlow,'green');
+        glowTimer=0;
+      }
+    }else if(autoGlow>=0){
+      if(autoGlow!==hovered && autoGlow!==selected) paint(autoGlow,'base');
+      autoGlow=-1; glowTimer=0;
+    }
+
     const par=open?0:1;
     mapGroup.position.x=mouse.x*0.3*par;
     mapGroup.position.y=-mouse.y*0.22*par;
