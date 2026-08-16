@@ -97,18 +97,8 @@
   .br{position:fixed;z-index:4;right:26px;bottom:24px;width:min(340px,42vw);text-align:right;
       transition:opacity .35s ease,transform .45s cubic-bezier(.2,.7,.2,1)}
   .br h1{font-size:clamp(19px,2vw,27px);line-height:1.06;font-weight:600;letter-spacing:-.022em;margin-bottom:8px}
-  .br .tagline{font-size:clamp(13px,1.05vw,15px);line-height:1.4;font-weight:400;opacity:.62;margin-bottom:16px}
+  .br .tagline{font-size:clamp(13px,1.05vw,15px);line-height:1.4;font-weight:400;opacity:.62}
   .br .tagline i{font-style:normal;color:var(--green)}
-  #signup{display:flex;align-items:center;gap:8px;justify-content:flex-end;border-bottom:1px solid var(--ink);padding-bottom:7px}
-  #signup input{flex:1;min-width:0;background:none;border:0;color:var(--ink);
-             font:400 13px/1.2 "IBM Plex Mono",monospace;text-align:right}
-  #signup input::placeholder{color:rgba(8,33,15,.42)}
-  #signup input:focus{outline:none}
-  #signup button{flex:none;width:28px;height:28px;border-radius:50%;border:1px solid var(--ink);background:none;
-              cursor:pointer;display:grid;place-items:center;color:var(--ink);
-              transition:background .22s ease,color .22s ease,transform .22s ease}
-  #signup button:hover{background:var(--ink);color:#eafff0;transform:translateX(2px)}
-  #signup button:focus-visible{outline:2px solid var(--green);outline-offset:3px}
   .msg{font:400 11px/1.4 "IBM Plex Mono",monospace;margin-top:8px;min-height:16px}
   .msg.err{color:#b4231f}
   .msg.ok{color:var(--green)}
@@ -119,7 +109,7 @@
     transform:translateX(101%);transition:transform .55s cubic-bezier(.16,.84,.3,1)}
   body.panel-open .panel{transform:none}
   body.panel-open .br{opacity:0;pointer-events:none;transform:translateY(8px)}
-  .chips{display:none;position:fixed;z-index:4;left:0;right:0;bottom:150px;padding:0 16px;gap:8px;
+  .chips{display:none;position:fixed;z-index:4;left:0;right:0;bottom:96px;padding:0 16px;gap:8px;
     overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;
     transition:opacity .3s,transform .3s}
   .chips::-webkit-scrollbar{display:none}
@@ -208,7 +198,7 @@
     nav{gap:14px;padding-top:3px}
     nav button{font-size:11px;letter-spacing:.1em}
     #navAdd{display:none}
-    .bl{left:16px;bottom:auto;top:auto;bottom:196px}
+    .bl{left:16px;bottom:auto;top:auto;bottom:142px}
     .br{right:16px;left:16px;width:auto;bottom:18px;text-align:left}
     form{justify-content:flex-start}
     form input{text-align:left}
@@ -247,16 +237,6 @@
 <section class="br" id="signupBlock">
   <h1>Kerala Specialty Coffee Map</h1>
   <p class="tagline" id="tagline">The rising of specialty coffee in <i>Kerala</i>.</p>
-  <form id="signup" novalidate>
-    <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="your@email.com" aria-label="Email address" />
-    <input type="hidden" name="_subject" value="New signup — Kerala Specialty Coffee Map" />
-    <button type="submit" aria-label="Join the list">
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-        <path d="M1 6h9M6.5 2.5 10 6l-3.5 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </button>
-  </form>
-  <div class="msg mono" id="msg" role="status"></div>
 </section>
 
 <aside class="panel" id="panel" role="dialog" aria-modal="false" aria-label="Details">
@@ -379,7 +359,6 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
                  "Ernakulam","Idukki","Kottayam","Alappuzha","Pathanamthitta","Kollam","Thiruvananthapuram"];
 
   /* ---------- sign-up: sends to Formspree, lands in Gmail ---------- */
-  const FORM_ENDPOINT = 'https://formspree.io/f/xrpzgeky';
   /* Add-a-Place -> Supabase submissions table. Publishable key is safe to
      expose client-side; row-level security only allows inserts here. */
   const SUPABASE_URL = 'https://uxmkcnavtzejyiptpenj.supabase.co';
@@ -469,30 +448,6 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
   };
   let LANG='en';
   function L(k){ return STR[LANG][k]; }
-  const form=document.getElementById('signup'), emailEl=document.getElementById('email'), msg=document.getElementById('msg');
-  const joinBtn = form.querySelector('button[type="submit"]');
-  form.addEventListener('submit',function(e){
-    e.preventDefault();
-    const v=(emailEl.value||'').trim();
-    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)){
-      msg.className='msg mono err'; msg.textContent=L('signupInvalid'); emailEl.focus(); return;
-    }
-    joinBtn.disabled=true; joinBtn.style.opacity='.45';
-    msg.className='msg mono'; msg.textContent=L('sending');
-    fetch(FORM_ENDPOINT,{method:'POST',headers:{'Accept':'application/json'},body:new FormData(form)})
-      .then(function(res){
-        if(res.ok){
-          msg.className='msg mono ok'; msg.textContent=L('signupOk');
-          emailEl.value=''; emailEl.blur();
-        }else{
-          msg.className='msg mono err'; msg.textContent=L('sendErr');
-        }
-      })
-      .catch(function(){
-        msg.className='msg mono err'; msg.textContent=L('connErr');
-      })
-      .finally(function(){ joinBtn.disabled=false; joinBtn.style.opacity=''; });
-  });
 
   /* ---------- panel ---------- */
   const panel=document.getElementById('panel'), panelBody=document.getElementById('panelBody');
@@ -672,7 +627,6 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
     document.getElementById('navEvents').textContent=L('navEvents');
     document.getElementById('navAbout').textContent=L('navAbout');
     document.getElementById('navLang').textContent=L('navLang');
-    document.getElementById('email').setAttribute('placeholder',L('emailPlaceholder'));
     const tagEl=document.getElementById('tagline');
     tagEl.innerHTML=(LANG==='en')?(L('tagline')+' <i>Kerala</i>.'):('<i>'+L('tagline')+'</i>');
     document.getElementById('hintToast').textContent=L('hint');
@@ -1041,7 +995,7 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
     updateTargets();
   }
   function viewSize(){ const h=2*Math.tan(camera.fov*Math.PI/360)*camera.position.z; return {h:h,w:h*camera.aspect}; }
-  function mapFit(){ return Math.min(1,(W/H)/0.78)*(isNarrow?0.8:1); }
+  function mapFit(){ return Math.min(1,(W/H)/0.78)*(isNarrow?0.95:1); }
   window.addEventListener('resize',resize); resize();
 
   const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
