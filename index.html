@@ -119,6 +119,17 @@
     transform:translateX(101%);transition:transform .55s cubic-bezier(.16,.84,.3,1)}
   body.panel-open .panel{transform:none}
   body.panel-open .br{opacity:0;pointer-events:none;transform:translateY(8px)}
+  .chips{display:none;position:fixed;z-index:4;left:0;right:0;bottom:150px;padding:0 16px;gap:8px;
+    overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+    transition:opacity .3s,transform .3s}
+  .chips::-webkit-scrollbar{display:none}
+  .chips button{flex:0 0 auto;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.08em;
+    text-transform:uppercase;color:#333;background:rgba(255,255,255,.85);border:1px solid var(--hair);
+    border-radius:999px;padding:7px 13px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .chips button small{color:var(--green);margin-left:5px;font-size:10px}
+  .chips button.on{background:var(--green);border-color:var(--green);color:#fff}
+  .chips button.on small{color:rgba(255,255,255,.85)}
+  body.panel-open .chips{opacity:0;pointer-events:none;transform:translateY(8px)}
   body.panel-open .bl{opacity:0}
   body.panel-open .hovername{opacity:0}
   .panel .close{position:absolute;top:26px;right:26px;width:30px;height:30px;border-radius:50%;
@@ -197,11 +208,12 @@
     nav{gap:14px;padding-top:3px}
     nav button{font-size:11px;letter-spacing:.1em}
     #navAdd{display:none}
-    .bl{left:16px;bottom:auto;top:auto;bottom:150px}
+    .bl{left:16px;bottom:auto;top:auto;bottom:196px}
     .br{right:16px;left:16px;width:auto;bottom:18px;text-align:left}
     form{justify-content:flex-start}
     form input{text-align:left}
     .hovername{bottom:auto;top:96px;font-size:24px}
+    .chips{display:flex}
     .panel{width:100%;height:64vh;top:auto;bottom:0;border-left:0;border-top:1px solid var(--hair);
       padding:26px 20px;transform:translateY(101%);border-radius:6px 6px 0 0}
     .panel .close{top:18px;right:18px}
@@ -229,6 +241,8 @@
 
 <div class="hovername" id="hoverName"></div>
 <div class="hintToast mono" id="hintToast">Click a district to explore</div>
+
+<nav class="chips" id="districtChips" aria-label="Districts"></nav>
 
 <section class="br" id="signupBlock">
   <h1>Kerala Specialty Coffee Map</h1>
@@ -934,8 +948,37 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
       D[i].sat=0; D[i].satT=1;
       renderDistrict(i); openPanel('district'); hideCard();
     }
+    updateChips();
     updateTargets();
   }
+
+  /* ---------- district chips (mobile) ---------- */
+  const chipsEl=document.getElementById('districtChips');
+  function entryCount(name){
+    const r=DATA[name]; if(!r) return 0;
+    return (r.cafes||[]).length+(r.roasters||[]).length+(r.farms||[]).length+(r.education||[]).length;
+  }
+  function buildChips(){
+    const order=NAMES.map(function(n,i){ return {n:n,i:i,c:entryCount(n)}; });
+    order.sort(function(a,b){ return (b.c-a.c)||a.n.localeCompare(b.n); });
+    chipsEl.innerHTML='';
+    order.forEach(function(o){
+      const b=document.createElement('button');
+      b.type='button';
+      b.innerHTML=o.c>0?(o.n+'<small>'+o.c+'</small>'):o.n;
+      b.setAttribute('data-d',o.i);
+      b.setAttribute('aria-label',o.n);
+      b.addEventListener('click',function(){ selectDistrict(o.i); });
+      chipsEl.appendChild(b);
+    });
+  }
+  function updateChips(){
+    const btns=chipsEl.children;
+    for(let k=0;k<btns.length;k++){
+      btns[k].classList.toggle('on', +btns[k].getAttribute('data-d')===selected);
+    }
+  }
+  buildChips();
 
   function updateTargets(){
     const vs=viewSize();
