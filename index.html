@@ -165,6 +165,12 @@
     cursor:pointer;transition:background .15s ease,border-color .15s ease,transform .1s ease}
   .cta-green:hover{background:#008f34;border-color:#008f34}
   .cta-green:active{transform:scale(.97)}
+  .cta-outline{margin-top:18px;margin-left:10px;display:inline-block;padding:11px 24px;border-radius:20px;
+    border:1px solid var(--green);background:transparent;color:var(--green);
+    font:600 11px/1 "Inter Tight",sans-serif;letter-spacing:.1em;text-transform:uppercase;
+    cursor:pointer;transition:background .15s ease,color .15s ease,transform .1s ease}
+  .cta-outline:hover{background:rgba(0,168,63,.08)}
+  .cta-outline:active{transform:scale(.97)}
   .item .lnk:hover,.item .lnk:focus-visible{opacity:1;text-decoration:underline}
   .empty{padding:0 0 16px;font:400 11px/1.5 "IBM Plex Mono",monospace;opacity:.5}
   .p-foot{margin-top:26px;font:400 10px/1.6 "IBM Plex Mono",monospace;opacity:.4;letter-spacing:.04em}
@@ -296,52 +302,53 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
      ========================================================================== */
   const DATA = {
     "Kasaragod":{sub:"Coastal north · Kanhangad–Bekal belt",
-      cafes:[], roasters:[], farms:[], education:[]},
+      cafes:[], roasters:[], farms:[], education:[], baristas:[]},
     "Kannur":{sub:"Coastal north · Thalassery–Kannur",
       cafes:[{n:"BRWLAB Kannur",m:"Kannur city · confirm exact storefront",w:"https://brwlab.in/"}],
-      roasters:[], farms:[], education:[]},
+      roasters:[], farms:[], education:[], baristas:[]},
     "Wayanad":{sub:"Kerala's main growing highland",
       cafes:[{n:"Wishlist Coffee",m:"Kalpetta · V60, filter, Wayanad Robusta",w:"https://wishlist.coffee/"}],
       roasters:[],
       farms:[{n:"Kelachandra Coffee — Brahmagiri Estate",m:"Thirunelly · Private estate",w:"https://kelachandracoffee.com/brahmagiri/"},
               {n:"Sanjay Garden / Bluhills Spices & Beans",m:"Kunnampetta · fine Robusta, By appointment",w:"https://bluhillsbeans.in/"},
               {n:"Black Baza Coffee — Smallholder Network",m:"Wayanad district · Regional producer network",w:"https://www.blackbazacoffee.com/blogs/origins-communities/wayanad-kerala"}],
-      education:[]},
+      education:[], baristas:[]},
     "Kozhikode":{sub:"Coast · roastery and café cluster",
       cafes:[{n:"Brewmorphia Speciality Coffee",m:"Mananchira · Silk Street",w:"https://brewmorphia.in/"},
              {n:"Sukoru Specialty Coffee & Concept Store",m:"Mananchira · concept store",w:"https://sukoru.coffee/"},
              {n:"Cafficana — Kozhikode",m:"Nellikode · manual brew bar",w:"https://cafficana.com/"},
-             {n:"Underblu Coffee — Southwave Experience Store",m:"South Beach / Silk Street · multi-roaster slow bar",w:"https://www.underblu.in/"}],
+             {n:"Underblu Coffee — Southwave Experience Store",m:"South Beach / Silk Street · multi-roaster slow bar",w:"https://www.underblu.in/"},
+             {n:"Overdose Cafe",m:"Calicut",w:"https://maps.app.goo.gl/e5cCiFrJhbHj2m188"}],
       roasters:[{n:"Bermito Coffee Roasters",m:"Kozhikode · rare lots, nano-lots, by appointment",w:"https://bermito.com/"}],
-      farms:[], education:[]},
+      farms:[], education:[], baristas:[]},
     "Malappuram":{sub:"Coast to the Nilambur valley",
-      cafes:[], roasters:[], farms:[], education:[]},
+      cafes:[], roasters:[], farms:[], education:[], baristas:[]},
     "Palakkad":{sub:"The Gap · Attappadi highlands",
       cafes:[], roasters:[],
       farms:[{n:"Poabs Organic Estates — Seethargundu",m:"Nelliyampathy · biodynamic, By appointment / event access",w:"https://www.poabsestates.com/produce/coffee/"}],
-      education:[]},
+      education:[], baristas:[]},
     "Thrissur":{sub:"Central Kerala · café town",
-      cafes:[], roasters:[], farms:[], education:[]},
+      cafes:[], roasters:[], farms:[], education:[], baristas:[]},
     "Ernakulam":{sub:"Kochi · the state's biggest café market",
       cafes:[{n:"Kaapi Street",m:"Pachalam · handcrafted coffee and bakes",w:"https://www.kaapistreet.com/"},
              {n:"90Million Coffee",m:"Kaloor · 100% specialty Arabica",w:"https://90million.in/"},
              {n:"Cafficana — Panampilly Nagar",m:"Panampilly Nagar · manual brew bar",w:"https://cafficana.com/"}],
       roasters:[{n:"CAPI Specialty Coffee Roasters",m:"Azad Road, Kaloor · tasting by appointment",w:"https://capiroast.com/"}],
       farms:[], education:[{n:"Pour Over Lab",m:"Kaloor · workshops, courses, experience space",w:"https://www.pouroverlab.in/"},
-                            {n:"The Brew School",m:"Kadavanthra · professional barista training",w:"https://thebrewschool.in/"}]},
+                            {n:"The Brew School",m:"Kadavanthra · professional barista training",w:"https://thebrewschool.in/"}], baristas:[]},
     "Idukki":{sub:"Ghats plantation belt · Anamudi",
-      cafes:[], roasters:[], farms:[], education:[]},
+      cafes:[], roasters:[], farms:[], education:[], baristas:[]},
     "Kottayam":{sub:"Midlands · plantation trade town",
-      cafes:[], roasters:[], farms:[], education:[]},
+      cafes:[], roasters:[], farms:[], education:[], baristas:[]},
     "Alappuzha":{sub:"Backwaters · the flattest district",
-      cafes:[], roasters:[], farms:[], education:[]},
+      cafes:[], roasters:[], farms:[], education:[], baristas:[]},
     "Pathanamthitta":{sub:"Foothills · Konni–Ranni",
-      cafes:[], roasters:[], farms:[], education:[]},
+      cafes:[], roasters:[], farms:[], education:[], baristas:[]},
     "Kollam":{sub:"Coast to the Punalur foothills",
-      cafes:[], roasters:[], farms:[], education:[]},
+      cafes:[], roasters:[], farms:[], education:[], baristas:[]},
     "Thiruvananthapuram":{sub:"Capital · Ponmudi and Agasthyamalai behind it",
       cafes:[{n:"Third Wave Coffee — Trivandrum Airport",m:"Chackai · 24-hour airport café"}],
-      roasters:[], farms:[], education:[]}
+      roasters:[], farms:[], education:[], baristas:[]}
   };
 
   /* Events — the next one whose date hasn't passed is shown automatically.
@@ -383,6 +390,7 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
       sendErr:"Couldn't send — try again in a moment.",
       connErr:"Couldn't send — check your connection and try again.",
       sending:'Sending…',
+      catBaristas:'Baristas & home brewers',
       catCafes:'Specialty cafés', catRoasters:'Specialty roasters',
       catFarms:'Specialty farms', catEducation:'Coffee education',
       emptyCat:'None listed yet — know one? Write to us.',
@@ -395,17 +403,30 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
       aboutKicker:'About', aboutSub:"A working map of the state's coffee",
       aboutP1:"Kerala grows coffee in the Ghats and drinks it on the coast. The map is the state's real terrain — the green strip is the coastal plain, the brown and white wall on the right is the Western Ghats, and the green notch halfway up is the Palakkad Gap.",
       aboutP2:'Run a place that belongs here? Send it in and it goes on the map.',
-      aboutAddBtn:'Add a Place',
+      aboutAddBtn:'Add a Place', aboutRemoveBtn:'Remove a Listing',
+      optBarista:'Barista / Home Brewer',
+      barSub:'A barista or home brewer who should be on the map?',
+      barLblAddr:'Area / neighbourhood', barLblWeb:'Portfolio or website',
+      barLblDesc:'Role, years of experience, skills, certifications',
+      barLblEmail:'Your email * (kept private)',
+      barRequiredMsg:'Name, city, district and your email are required.',
+      removeTitle:'Remove a Listing', removeBtn:'Request removal',
+      removeSub:'Listed here and want to be taken off? Send a request.',
+      lblRmName:'Name as listed *', lblRmEmail:'Email you submitted with *',
+      lblRmNote:'Anything else (optional)',
+      rmRequiredMsg:'Name, district and your email are required.',
+      rmOkMsg:'Request received. We will confirm and remove your listing.',
+      removeFoot:'Removal requests are checked against the email used to submit the listing.',
       aboutFoot:'District boundaries: census district polygons. Elevation: modelled from published point heights.',
       contributeKicker:'Contribute', addPlaceTitle:'Add a Place',
-      addPlaceSub:'Know a café, roaster, farm or coffee educator that belongs here?',
-      lblName:'Place name *', lblCategory:'Category *', lblCity:'City', lblDistrict:'District',
-      lblAddr:'Address or Google Maps link', lblWeb:'Website', lblIg:'Instagram',
+      addPlaceSub:'Know a café, roaster, farm, educator or barista that belongs here?',
+      lblName:'Name *', lblCategory:'Category *', lblCity:'City *', lblDistrict:'District *',
+      lblAddr:'Address or Google Maps link *', lblWeb:'Website', lblIg:'Instagram',
       lblDesc:'Short description', lblEmail:'Your email *', lblPhone:'Phone (optional)',
       optCafe:'Café', optRoaster:'Roaster', optFarm:'Farm / Producer',
       optEducation:'Coffee education', optEquipment:'Equipment / Supplier',
       submitBtn:'Submit for review',
-      requiredMsg:'Place name and your email are required.',
+      requiredMsg:'Name, city, district, address and your email are required.',
       addOkMsg:'Thank you. We verify every submission before it appears on the map.',
       addPlaceFoot:'Thank you. We verify every submission before it appears on the Kerala Specialty Coffee Map.'
     },
@@ -419,6 +440,7 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
       sendErr:'അയയ്ക്കാൻ കഴിഞ്ഞില്ല — അൽപ്പസമയം കഴിഞ്ഞ് വീണ്ടും ശ്രമിക്കുക.',
       connErr:'അയയ്ക്കാൻ കഴിഞ്ഞില്ല — നിങ്ങളുടെ കണക്ഷൻ പരിശോധിച്ച് വീണ്ടും ശ്രമിക്കുക.',
       sending:'അയയ്ക്കുന്നു…',
+      catBaristas:'ബരിസ്റ്റകളും ഹോം ബ്രൂവർമാരും',
       catCafes:'സ്പെഷ്യാലിറ്റി കഫേകൾ', catRoasters:'സ്പെഷ്യാലിറ്റി റോസ്റ്ററുകൾ',
       catFarms:'സ്പെഷ്യാലിറ്റി ഫാമുകൾ', catEducation:'കോഫി വിദ്യാഭ്യാസം',
       emptyCat:'ഇതുവരെ ലിസ്റ്റ് ചെയ്തിട്ടില്ല — ഒരെണ്ണം അറിയാമോ? ഞങ്ങൾക്ക് എഴുതുക.',
@@ -431,17 +453,30 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
       aboutKicker:'വിവരം', aboutSub:'സംസ്ഥാനത്തിന്റെ കോഫിയുടെ ഒരു പ്രവർത്തന ഭൂപടം',
       aboutP1:'കേരളം ഘട്ടുകളിൽ കോഫി വളർത്തുന്നു, തീരത്ത് അത് കുടിക്കുന്നു. ഭൂപടം സംസ്ഥാനത്തിന്റെ യഥാർത്ഥ ഭൂപ്രകൃതിയാണ് — പച്ച വരമ്പ് തീരപ്രദേശമാണ്, വലതുവശത്തെ തവിട്ട്-വെള്ള മതിൽ പശ്ചിമഘട്ടമാണ്, പകുതി ഉയരത്തിലുള്ള പച്ച വിടവ് പാലക്കാട് ചുരമാണ്.',
       aboutP2:'ഇവിടെ ഉൾപ്പെടേണ്ട ഒരു സ്ഥലം അറിയാമോ? അയച്ചുതരൂ, അത് ഭൂപടത്തിൽ ഇടം നേടും.',
-      aboutAddBtn:'ഒരു സ്ഥലം ചേർക്കുക',
+      aboutAddBtn:'ഒരു സ്ഥലം ചേർക്കുക', aboutRemoveBtn:'ലിസ്റ്റിംഗ് നീക്കം ചെയ്യുക',
+      optBarista:'ബരിസ്റ്റ / ഹോം ബ്രൂവർ',
+      barSub:'മാപ്പിൽ ഉൾപ്പെടേണ്ട ഒരു ബരിസ്റ്റയോ ഹോം ബ്രൂവറോ?',
+      barLblAddr:'പ്രദേശം', barLblWeb:'പോർട്ട്ഫോളിയോ അല്ലെങ്കിൽ വെബ്സൈറ്റ്',
+      barLblDesc:'റോൾ, പരിചയം, കഴിവുകൾ, സർട്ടിഫിക്കേഷനുകൾ',
+      barLblEmail:'നിങ്ങളുടെ ഇമെയിൽ * (പരസ്യമാക്കില്ല)',
+      barRequiredMsg:'പേര്, നഗരം, ജില്ല, ഇമെയിൽ എന്നിവ ആവശ്യമാണ്.',
+      removeTitle:'ലിസ്റ്റിംഗ് നീക്കം ചെയ്യുക', removeBtn:'നീക്കം ചെയ്യാൻ അപേക്ഷിക്കുക',
+      removeSub:'ഇവിടെ ലിസ്റ്റ് ചെയ്തിട്ടുണ്ടോ, നീക്കം ചെയ്യണോ? അപേക്ഷ അയയ്ക്കുക.',
+      lblRmName:'ലിസ്റ്റിലുള്ള പേര് *', lblRmEmail:'സമർപ്പിച്ച ഇമെയിൽ *',
+      lblRmNote:'മറ്റെന്തെങ്കിലും (നിർബന്ധമല്ല)',
+      rmRequiredMsg:'പേര്, ജില്ല, ഇമെയിൽ എന്നിവ ആവശ്യമാണ്.',
+      rmOkMsg:'അപേക്ഷ ലഭിച്ചു. സ്ഥിരീകരിച്ച ശേഷം നീക്കം ചെയ്യും.',
+      removeFoot:'ലിസ്റ്റിംഗ് സമർപ്പിച്ച ഇമെയിലുമായി ഒത്തുനോക്കിയ ശേഷമാണ് നീക്കം ചെയ്യുക.',
       aboutFoot:'ജില്ലാ അതിരുകൾ: സെൻസസ് ജില്ലാ പോളിഗണുകൾ. ഉയരം: പ്രസിദ്ധീകരിച്ച പോയിന്റ് ഉയരങ്ങളിൽ നിന്ന് മാതൃകയാക്കിയത്.',
       contributeKicker:'സംഭാവന ചെയ്യുക', addPlaceTitle:'ഒരു സ്ഥലം ചേർക്കുക',
       addPlaceSub:'ഇവിടെ ഉൾപ്പെടേണ്ട ഒരു കഫേ, റോസ്റ്റർ, ഫാം അല്ലെങ്കിൽ കോഫി അധ്യാപകൻ അറിയാമോ?',
-      lblName:'സ്ഥലത്തിന്റെ പേര് *', lblCategory:'വിഭാഗം *', lblCity:'നഗരം', lblDistrict:'ജില്ല',
-      lblAddr:'വിലാസം അല്ലെങ്കിൽ ഗൂഗിൾ മാപ്സ് ലിങ്ക്', lblWeb:'വെബ്സൈറ്റ്', lblIg:'ഇൻസ്റ്റാഗ്രാം',
+      lblName:'പേര് *', lblCategory:'വിഭാഗം *', lblCity:'നഗരം *', lblDistrict:'ജില്ല *',
+      lblAddr:'വിലാസം അല്ലെങ്കിൽ ഗൂഗിൾ മാപ്സ് ലിങ്ക് *', lblWeb:'വെബ്സൈറ്റ്', lblIg:'ഇൻസ്റ്റാഗ്രാം',
       lblDesc:'ഹ്രസ്വ വിവരണം', lblEmail:'നിങ്ങളുടെ ഇമെയിൽ *', lblPhone:'ഫോൺ (ഓപ്ഷണൽ)',
       optCafe:'കഫേ', optRoaster:'റോസ്റ്റർ', optFarm:'ഫാം / ഉത്പാദകൻ',
       optEducation:'കോഫി വിദ്യാഭ്യാസം', optEquipment:'ഉപകരണം / വിതരണക്കാരൻ',
       submitBtn:'അവലോകനത്തിനായി സമർപ്പിക്കുക',
-      requiredMsg:'സ്ഥലത്തിന്റെ പേരും നിങ്ങളുടെ ഇമെയിലും ആവശ്യമാണ്.',
+      requiredMsg:'പേര്, നഗരം, ജില്ല, വിലാസം, ഇമെയിൽ എന്നിവ ആവശ്യമാണ്.',
       addOkMsg:'നന്ദി. ഭൂപടത്തിൽ പ്രത്യക്ഷപ്പെടുന്നതിന് മുമ്പ് ഓരോ സമർപ്പണവും ഞങ്ങൾ പരിശോധിക്കുന്നു.',
       addPlaceFoot:'നന്ദി. കേരള സ്പെഷ്യാലിറ്റി കോഫി ഭൂപടത്തിൽ പ്രത്യക്ഷപ്പെടുന്നതിന് മുമ്പ് ഓരോ സമർപ്പണവും ഞങ്ങൾ പരിശോധിക്കുന്നു.'
     }
@@ -453,7 +488,8 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
   const panel=document.getElementById('panel'), panelBody=document.getElementById('panelBody');
   function getCats(){
     return [{k:'cafes',t:L('catCafes')},{k:'roasters',t:L('catRoasters')},
-            {k:'farms',t:L('catFarms')},{k:'education',t:L('catEducation')}];
+            {k:'farms',t:L('catFarms')},{k:'education',t:L('catEducation')},
+            {k:'baristas',t:L('catBaristas')}];
   }
   const esc=function(s){return String(s).replace(/[&<>"]/g,function(c){
     return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
@@ -462,7 +498,7 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
   const nf=function(n){return n.toLocaleString('en-IN');};
 
   function renderDistrict(i){
-    const name=NAMES[i], rec=DATA[name]||{sub:'',cafes:[],roasters:[],farms:[],education:[]};
+    const name=NAMES[i], rec=DATA[name]||{sub:'',cafes:[],roasters:[],farms:[],education:[],baristas:[]};
     const er=(typeof ERANGE!=='undefined'&&ERANGE[name])?ERANGE[name]:null;
     let html='<div class="p-kicker mono">'+L('districtKicker')+'</div><h2 class="p-title">'+esc(name)+'</h2>'+
       '<div class="p-sub mono">'+esc(rec.sub||'')+(er?'<br>'+L('elevation')+' '+nf(er[0])+'–'+nf(er[1])+' m':'')+'</div>';
@@ -512,14 +548,17 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
       '<p style="font-size:14px;line-height:1.6;opacity:.85">'+L('aboutP1')+'</p>'+
       '<p style="font-size:14px;line-height:1.6;opacity:.85;margin-top:14px">'+L('aboutP2')+'</p>'+
       '<button class="cta-green" id="aboutAddPlaceBtn" type="button">'+L('aboutAddBtn')+'</button>'+
+      '<button class="cta-outline" id="aboutRemoveBtn" type="button">'+L('aboutRemoveBtn')+'</button>'+
       '<div class="p-foot mono">'+L('aboutFoot')+'</div>';
     panel.scrollTop=0;
     const addBtn=document.getElementById('aboutAddPlaceBtn');
     if(addBtn) addBtn.addEventListener('click',function(){ renderAddPlace(); openPanel('add'); });
+    const remBtn=document.getElementById('aboutRemoveBtn');
+    if(remBtn) remBtn.addEventListener('click',function(){ renderRemove(); openPanel('remove'); });
   }
   function renderAddPlace(){
     panelBody.innerHTML='<div class="p-kicker mono">'+L('contributeKicker')+'</div><h2 class="p-title">'+L('addPlaceTitle')+'</h2>'+
-      '<div class="p-sub mono">'+L('addPlaceSub')+'</div>'+
+      '<div class="p-sub mono" id="apSub">'+L('addPlaceSub')+'</div>'+
       '<form id="addPlaceForm" class="add-form" novalidate>'+
         '<label class="af-label mono" for="ap-name">'+L('lblName')+'</label>'+
         '<input class="af-input" id="ap-name" name="place_name" type="text" required />'+
@@ -527,20 +566,21 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
         '<select class="af-input" id="ap-category" name="category" required>'+
           '<option value="cafe">'+L('optCafe')+'</option><option value="roaster">'+L('optRoaster')+'</option>'+
           '<option value="farm">'+L('optFarm')+'</option><option value="education">'+L('optEducation')+'</option>'+
-          '<option value="equipment">'+L('optEquipment')+'</option></select>'+
+          '<option value="equipment">'+L('optEquipment')+'</option>'+
+          '<option value="barista">'+L('optBarista')+'</option></select>'+
         '<label class="af-label mono" for="ap-city">'+L('lblCity')+'</label>'+
-        '<input class="af-input" id="ap-city" name="city" type="text" />'+
+        '<input class="af-input" id="ap-city" name="city" type="text" required />'+
         '<label class="af-label mono" for="ap-district">'+L('lblDistrict')+'</label>'+
-        '<input class="af-input" id="ap-district" name="district" type="text" />'+
-        '<label class="af-label mono" for="ap-addr">'+L('lblAddr')+'</label>'+
-        '<input class="af-input" id="ap-addr" name="address_or_maps_link" type="text" />'+
-        '<label class="af-label mono" for="ap-web">'+L('lblWeb')+'</label>'+
+        '<input class="af-input" id="ap-district" name="district" type="text" required />'+
+        '<label class="af-label mono" id="lab-addr" for="ap-addr">'+L('lblAddr')+'</label>'+
+        '<input class="af-input" id="ap-addr" name="address_or_maps_link" type="text" required />'+
+        '<label class="af-label mono" id="lab-web" for="ap-web">'+L('lblWeb')+'</label>'+
         '<input class="af-input" id="ap-web" name="website" type="url" />'+
         '<label class="af-label mono" for="ap-ig">'+L('lblIg')+'</label>'+
         '<input class="af-input" id="ap-ig" name="instagram" type="text" />'+
-        '<label class="af-label mono" for="ap-desc">'+L('lblDesc')+'</label>'+
+        '<label class="af-label mono" id="lab-desc" for="ap-desc">'+L('lblDesc')+'</label>'+
         '<textarea class="af-input af-textarea" id="ap-desc" name="description" rows="3"></textarea>'+
-        '<label class="af-label mono" for="ap-email">'+L('lblEmail')+'</label>'+
+        '<label class="af-label mono" id="lab-email" for="ap-email">'+L('lblEmail')+'</label>'+
         '<input class="af-input" id="ap-email" name="submitter_email" type="email" required />'+
         '<label class="af-label mono" for="ap-phone">'+L('lblPhone')+'</label>'+
         '<input class="af-input" id="ap-phone" name="phone" type="tel" />'+
@@ -550,11 +590,94 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
       '<div class="p-foot mono">'+L('addPlaceFoot')+'</div>';
     panel.scrollTop=0;
     wireAddPlaceForm();
+    applyCategoryMode();
+  }
+  /* Swap the form's wording when the category is a person rather than a
+     venue. Address stops being required here on purpose: demanding a street
+     address for an individual is a privacy problem, so it softens to a
+     neighbourhood and the email note makes clear it is not published. */
+  function isBaristaCat(){
+    const sel=document.getElementById('ap-category');
+    return !!sel && sel.value==='barista';
+  }
+  function applyCategoryMode(){
+    const bar=isBaristaCat();
+    const sub=document.getElementById('apSub');
+    const lAddr=document.getElementById('lab-addr'), lWeb=document.getElementById('lab-web');
+    const lDesc=document.getElementById('lab-desc'), lEmail=document.getElementById('lab-email');
+    const iAddr=document.getElementById('ap-addr');
+    if(sub) sub.textContent = bar ? L('barSub') : L('addPlaceSub');
+    if(lAddr) lAddr.textContent = bar ? L('barLblAddr') : L('lblAddr');
+    if(lWeb) lWeb.textContent = bar ? L('barLblWeb') : L('lblWeb');
+    if(lDesc) lDesc.textContent = bar ? L('barLblDesc') : L('lblDesc');
+    if(lEmail) lEmail.textContent = bar ? L('barLblEmail') : L('lblEmail');
+    if(iAddr){ if(bar) iAddr.removeAttribute('required'); else iAddr.setAttribute('required',''); }
+  }
+  /* ---------- removal request ----------
+     A listed person or business asks to be taken off the map. This is a
+     request, not an instant self-service delete: without verifying who is
+     asking, anyone could remove anyone else's listing. Vajid confirms the
+     email matches the original submission, then deletes by hand. */
+  function renderRemove(){
+    panelBody.innerHTML='<div class="p-kicker mono">'+L('contributeKicker')+'</div><h2 class="p-title">'+L('removeTitle')+'</h2>'+
+      '<div class="p-sub mono">'+L('removeSub')+'</div>'+
+      '<form id="removeForm" class="add-form" novalidate>'+
+        '<label class="af-label mono" for="rm-name">'+L('lblRmName')+'</label>'+
+        '<input class="af-input" id="rm-name" name="listing_name" type="text" required />'+
+        '<label class="af-label mono" for="rm-district">'+L('lblDistrict')+'</label>'+
+        '<input class="af-input" id="rm-district" name="district" type="text" required />'+
+        '<label class="af-label mono" for="rm-email">'+L('lblRmEmail')+'</label>'+
+        '<input class="af-input" id="rm-email" name="submitter_email" type="email" required />'+
+        '<label class="af-label mono" for="rm-note">'+L('lblRmNote')+'</label>'+
+        '<textarea class="af-input af-textarea" id="rm-note" name="note" rows="3"></textarea>'+
+        '<button class="af-submit" type="submit">'+L('removeBtn')+'</button>'+
+        '<div class="msg mono" id="rmMsg" role="status"></div>'+
+      '</form>'+
+      '<div class="p-foot mono">'+L('removeFoot')+'</div>';
+    panel.scrollTop=0;
+    wireRemoveForm();
+  }
+  function wireRemoveForm(){
+    const form=document.getElementById('removeForm');
+    if(!form) return;
+    const msg=document.getElementById('rmMsg');
+    form.addEventListener('submit',function(e){
+      e.preventDefault();
+      const btn=form.querySelector('.af-submit');
+      const payload={
+        place_name:form.listing_name.value.trim(),
+        category:'removal_request',
+        district:form.district.value.trim(),
+        description:form.note.value.trim()||null,
+        submitter_email:form.submitter_email.value.trim()
+      };
+      if(!payload.place_name||!payload.district||!payload.submitter_email){
+        msg.className='msg mono err'; msg.textContent=L('rmRequiredMsg'); return;
+      }
+      btn.disabled=true; btn.style.opacity='.5';
+      msg.className='msg mono'; msg.textContent=L('sending');
+      fetch(SUPABASE_URL+'/rest/v1/submissions',{
+        method:'POST',
+        headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,
+                 'Content-Type':'application/json','Prefer':'return=minimal'},
+        body:JSON.stringify(payload)
+      }).then(function(res){
+        if(res.ok){
+          msg.className='msg mono ok'; msg.textContent=L('rmOkMsg'); form.reset();
+        }else{
+          msg.className='msg mono err'; msg.textContent=L('sendErr');
+        }
+      }).catch(function(){
+        msg.className='msg mono err'; msg.textContent=L('connErr');
+      }).finally(function(){ btn.disabled=false; btn.style.opacity=''; });
+    });
   }
   function wireAddPlaceForm(){
     const form=document.getElementById('addPlaceForm');
     if(!form) return;
     const msg=document.getElementById('apMsg');
+    const catSel=document.getElementById('ap-category');
+    if(catSel) catSel.addEventListener('change',applyCategoryMode);
     form.addEventListener('submit',function(e){
       e.preventDefault();
       const btn=form.querySelector('.af-submit');
@@ -570,8 +693,11 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
         submitter_email:form.submitter_email.value.trim(),
         phone:form.phone.value.trim()||null
       };
-      if(!payload.place_name||!payload.submitter_email){
-        msg.className='msg mono err'; msg.textContent=L('requiredMsg'); return;
+      const bar=payload.category==='barista';
+      if(!payload.place_name||!payload.city||!payload.district||!payload.submitter_email||
+         (!bar&&!payload.address_or_maps_link)){
+        msg.className='msg mono err';
+        msg.textContent=bar?L('barRequiredMsg'):L('requiredMsg'); return;
       }
       btn.disabled=true; btn.style.opacity='.5';
       msg.className='msg mono'; msg.textContent=L('sending');
@@ -634,6 +760,7 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
     else if(panelMode==='events') renderEvents();
     else if(panelMode==='about') renderAbout();
     else if(panelMode==='add') renderAddPlace();
+    else if(panelMode==='remove') renderRemove();
   }
   document.getElementById('navLang').addEventListener('click',function(){
     LANG = (LANG==='en') ? 'ml' : 'en';
