@@ -173,7 +173,10 @@
   .cta-outline:active{transform:scale(.97)}
   .item .lnk:hover,.item .lnk:focus-visible{opacity:1;text-decoration:underline}
   .empty{padding:0 0 16px;font:400 11px/1.5 "IBM Plex Mono",monospace;opacity:.5}
-  .p-foot{margin-top:26px;font:400 10px/1.6 "IBM Plex Mono",monospace;opacity:.4;letter-spacing:.04em}
+  .p-contact{margin-top:22px;font:400 11px/1.6 "IBM Plex Mono",monospace;opacity:.65;letter-spacing:.04em}
+  .p-contact a{color:var(--green);text-decoration:none;border-bottom:1px solid rgba(0,168,63,.3)}
+  .p-contact a:hover{border-bottom-color:var(--green)}
+  .p-foot{margin-top:18px;font:400 10px/1.6 "IBM Plex Mono",monospace;opacity:.4;letter-spacing:.04em}
   .ev{padding:20px 0;border-bottom:1px solid var(--hair)}
   .ev .d{font:500 11px/1 "IBM Plex Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
   .ev .t{font:600 18px/1.15 "Inter Tight",sans-serif;letter-spacing:-.01em;margin:8px 0 6px}
@@ -323,7 +326,9 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
       roasters:[{n:"Bermito Coffee Roasters",m:"Kozhikode · rare lots, nano-lots, by appointment",w:"https://bermito.com/"}],
       farms:[], education:[], baristas:[]},
     "Malappuram":{sub:"Coast to the Nilambur valley",
-      cafes:[], roasters:[], farms:[], education:[], baristas:[]},
+      cafes:[], roasters:[], farms:[],
+      education:[{n:"Brewell Coffee Lab",m:"Manjeri · learning, experimenting, coffee & beverage development",w:"https://www.instagram.com/brewellcoffeelab/"}],
+      baristas:[]},
     "Palakkad":{sub:"The Gap · Attappadi highlands",
       cafes:[], roasters:[],
       farms:[{n:"Poabs Organic Estates — Seethargundu",m:"Nelliyampathy · biodynamic, By appointment / event access",w:"https://www.poabsestates.com/produce/coffee/"},
@@ -423,6 +428,7 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
       rmRequiredMsg:'Name, district and your email are required.',
       rmOkMsg:'Request received. We will confirm and remove your listing.',
       removeFoot:'Removal requests are checked against the email used to submit the listing.',
+      aboutContact:'Contact',
       aboutFoot:'District boundaries: census district polygons. Elevation: modelled from published point heights.',
       contributeKicker:'Contribute', addPlaceTitle:'Add a Place',
       addPlaceSub:'Know a café, roaster, farm, educator or barista that belongs here?',
@@ -473,6 +479,7 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
       rmRequiredMsg:'പേര്, ജില്ല, ഇമെയിൽ എന്നിവ ആവശ്യമാണ്.',
       rmOkMsg:'അപേക്ഷ ലഭിച്ചു. സ്ഥിരീകരിച്ച ശേഷം നീക്കം ചെയ്യും.',
       removeFoot:'ലിസ്റ്റിംഗ് സമർപ്പിച്ച ഇമെയിലുമായി ഒത്തുനോക്കിയ ശേഷമാണ് നീക്കം ചെയ്യുക.',
+      aboutContact:'ബന്ധപ്പെടാൻ',
       aboutFoot:'ജില്ലാ അതിരുകൾ: സെൻസസ് ജില്ലാ പോളിഗണുകൾ. ഉയരം: പ്രസിദ്ധീകരിച്ച പോയിന്റ് ഉയരങ്ങളിൽ നിന്ന് മാതൃകയാക്കിയത്.',
       contributeKicker:'സംഭാവന ചെയ്യുക', addPlaceTitle:'ഒരു സ്ഥലം ചേർക്കുക',
       addPlaceSub:'ഇവിടെ ഉൾപ്പെടേണ്ട ഒരു കഫേ, റോസ്റ്റർ, ഫാം അല്ലെങ്കിൽ കോഫി അധ്യാപകൻ അറിയാമോ?',
@@ -555,6 +562,7 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
       '<p style="font-size:14px;line-height:1.6;opacity:.85;margin-top:14px">'+L('aboutP2')+'</p>'+
       '<button class="cta-green" id="aboutAddPlaceBtn" type="button">'+L('aboutAddBtn')+'</button>'+
       '<button class="cta-outline" id="aboutRemoveBtn" type="button">'+L('aboutRemoveBtn')+'</button>'+
+      '<div class="p-contact mono">'+L('aboutContact')+' <a href="mailto:contact@specialtycoffeekerala.com">contact@specialtycoffeekerala.com</a></div>'+
       '<div class="p-foot mono">'+L('aboutFoot')+'</div>';
     panel.scrollTop=0;
     const addBtn=document.getElementById('aboutAddPlaceBtn');
