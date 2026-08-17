@@ -318,14 +318,16 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
              {n:"Sukoru Specialty Coffee & Concept Store",m:"Mananchira · concept store",w:"https://sukoru.coffee/"},
              {n:"Cafficana — Kozhikode",m:"Nellikode · manual brew bar",w:"https://cafficana.com/"},
              {n:"Underblu Coffee — Southwave Experience Store",m:"South Beach / Silk Street · multi-roaster slow bar",w:"https://www.underblu.in/"},
-             {n:"Overdose Cafe",m:"Calicut",w:"https://maps.app.goo.gl/e5cCiFrJhbHj2m188"}],
+             {n:"Overdose Cafe",m:"Calicut",w:"https://maps.app.goo.gl/e5cCiFrJhbHj2m188"},
+             {n:"Slolabs by Cafficana",m:"Calicut",w:"https://share.google/lonSoUiSXzTv0dZLS"}],
       roasters:[{n:"Bermito Coffee Roasters",m:"Kozhikode · rare lots, nano-lots, by appointment",w:"https://bermito.com/"}],
       farms:[], education:[], baristas:[]},
     "Malappuram":{sub:"Coast to the Nilambur valley",
       cafes:[], roasters:[], farms:[], education:[], baristas:[]},
     "Palakkad":{sub:"The Gap · Attappadi highlands",
       cafes:[], roasters:[],
-      farms:[{n:"Poabs Organic Estates — Seethargundu",m:"Nelliyampathy · biodynamic, By appointment / event access",w:"https://www.poabsestates.com/produce/coffee/"}],
+      farms:[{n:"Poabs Organic Estates — Seethargundu",m:"Nelliyampathy · biodynamic, By appointment / event access",w:"https://www.poabsestates.com/produce/coffee/"},
+             {n:"Silent Valley Estate",m:"Mukkali · Attappadi hills · fine Robusta & specialty Arabica",w:"https://silentvalley.coffee"}],
       education:[], baristas:[]},
     "Thrissur":{sub:"Central Kerala · café town",
       cafes:[], roasters:[], farms:[], education:[], baristas:[]},
@@ -337,7 +339,8 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
       farms:[], education:[{n:"Pour Over Lab",m:"Kaloor · workshops, courses, experience space",w:"https://www.pouroverlab.in/"},
                             {n:"The Brew School",m:"Kadavanthra · professional barista training",w:"https://thebrewschool.in/"}], baristas:[]},
     "Idukki":{sub:"Ghats plantation belt · Anamudi",
-      cafes:[], roasters:[], farms:[], education:[], baristas:[]},
+      cafes:[], roasters:[], farms:[], education:[],
+      baristas:[{n:"Thomas K V",m:"Kumily / Thekkady · barista at Araku Coffee, Bangalore · SCA Foundation in Sensory Skills · home brewer",w:"https://www.instagram.com/thomas__kv/"}]},
     "Kottayam":{sub:"Midlands · plantation trade town",
       cafes:[], roasters:[], farms:[], education:[], baristas:[]},
     "Alappuzha":{sub:"Backwaters · the flattest district",
@@ -1037,7 +1040,7 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
   const chipsEl=document.getElementById('districtChips');
   function entryCount(name){
     const r=DATA[name]; if(!r) return 0;
-    return (r.cafes||[]).length+(r.roasters||[]).length+(r.farms||[]).length+(r.education||[]).length;
+    return (r.cafes||[]).length+(r.roasters||[]).length+(r.farms||[]).length+(r.education||[]).length+(r.baristas||[]).length;
   }
   function buildChips(){
     const order=NAMES.map(function(n,i){ return {n:n,i:i,c:entryCount(n)}; });
