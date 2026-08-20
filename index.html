@@ -853,29 +853,32 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
       'And the courage to do it <i>differently</i>.'
     ];
     /* One shared font size, chosen so every frame sits on a single line
-       (frame 3 is three deliberate rows). Measured, not guessed, so the
-       longest sentence decides the size and nothing ever wraps mid-line. */
-    (function fitType(){
+       (frame 3 is three deliberate rows). Measured on the live page — the
+       measurer must NOT sit inside #intro, which is display:none at this
+       point and would measure everything as zero — and only after the
+       webfont is ready, so Inter Tight's real letter widths are used. */
+    function fitType(){
       var meas=document.createElement('div');
       meas.className='intro-measure';
-      el.appendChild(meas);
+      document.body.appendChild(meas);
       var usable=Math.max(240, window.innerWidth*0.90);
       var best=96;
       for(var f=0; f<FRAMES.length; f++){
         meas.style.fontSize='100px';
         meas.innerHTML=FRAMES[f];
-        var w=meas.scrollWidth||1;
-        var size=100*usable/w;
-        if(size<best) best=size;
+        var w=meas.scrollWidth;
+        if(w>0){
+          var size=100*usable/w;
+          if(size<best) best=size;
+        }
       }
       best=Math.min(best, window.innerHeight*0.16, 96);
       lineA.style.fontSize=best+'px';
       lineB.style.fontSize=best+'px';
-      el.removeChild(meas);
-    })();
+      document.body.removeChild(meas);
+    }
     var ENTER=680, HOLD=1050, EXIT=560, i=0, timers=[], done=false;
     var lines=[lineA,lineB];
-    el.classList.add('on');
     function later(fn,ms){ timers.push(setTimeout(fn,ms)); }
     function finish(){
       if(done) return; done=true;
@@ -883,6 +886,13 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
       try{ localStorage.setItem(KEY,'1'); }catch(e){}
       el.classList.add('out');
       setTimeout(function(){ el.classList.remove('on'); el.style.display='none'; },600);
+      /* the arrival hint fired behind the intro and was never seen;
+         give first-time visitors one clean flash of it now */
+      var toast=document.getElementById('hintToast');
+      if(toast){
+        setTimeout(function(){ toast.classList.add('show'); },700);
+        setTimeout(function(){ toast.classList.remove('show'); },2600);
+      }
     }
     function fly(node,to,ms,ease){
       node.style.transition='transform '+ms+'ms '+ease;
@@ -902,15 +912,30 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
       i++;
       later(step, ENTER+HOLD);
     }
+    function begin(){
+      if(done) return;
+      fitType();
+      el.classList.add('on');
+      step();
+      /* after the last frame's hold, send it off the top before the fade */
+      later(function(){
+        if(done) return;
+        fly(lines[(i+1)%2],'-104vh',EXIT,'cubic-bezier(.7,0,.84,0)');
+        later(finish,EXIT-120);
+      }, (ENTER+HOLD)*FRAMES.length);
+    }
     el.addEventListener('click',finish);
     el.addEventListener('touchstart',finish,{passive:true});
-    step();
-    /* after the last frame's hold, send it off the top before the fade */
-    later(function(){
-      if(done) return;
-      fly(lines[(i+1)%2],'-104vh',EXIT,'cubic-bezier(.7,0,.84,0)');
-      later(finish,EXIT-120);
-    }, (ENTER+HOLD)*FRAMES.length);
+    /* start once the webfont is usable, so measurement sees real glyphs;
+       cap the wait at 900ms so a slow font CDN can never stall the intro */
+    var started=false;
+    function startOnce(){ if(!started){ started=true; begin(); } }
+    if(document.fonts&&document.fonts.load){
+      document.fonts.load('700 16px "Inter Tight"').then(startOnce).catch(startOnce);
+      setTimeout(startOnce,900);
+    }else{
+      setTimeout(startOnce,150);
+    }
   })();
 
 
