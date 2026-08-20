@@ -105,9 +105,10 @@
   #intro.on{display:block}
   #intro.out{opacity:0;pointer-events:none}
   .intro-line{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-    text-align:center;padding:0 5vw;font-family:"Inter Tight",sans-serif;font-weight:700;
-    line-height:1.14;letter-spacing:-.03em;color:var(--ink);white-space:nowrap;
+    padding:0 5vw;font-family:"Inter Tight",sans-serif;font-weight:700;
+    line-height:1.14;letter-spacing:-.03em;color:var(--ink);
     transform:translateY(104vh);will-change:transform}
+  .intro-line .intro-text{white-space:nowrap;text-align:center}
   .intro-line .row{display:block}
   .intro-line i{font-style:normal;color:var(--green)}
   .intro-measure{position:absolute;left:-9999px;top:0;visibility:hidden;display:inline-block;
@@ -257,8 +258,8 @@
 <div class="hintToast mono" id="hintToast">Click a district to explore</div>
 
 <div id="intro" aria-hidden="true">
-  <div class="intro-line" id="introLineA"></div>
-  <div class="intro-line" id="introLineB"></div>
+  <div class="intro-line" id="introLineA"><div class="intro-text"></div></div>
+  <div class="intro-line" id="introLineB"><div class="intro-text"></div></div>
   <div class="intro-skip mono">tap to skip</div>
 </div>
 
@@ -839,10 +840,8 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
      never shown for reduced-motion users, and a try/catch around
      localStorage keeps private-mode browsers from breaking the page. */
   (function(){
-    var KEY='sck_intro_seen', seen=false;
-    try{ seen=localStorage.getItem(KEY)==='1'; }catch(e){}
     var reduceMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if(seen||reduceMotion) return;
+    if(reduceMotion) return;
     var el=document.getElementById('intro');
     var lineA=document.getElementById('introLineA'), lineB=document.getElementById('introLineB');
     if(!el||!lineA||!lineB) return;
@@ -883,7 +882,6 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
     function finish(){
       if(done) return; done=true;
       timers.forEach(clearTimeout);
-      try{ localStorage.setItem(KEY,'1'); }catch(e){}
       el.classList.add('out');
       setTimeout(function(){ el.classList.remove('on'); el.style.display='none'; },600);
       /* the arrival hint fired behind the intro and was never seen;
@@ -902,7 +900,7 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
       if(done) return;
       if(i>=FRAMES.length) return;   /* the send-off timer below handles the ending */
       var cur=lines[i%2], prev=lines[(i+1)%2];
-      cur.innerHTML=FRAMES[i];
+      cur.firstElementChild.innerHTML=FRAMES[i];
       cur.style.transition='none';
       cur.style.transform='translateY(104vh)';
       void cur.offsetWidth;
