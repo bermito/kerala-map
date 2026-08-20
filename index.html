@@ -106,9 +106,10 @@
   #intro.out{opacity:0;pointer-events:none}
   .intro-line{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
     padding:0 5vw;font-family:"Inter Tight",sans-serif;font-weight:700;
-    line-height:1.14;letter-spacing:-.03em;color:var(--ink);
-    transform:translateY(104vh);will-change:transform}
-  .intro-line .intro-text{white-space:nowrap;text-align:center}
+    line-height:1.14;letter-spacing:-.03em;color:var(--ink)}
+  .intro-line .intro-text{white-space:nowrap;text-align:center;background:#ffffff;
+    padding:.12em .25em;transform:translateY(104vh);backface-visibility:hidden;
+    -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
   .intro-line .row{display:block}
   .intro-line i{font-style:normal;color:var(--green)}
   .intro-measure{position:absolute;left:-9999px;top:0;visibility:hidden;display:inline-block;
@@ -899,8 +900,8 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
     function step(){
       if(done) return;
       if(i>=FRAMES.length) return;   /* the send-off timer below handles the ending */
-      var cur=lines[i%2], prev=lines[(i+1)%2];
-      cur.firstElementChild.innerHTML=FRAMES[i];
+      var cur=lines[i%2].firstElementChild, prev=lines[(i+1)%2].firstElementChild;
+      cur.innerHTML=FRAMES[i];
       cur.style.transition='none';
       cur.style.transform='translateY(104vh)';
       void cur.offsetWidth;
@@ -918,7 +919,7 @@ const FINE={"Kasaragod": {"x0": 74.86304, "y0": 12.05636, "w": 115, "h": 149, "d
       /* after the last frame's hold, send it off the top before the fade */
       later(function(){
         if(done) return;
-        fly(lines[(i+1)%2],'-104vh',EXIT,'cubic-bezier(.7,0,.84,0)');
+        fly(lines[(i+1)%2].firstElementChild,'-104vh',EXIT,'cubic-bezier(.7,0,.84,0)');
         later(finish,EXIT-120);
       }, (ENTER+HOLD)*FRAMES.length);
     }
