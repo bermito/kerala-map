@@ -29,8 +29,17 @@ Pages redeploys automatically, usually live within a minute. If a change doesn't
 | `manifest.webmanifest` | Web app manifest, references the two PWA icons. |
 | `robots.txt` | Allows crawling, points to the sitemap. |
 | `sitemap.xml` | Single-page sitemap. |
+| `seo-generate.js` | Optional. Regenerates the static directory / events / FAQ HTML and the JSON-LD from the data in `index.html` (`node seo-generate.js`). Not needed to deploy. |
 | `README.md` | This file. |
 | `THIRD_PARTY_LICENSES.md` | three.js MIT license, fonts, data attribution. |
+
+---
+
+## The guide & directory layer
+
+`index.html` also carries a plain-HTML twin of the map — a written guide to specialty coffee in Kerala, the full directory district by district, the upcoming events and the FAQ — inside `<main id="guide">`. It opens from the **Guide** nav button, the link under the headline, or deep links like `/#directory` and `/#district-kozhikode`. It exists so search engines and AI crawlers, which cannot read the 3D canvas, still see every listing as real text.
+
+The directory, events and FAQ sections in it are generated from `DATA`, `EVENTS` and `FAQ`. After editing those arrays, run `node seo-generate.js` to rewrite the static copies and the `ItemList` / `Event` JSON-LD between the `<!-- SEO:* -->` markers. The prose in the guide is hand-written and edited directly.
 
 ---
 
