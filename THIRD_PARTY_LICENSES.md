@@ -1,12 +1,12 @@
 # Third-Party Licenses and Attribution
 
-This site inlines third-party code and builds on published data. Attribution and license terms are below.
+This site bundles third-party code and builds on published data. Attribution and license terms are below.
 
 ---
 
 ## three.js (r128)
 
-Bundled inline in `index.html` (~600 KB). Inlined rather than loaded from a CDN because the original build environment blocked external scripts.
+Bundled locally in `assets/three-r128.js` (~600 KB). The production library is preserved without modification.
 
 Source: https://github.com/mrdoob/three.js
 
@@ -38,7 +38,7 @@ THE SOFTWARE.
 
 ## Fonts
 
-Loaded from Google Fonts — the only external network request the page makes. If Google Fonts is unreachable, the page falls back to system fonts and nothing breaks.
+Loaded from Google Fonts. Submission forms separately use the existing Supabase configuration. If Google Fonts is unreachable, the page falls back to system fonts and nothing breaks.
 
 ### Inter Tight
 
@@ -68,6 +68,11 @@ It is a plausible surface, not survey data, and should not be relied on for any 
 
 ## Directory listings
 
-Entries in the directory are compiled from public sources — business websites, published listings and public social accounts — and verified before publication.
+Entries in the directory are compiled from public sources — business websites, published listings and public social accounts — and reviewed before publication. Entries whose opening status is unconfirmed are explicitly labelled.
 
-Three farm entries (Kelachandra, Black Baza and WSSS) are listed by region rather than street address at the operators' preference. This is deliberate and is not a data gap.
+Private-estate and regional-network entries retain their existing broad location descriptions. This is deliberate and is not a data gap.
+
+
+## Noto Sans Malayalam
+
+Malayalam typography uses Noto Sans Malayalam through Google Fonts, under the SIL Open Font License 1.1. Upstream: https://github.com/notofonts/malayalam. A Malayalam-capable system font is used if the font cannot be loaded.

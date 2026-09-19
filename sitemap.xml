@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://www.specialtycoffeekerala.com/</loc>
-    <lastmod>2026-09-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
+  <url><loc>https://www.specialtycoffeekerala.com/</loc></url>
+  <url><loc>https://www.specialtycoffeekerala.com/blog/</loc></url>
+  <url><loc>https://www.specialtycoffeekerala.com/blog/what-is-specialty-coffee/</loc></url>
+  <url><loc>https://www.specialtycoffeekerala.com/blog/specialty-coffee-kochi/</loc></url>
+  <url><loc>https://www.specialtycoffeekerala.com/blog/wayanad-coffee-guide/</loc></url>
+  <url><loc>https://www.specialtycoffeekerala.com/directory/</loc></url>
+  <url><loc>https://www.specialtycoffeekerala.com/events/</loc></url>
+  <url><loc>https://www.specialtycoffeekerala.com/faq/</loc></url>
+  <url><loc>https://www.specialtycoffeekerala.com/ml/</loc></url>
+  <url><loc>https://www.specialtycoffeekerala.com/ml/blog/</loc></url>
+  <url><loc>https://www.specialtycoffeekerala.com/ml/blog/what-is-specialty-coffee/</loc></url>
+  <url><loc>https://www.specialtycoffeekerala.com/ml/blog/specialty-coffee-kochi/</loc></url>
+  <url><loc>https://www.specialtycoffeekerala.com/ml/blog/wayanad-coffee-guide/</loc></url>
+  <url><loc>https://www.specialtycoffeekerala.com/ml/directory/</loc></url>
+  <url><loc>https://www.specialtycoffeekerala.com/ml/events/</loc></url>
+  <url><loc>https://www.specialtycoffeekerala.com/ml/faq/</loc></url>
 </urlset>

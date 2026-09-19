@@ -1,8 +1,8 @@
 {
-  "name": "Specialty Coffee Kerala Map",
-  "short_name": "Kerala Coffee",
-  "description": "Explore Kerala’s coffee, district by district.",
-  "start_url": "/",
+  "name": "കേരള കാപ്പി ഭൂപടം",
+  "short_name": "കേരള കാപ്പി",
+  "description": "കേരളത്തിലെ കാപ്പിയെ ജില്ല തിരിച്ച് കണ്ടെത്താം.",
+  "start_url": "/ml/",
   "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -22,6 +22,6 @@
     }
   ],
   "id": "/",
-  "lang": "en",
+  "lang": "ml",
   "dir": "ltr"
 }

@@ -1,0 +1,398 @@
+{
+  "Kasaragod": {
+    "sub": "Coastal north · Kanhangad–Bekal belt",
+    "buyroasted": [],
+    "cafes": [],
+    "roasters": [],
+    "farms": [],
+    "education": [],
+    "baristas": [],
+    "equipment": [],
+    "name_ml": "കാസർഗോഡ്",
+    "sub_ml": "വടക്കൻ തീരം · കാഞ്ഞങ്ങാട്–ബേക്കൽ പ്രദേശം"
+  },
+  "Kannur": {
+    "sub": "Coastal north · Thalassery–Kannur",
+    "buyroasted": [],
+    "cafes": [
+      {
+        "n": "BRWLAB",
+        "m": "Chalad · Payyambalam Beach Road · single origin, espresso, pour over, cold brew",
+        "w": "https://brwlab.in/",
+        "n_ml": "ബ്രൂലാബ്",
+        "m_ml": "ചാലാട് · പയ്യാമ്പലം ബീച്ച് റോഡ് · ഒറ്റ ഉത്ഭവപ്രദേശത്തെ കാപ്പി, എസ്പ്രെസ്സോ, ഒഴിച്ചെടുക്കുന്ന കാപ്പി, തണുത്ത വെള്ളത്തിൽ തയ്യാറാക്കുന്ന കാപ്പി"
+      }
+    ],
+    "roasters": [],
+    "farms": [],
+    "education": [],
+    "baristas": [],
+    "equipment": [],
+    "name_ml": "കണ്ണൂർ",
+    "sub_ml": "വടക്കൻ തീരം · തലശ്ശേരി–കണ്ണൂർ"
+  },
+  "Wayanad": {
+    "sub": "Kerala's main growing highland",
+    "buyroasted": [],
+    "cafes": [
+      {
+        "n": "Wishlist Coffee",
+        "m": "Green Land Nagar, Kalpetta · in-house bakes, Wayanad Robusta V60",
+        "w": "https://wishlist.coffee/",
+        "n_ml": "വിഷ്‌ലിസ്റ്റ് കോഫി",
+        "m_ml": "ഗ്രീൻ ലാൻഡ് നഗർ, കൽപ്പറ്റ · സ്വന്തമായി തയ്യാറാക്കുന്ന പലഹാരങ്ങൾ; വയനാടൻ റോബസ്റ്റ കാപ്പി"
+      }
+    ],
+    "roasters": [],
+    "farms": [
+      {
+        "n": "Kelachandra Coffee — Brahmagiri Estate",
+        "m": "Thirunelly · Private estate",
+        "w": "https://kelachandracoffee.com/brahmagiri/",
+        "n_ml": "കേളചന്ദ്ര കോഫി — ബ്രഹ്മഗിരി എസ്റ്റേറ്റ്",
+        "m_ml": "തിരുനെല്ലി · സ്വകാര്യ തോട്ടം"
+      },
+      {
+        "n": "Sanjay Garden / Bluhills Spices & Beans",
+        "m": "Kunnampetta · fine Robusta, By appointment",
+        "w": "https://bluhillsbeans.in/",
+        "n_ml": "സഞ്ജയ് ഗാർഡൻ / ബ്ലൂഹിൽസ് സ്പൈസസ് ആൻഡ് ബീൻസ്",
+        "m_ml": "കുന്നമ്പറ്റ · മികച്ച റോബസ്റ്റ കാപ്പി · മുൻകൂട്ടി അനുമതി വാങ്ങി സന്ദർശിക്കുക"
+      },
+      {
+        "n": "Black Baza Coffee — Smallholder Network",
+        "m": "Wayanad district · Regional producer network",
+        "w": "https://www.blackbazacoffee.com/blogs/origins-communities/wayanad-kerala",
+        "n_ml": "ബ്ലാക്ക് ബാസ കോഫി — ചെറുകിട കർഷക കൂട്ടായ്മ",
+        "m_ml": "വയനാട് ജില്ല · പ്രാദേശിക കാപ്പി ഉത്പാദകരുടെ കൂട്ടായ്മ"
+      },
+      {
+        "n": "Old Babbler Coffee",
+        "m": "Meppadi · single-estate, shade-grown, small-batch roasted",
+        "w": "https://www.oldbabbler.com",
+        "n_ml": "ഓൾഡ് ബാബ്ലർ കോഫി",
+        "m_ml": "മേപ്പാടി · ഒരേ തോട്ടത്തിൽ തണലിൽ വളർത്തുന്ന കാപ്പി; ചെറിയ അളവുകളിൽ വറുക്കുന്നു"
+      }
+    ],
+    "education": [],
+    "baristas": [],
+    "equipment": [],
+    "name_ml": "വയനാട്",
+    "sub_ml": "കേരളത്തിലെ പ്രധാന കാപ്പിക്കൃഷി മേഖല"
+  },
+  "Kozhikode": {
+    "sub": "Coast · roastery and café cluster",
+    "buyroasted": [],
+    "cafes": [
+      {
+        "n": "Brewmorphia Speciality Coffee",
+        "m": "Mananchira · Silk Street, behind Beach Post Office · coffee and matcha",
+        "w": "https://brewmorphia.in/",
+        "n_ml": "ബ്രൂമോർഫിയ സ്പെഷ്യാലിറ്റി കോഫി",
+        "m_ml": "മാനാഞ്ചിറ · സിൽക്ക് സ്ട്രീറ്റ്, ബീച്ച് തപാൽ ഓഫീസിനു പിന്നിൽ · കാപ്പിയും മാച്ചയും"
+      },
+      {
+        "n": "Sukoru Specialty Coffee",
+        "m": "Mananchira · English Parambil, near District Court · concept store",
+        "w": "https://sukoru.coffee/",
+        "n_ml": "സുകോരു സ്പെഷ്യാലിറ്റി കോഫി",
+        "m_ml": "മാനാഞ്ചിറ · ജില്ലാ കോടതിക്കു സമീപം, ഇംഗ്ലീഷ് പറമ്പിൽ · കാപ്പിശാലയും ഉത്പന്നശാലയും"
+      },
+      {
+        "n": "Cafficana Kozhikode",
+        "m": "Thondayad · Bypass, near UL Cyber Park · V60, Chemex, AeroPress, French press",
+        "w": "https://cafficana.com/",
+        "n_ml": "കഫിക്കാന കോഴിക്കോട്",
+        "m_ml": "തൊണ്ടയാട് · യു.എൽ. സൈബർ പാർക്കിനു സമീപം, ബൈപ്പാസ് · വി അറുപത്, കെമെക്സ്, എയറോപ്രസ്, ഫ്രഞ്ച് പ്രസ്"
+      },
+      {
+        "n": "Underblu Specialty Coffee",
+        "m": "Mananchira · Silk Street, near South Beach Road · multi-roaster slow bar",
+        "w": "https://www.underblu.in/",
+        "n_ml": "അണ്ടർബ്ലൂ സ്പെഷ്യാലിറ്റി കോഫി",
+        "m_ml": "മാനാഞ്ചിറ · സൗത്ത് ബീച്ച് റോഡിനു സമീപം, സിൽക്ക് സ്ട്രീറ്റ് · വിവിധ വറുക്കൽ കേന്ദ്രങ്ങളിൽനിന്നുള്ള കാപ്പി"
+      },
+      {
+        "n": "Overdose Cafe",
+        "m": "Kuttichira · pour over, breakfast, bites and desserts",
+        "w": "https://maps.app.goo.gl/e5cCiFrJhbHj2m188",
+        "n_ml": "ഓവർഡോസ് കഫേ",
+        "m_ml": "കുറ്റിച്ചിറ · ഒഴിച്ചെടുക്കുന്ന കാപ്പി, പ്രഭാതഭക്ഷണം, ലഘുഭക്ഷണം, മധുരപലഹാരങ്ങൾ"
+      },
+      {
+        "n": "Slolabs by Cafficana",
+        "m": "Calicut",
+        "w": "https://share.google/lonSoUiSXzTv0dZLS",
+        "n_ml": "കഫിക്കാനയുടെ സ്ലോലാബ്സ്",
+        "m_ml": "കോഴിക്കോട്"
+      }
+    ],
+    "roasters": [
+      {
+        "n": "Bermito Coffee Roasters",
+        "m": "Kozhikode · rare lots, nano-lots, by appointment",
+        "w": "https://bermito.com/",
+        "n_ml": "ബെർമിറ്റോ കോഫി റോസ്റ്റേഴ്സ്",
+        "m_ml": "കോഴിക്കോട് · അപൂർവ ഇനങ്ങൾ, ചെറിയ ഉത്പാദനശേഖരങ്ങൾ · മുൻകൂട്ടി അനുമതി വാങ്ങി സന്ദർശിക്കുക"
+      }
+    ],
+    "farms": [],
+    "education": [],
+    "baristas": [],
+    "equipment": [],
+    "name_ml": "കോഴിക്കോട്",
+    "sub_ml": "തീരദേശം · കാപ്പിശാലകളും കാപ്പിവറുക്കൽ കേന്ദ്രങ്ങളും"
+  },
+  "Malappuram": {
+    "sub": "Coast to the Nilambur valley",
+    "buyroasted": [],
+    "cafes": [
+      {
+        "n": "Understory Cafe",
+        "m": "Patterkulam, Manjeri · Thurakkal Baputty Bypass Rd · café and social club",
+        "w": "https://maps.app.goo.gl/cvAJQD5CuF4JD3qz8",
+        "n_ml": "അണ്ടർസ്റ്റോറി കഫേ",
+        "m_ml": "പട്ടർകുളം, മഞ്ചേരി · തുറക്കൽ ബാപ്പുട്ടി ബൈപ്പാസ് റോഡ് · കാപ്പിശാലയും കൂട്ടായ്മയും"
+      },
+      {
+        "n": "Haneen Cafe",
+        "m": "Patterkulam, Manjeri · Thurakkal Baputty Bypass Rd · espresso, frappes, food, late night",
+        "n_ml": "ഹനീൻ കഫേ",
+        "m_ml": "പട്ടർകുളം, മഞ്ചേരി · തുറക്കൽ ബാപ്പുട്ടി ബൈപ്പാസ് റോഡ് · എസ്പ്രെസ്സോ, തണുത്ത പാനീയങ്ങൾ, ഭക്ഷണം; രാത്രിയിലും പ്രവർത്തനം"
+      }
+    ],
+    "roasters": [],
+    "farms": [],
+    "education": [
+      {
+        "n": "Brewell Coffee Lab",
+        "m": "Manjeri · learning, experimenting, coffee & beverage development",
+        "w": "https://maps.app.goo.gl/RoPvsB8kzQwJdzUt5",
+        "n_ml": "ബ്രൂവെൽ കോഫി ലാബ്",
+        "m_ml": "മഞ്ചേരി · കാപ്പി പഠനം, പരീക്ഷണങ്ങൾ, പാനീയ വികസനം"
+      }
+    ],
+    "baristas": [],
+    "equipment": [],
+    "name_ml": "മലപ്പുറം",
+    "sub_ml": "തീരത്തുനിന്ന് നിലമ്പൂർ താഴ്‌വരയിലേക്ക്"
+  },
+  "Palakkad": {
+    "sub": "The Gap · Attappadi highlands",
+    "buyroasted": [],
+    "cafes": [],
+    "roasters": [],
+    "farms": [
+      {
+        "n": "Poabs Organic Estates — Seethargundu",
+        "m": "Nelliyampathy · biodynamic, By appointment / event access",
+        "w": "https://www.poabsestates.com/produce/coffee/",
+        "n_ml": "പോബ്സ് ഓർഗാനിക് എസ്റ്റേറ്റ്സ് — സീതാർകുണ്ട്",
+        "m_ml": "നെല്ലിയാമ്പതി · ജൈവകൃഷി തോട്ടം · മുൻകൂട്ടിയുള്ള അനുമതിയോടെയോ പരിപാടികളുടെ ഭാഗമായോ സന്ദർശനം"
+      },
+      {
+        "n": "Silent Valley Estate",
+        "m": "Mukkali · Attappadi hills · fine Robusta & specialty Arabica",
+        "w": "https://silentvalley.coffee",
+        "n_ml": "സൈലന്റ് വാലി എസ്റ്റേറ്റ്",
+        "m_ml": "മുക്കാലി · അട്ടപ്പാടി മലനിരകൾ · മികച്ച റോബസ്റ്റയും അറബിക്കയും"
+      }
+    ],
+    "education": [],
+    "baristas": [],
+    "equipment": [],
+    "name_ml": "പാലക്കാട്",
+    "sub_ml": "പാലക്കാട് ചുരം · അട്ടപ്പാടി മലനിരകൾ"
+  },
+  "Thrissur": {
+    "sub": "Central Kerala · café town",
+    "buyroasted": [],
+    "cafes": [],
+    "roasters": [],
+    "farms": [],
+    "education": [],
+    "baristas": [],
+    "equipment": [],
+    "name_ml": "തൃശ്ശൂർ",
+    "sub_ml": "മധ്യകേരളം · തൃശ്ശൂർ നഗരം"
+  },
+  "Ernakulam": {
+    "sub": "Kochi · the state's biggest café market",
+    "buyroasted": [],
+    "cafes": [
+      {
+        "n": "90Million Coffee",
+        "m": "Kaloor · Edward Square, Stadium Link Road · specialty Arabica, manual brews",
+        "w": "https://90million.in/",
+        "n_ml": "നൈന്റ്റി മില്യൺ കോഫി",
+        "m_ml": "കലൂർ · സ്റ്റേഡിയം ലിങ്ക് റോഡ്, എഡ്വേർഡ് സ്ക്വയർ · അറബിക്ക കാപ്പി; കൈകൊണ്ട് തയ്യാറാക്കുന്ന കാപ്പികൾ"
+      },
+      {
+        "n": "Cafficana Kochi",
+        "m": "Panampilly Nagar · 5th Cross Road, opp. Mammootty Palam · manual brew bar",
+        "w": "https://cafficana.com/",
+        "n_ml": "കഫിക്കാന കൊച്ചി",
+        "m_ml": "പനമ്പിള്ളി നഗർ · മമ്മൂട്ടി പാലത്തിന് എതിർവശം, അഞ്ചാം ക്രോസ് റോഡ് · കൈകൊണ്ട് കാപ്പി തയ്യാറാക്കുന്ന കേന്ദ്രം"
+      },
+      {
+        "n": "Cafe Addict Kochi",
+        "m": "Edappally · Pookattupady Road, Unnichira · coffee, art and community",
+        "n_ml": "കഫേ അഡിക്ട് കൊച്ചി",
+        "m_ml": "ഇടപ്പള്ളി · ഉണിച്ചിറ, പൂക്കാട്ടുപടി റോഡ് · കാപ്പി, കല, കൂട്ടായ്മ"
+      },
+      {
+        "n": "Third Wave Coffee — Panampilly Nagar",
+        "m": "Panampilly Nagar · Named in the company’s recruitment listing. Opening date and public access not yet confirmed.",
+        "n_ml": "തേർഡ് വേവ് കോഫി — പനമ്പിള്ളി നഗർ",
+        "m_ml": "പനമ്പിള്ളി നഗർ · സ്ഥാപനത്തിന്റെ നിയമന അറിയിപ്പിൽ പരാമർശിച്ച ശാഖ. തുറക്കുന്ന തീയതിയും സന്ദർശകരെ സ്വീകരിക്കുന്നതും സ്ഥിരീകരിച്ചിട്ടില്ല.",
+        "v": "unconfirmed",
+        "w": "https://www.apna.co/job/ernakulam/barista-474945258",
+        "sourceLabel": "Recruitment notice",
+        "checked": "2026-09-19"
+      },
+      {
+        "n": "Third Wave Coffee — Noel Mall, Kakkanad",
+        "m": "Noel Mall, Kakkanad · Named in the company’s recruitment listing. Opening date and public access not yet confirmed.",
+        "n_ml": "തേർഡ് വേവ് കോഫി — നോയൽ മാൾ, കാക്കനാട്",
+        "m_ml": "നോയൽ മാൾ, കാക്കനാട് · സ്ഥാപനത്തിന്റെ നിയമന അറിയിപ്പിൽ പരാമർശിച്ച ശാഖ. തുറക്കുന്ന തീയതിയും സന്ദർശകരെ സ്വീകരിക്കുന്നതും സ്ഥിരീകരിച്ചിട്ടില്ല.",
+        "v": "unconfirmed",
+        "w": "https://www.apna.co/job/ernakulam/barista-474945258",
+        "sourceLabel": "Recruitment notice",
+        "checked": "2026-09-19"
+      }
+    ],
+    "roasters": [
+      {
+        "n": "CAPI Specialty Coffee Roasters",
+        "m": "Azad Road, Kaloor · tasting by appointment",
+        "w": "https://capiroast.com/",
+        "n_ml": "കാപ്പി സ്പെഷ്യാലിറ്റി കോഫി റോസ്റ്റേഴ്സ്",
+        "m_ml": "കലൂർ, ആസാദ് റോഡ് · മുൻകൂട്ടി സമയം നിശ്ചയിച്ചുള്ള കാപ്പി രുചിപരിശോധന"
+      }
+    ],
+    "farms": [],
+    "education": [
+      {
+        "n": "Pour Over Lab",
+        "m": "Kaloor · workshops, courses, experience space",
+        "w": "https://www.pouroverlab.in/",
+        "n_ml": "പോർ ഓവർ ലാബ്",
+        "m_ml": "കലൂർ · ശിൽപ്പശാലകൾ, പഠനപരിപാടികൾ, കാപ്പി അനുഭവങ്ങൾ"
+      },
+      {
+        "n": "The Brew School",
+        "m": "Kadavanthra · professional barista training",
+        "w": "https://thebrewschool.in/",
+        "n_ml": "ദി ബ്രൂ സ്കൂൾ",
+        "m_ml": "കടവന്ത്ര · തൊഴിൽപരമായ കാപ്പി തയ്യാറാക്കൽ പരിശീലനം"
+      }
+    ],
+    "baristas": [],
+    "equipment": [],
+    "name_ml": "എറണാകുളം",
+    "sub_ml": "കൊച്ചി · കാപ്പിശാലകളും പരിശീലനകേന്ദ്രങ്ങളും"
+  },
+  "Idukki": {
+    "sub": "Ghats plantation belt · Anamudi",
+    "buyroasted": [],
+    "cafes": [
+      {
+        "n": "Erel Spices Experience Centre",
+        "m": "Chelimada · Kottayam–Kumily Road · V60, French press, AeroPress and syphon tasting experiences",
+        "w": "https://www.erelspices.com",
+        "n_ml": "എറേൽ സ്പൈസസ് എക്സ്പീരിയൻസ് സെന്റർ",
+        "m_ml": "ചെളിമട · കോട്ടയം–കുമളി റോഡ് · വി അറുപത്, ഫ്രഞ്ച് പ്രസ്, എയറോപ്രസ്, സൈഫൺ കാപ്പികളുടെ രുചിപരിശോധന"
+      }
+    ],
+    "roasters": [],
+    "farms": [
+      {
+        "n": "Terra Vagamon Conservancy",
+        "m": "Kanam Estate, Vagamon",
+        "w": "https://www.instagram.com/terravagamon/",
+        "n_ml": "ടെറ വാഗമൺ കൺസർവൻസി",
+        "m_ml": "കാനം എസ്റ്റേറ്റ്, വാഗമൺ"
+      }
+    ],
+    "education": [],
+    "baristas": [
+      {
+        "n": "Thomas K V",
+        "m": "Kumily / Thekkady · barista at Araku Coffee, Bangalore · SCA Foundation in Sensory Skills · home brewer",
+        "w": "https://www.instagram.com/thomas__kv/",
+        "n_ml": "തോമസ് കെ. വി.",
+        "m_ml": "കുമളി / തേക്കടി · ബെംഗളൂരുവിലെ അരക്കു കോഫിയിൽ കാപ്പി തയ്യാറാക്കുന്നു · രുചിപരിശോധനയിൽ അടിസ്ഥാന പരിശീലനം നേടിയിട്ടുണ്ട്; വീട്ടിലും കാപ്പി തയ്യാറാക്കുന്നു"
+      }
+    ],
+    "equipment": [],
+    "name_ml": "ഇടുക്കി",
+    "sub_ml": "പശ്ചിമഘട്ടത്തിലെ തോട്ടം മേഖല · ആനമുടി"
+  },
+  "Kottayam": {
+    "sub": "Midlands · plantation trade town",
+    "buyroasted": [],
+    "cafes": [],
+    "roasters": [],
+    "farms": [],
+    "education": [],
+    "baristas": [],
+    "equipment": [],
+    "name_ml": "കോട്ടയം",
+    "sub_ml": "ഇടനാട് · തോട്ടവിള വ്യാപാരകേന്ദ്രം"
+  },
+  "Alappuzha": {
+    "sub": "Backwaters · the flattest district",
+    "buyroasted": [],
+    "cafes": [],
+    "roasters": [],
+    "farms": [],
+    "education": [],
+    "baristas": [],
+    "equipment": [],
+    "name_ml": "ആലപ്പുഴ",
+    "sub_ml": "കായലുകളും തീരസമതലങ്ങളും"
+  },
+  "Pathanamthitta": {
+    "sub": "Foothills · Konni–Ranni",
+    "buyroasted": [],
+    "cafes": [],
+    "roasters": [],
+    "farms": [],
+    "education": [],
+    "baristas": [],
+    "equipment": [],
+    "name_ml": "പത്തനംതിട്ട",
+    "sub_ml": "മലയോരം · കോന്നി–റാന്നി"
+  },
+  "Kollam": {
+    "sub": "Coast to the Punalur foothills",
+    "buyroasted": [],
+    "cafes": [],
+    "roasters": [],
+    "farms": [],
+    "education": [],
+    "baristas": [],
+    "equipment": [],
+    "name_ml": "കൊല്ലം",
+    "sub_ml": "തീരത്തുനിന്ന് പുനലൂർ മലയോരത്തേക്ക്"
+  },
+  "Thiruvananthapuram": {
+    "sub": "Capital · Ponmudi and Agasthyamalai behind it",
+    "buyroasted": [],
+    "cafes": [
+      {
+        "n": "Third Wave Coffee — Airport",
+        "m": "Chackai · Thiruvananthapuram International Airport, L1-60 · open 24 hours",
+        "n_ml": "തേർഡ് വേവ് കോഫി — വിമാനത്താവളം",
+        "m_ml": "ചാക്ക · തിരുവനന്തപുരം അന്താരാഷ്ട്ര വിമാനത്താവളം, എൽ ഒന്ന്–അറുപത് · ഇരുപത്തിനാലു മണിക്കൂറും പ്രവർത്തനം"
+      }
+    ],
+    "roasters": [],
+    "farms": [],
+    "education": [],
+    "baristas": [],
+    "equipment": [],
+    "name_ml": "തിരുവനന്തപുരം",
+    "sub_ml": "തലസ്ഥാനനഗരം · പൊന്മുടിയും അഗസ്ത്യമലയും"
+  }
+}

@@ -1,117 +1,80 @@
 #!/usr/bin/env node
-/* seo-generate.js
-   Reads NAMES / DATA / EVENTS / FAQ out of index.html and rewrites the static
-   directory, events and FAQ HTML plus the Event and ItemList JSON-LD between
-   the SEO:* markers. Run after editing listings or events so the crawlable
-   copy never drifts from what the map shows:   node seo-generate.js
-*/
-const fs = require('fs');
-const vm = require('vm');
-const path = process.argv[2] || 'index.html';
-let src = fs.readFileSync(path, 'utf8');
-
-function grab(re){ const m = src.match(re); if(!m) throw new Error('not found: '+re); return m[0]; }
-const ctx = {}; vm.createContext(ctx);
-vm.runInContext(
-  grab(/const NAMES\s*=\s*\[[^\]]*\];/).replace('const ','var ') +
-  grab(/const DATA\s*=\s*\{[\s\S]*?\n  \};/).replace('const ','var ') +
-  grab(/const EVENTS\s*=\s*\[[\s\S]*?\n  \];/).replace('const ','var ') +
-  grab(/const FAQ\s*=\s*\[[\s\S]*?\n  \];/).replace('const ','var '), ctx);
-const { NAMES, DATA, EVENTS, FAQ } = ctx;
-
-const esc = s => String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-const SITE = 'https://www.specialtycoffeekerala.com/';
-const CATS = [
-  ['buyroasted','Buy roasted coffee','Store'],
-  ['cafes','Specialty cafés','CafeOrCoffeeShop'],
-  ['roasters','Specialty roasters','LocalBusiness'],
-  ['farms','Specialty farms','LocalBusiness'],
-  ['education','Coffee education','LocalBusiness'],
-  ['baristas','Baristas & home brewers',null],       // people: kept out of schema
-  ['equipment','Coffee equipment shops','Store'],
-];
-const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-const today = new Date().toISOString().slice(0,10);
-
-/* ---------- directory HTML ---------- */
-let dir = '', listItems = [], pos = 1;
-NAMES.forEach((name, i) => {
-  const rec = DATA[name] || {};
-  const total = CATS.reduce((n,[k]) => n + (rec[k]||[]).length, 0);
-  dir += `\n      <section class="dir-district" id="district-${slug(name)}">\n`;
-  dir += `        <h3>${esc(name)} <span class="dir-count mono">${total===0?'none listed yet':total+(total===1?' place':' places')}</span></h3>\n`;
-  if (rec.sub) dir += `        <p class="dir-sub mono">${esc(rec.sub)}</p>\n`;
-  if (total) dir += `        <button class="dir-map" type="button" data-district="${i}">View ${esc(name)} on the map →</button>\n`;
-  CATS.forEach(([k,label,type]) => {
-    const list = rec[k] || [];
-    if (!list.length) return;
-    dir += `        <h4>${esc(label)}</h4>\n        <ul class="dir-list">\n`;
-    list.forEach(e => {
-      const nameHtml = e.w ? `<a href="${esc(e.w)}" target="_blank" rel="noopener">${esc(e.n)}</a>` : `<span>${esc(e.n)}</span>`;
-      const tag = e.v ? ` <em class="dir-tag mono">${esc(e.v)}</em>` : '';
-      dir += `          <li>${nameHtml}${tag}<small class="mono">${esc(e.m||'')}</small></li>\n`;
-      if (type) {
-        const item = { '@type': type, name: e.n,
-          address: { '@type':'PostalAddress', addressLocality: name, addressRegion:'Kerala', addressCountry:'IN' } };
-        if (e.m) item.description = e.m;
-        if (e.w) item.url = e.w;
-        listItems.push({ '@type':'ListItem', position: pos++, item });
-      }
-    });
-    dir += `        </ul>\n`;
-  });
-  dir += `      </section>\n`;
-});
-
-/* ---------- events HTML + schema ---------- */
-const upcoming = EVENTS.filter(e => e.date >= today).sort((a,b) => a.date.localeCompare(b.date));
-const fmt = d => new Date(d+'T00:00:00').toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
-let ev = upcoming.length ? '\n      <ul class="ev-list">\n' : '\n      <p class="mono">No upcoming events listed right now.</p>\n';
-upcoming.forEach(e => {
-  ev += `        <li><time class="mono" datetime="${esc(e.date)}">${esc(fmt(e.date))}</time><b>${esc(e.title)}</b><small class="mono">${esc(e.venue)}</small><p>${esc(e.blurb)}</p></li>\n`;
-});
-if (upcoming.length) ev += '      </ul>\n';
-
-const cityOf = v => {
-  const s = String(v||'');
-  for (const c of ['Kozhikode','Calicut','Kochi','Cochin','Wayanad','Kalpetta','Kannur','Thrissur','Thiruvananthapuram','Manjeri','Kumily','Idukki']) {
-    if (s.indexOf(c) >= 0) return c;
-  }
-  return 'Kerala';
-};
-const eventLD = upcoming.map(e => ({
-  '@context':'https://schema.org', '@type':'Event',
-  name: e.title, startDate: e.date, description: e.blurb,
-  eventStatus:'https://schema.org/EventScheduled',
-  eventAttendanceMode:'https://schema.org/OfflineEventAttendanceMode',
-  location: { '@type':'Place', name: e.venue,
-    address: { '@type':'PostalAddress', addressLocality: cityOf(e.venue), addressRegion:'Kerala', addressCountry:'IN' } },
-  url: SITE + '#events-list'
-}));
-
-/* ---------- FAQ HTML (static twin of the panel accordion) ---------- */
-let faq = '\n      <dl class="faq-static">\n';
-FAQ.forEach(f => { faq += `        <dt>${esc(f.q)}</dt>\n        <dd>${esc(f.a)}</dd>\n`; });
-faq += '      </dl>\n';
-
-/* ---------- ItemList schema ---------- */
-const listLD = { '@context':'https://schema.org', '@type':'ItemList',
-  name:'Specialty coffee in Kerala — directory', url: SITE + '#directory',
-  numberOfItems: listItems.length, itemListOrder:'https://schema.org/ItemListUnordered', itemListElement: listItems };
-
-const ld = '\n<script type="application/ld+json">\n' + JSON.stringify(listLD) + '\n</script>' +
-  eventLD.map(e => '\n<script type="application/ld+json">\n' + JSON.stringify(e) + '\n</script>').join('') + '\n';
-
-/* ---------- splice ---------- */
-function splice(tag, body){
-  const re = new RegExp(`(<!-- SEO:${tag}:START -->)[\\s\\S]*?(<!-- SEO:${tag}:END -->)`);
-  if (!re.test(src)) throw new Error('markers missing: '+tag);
-  src = src.replace(re, (m,a,b) => a + body + '      ' + b);
+/* Optional, dependency-free build. Upload generated HTML/assets directly to Pages. */
+const fs=require('fs'),path=require('path');
+const {upcoming}=require('./assets/shared.js');
+const read=n=>JSON.parse(fs.readFileSync(`content/${n}.json`,'utf8'));
+const DATA=read('data'),EVENTS=read('events'),FAQ=read('faq'),STR=read('str'),NAMES=read('names'),POSTS=read('posts');
+const SITE='https://www.specialtycoffeekerala.com';
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const json=o=>JSON.stringify(o).replace(/</g,'\\u003c');
+const slug=s=>s.toLowerCase().replace(/[^a-z0-9]+/g,'-');
+const cats=[['cafes','catCafes'],['roasters','catRoasters'],['farms','catFarms'],['education','catEducation'],['buyroasted','catBuyRoasted'],['equipment','catEquipment'],['baristas','catBaristas']];
+const date=(d,l)=>new Date(d+'T12:00:00+05:30').toLocaleDateString(l==='ml'?'ml-IN':'en-IN',{day:'numeric',month:'long',year:'numeric',timeZone:'Asia/Kolkata'});
+const out=(p,s)=>{fs.mkdirSync(path.dirname(p),{recursive:true});fs.writeFileSync(p,s)};
+const pages=[];
+function head(lang,route,title,description,schemas=[],map=false){
+ const root=lang==='ml'?'/ml/':'/',url=SITE+root+route;
+ const alt=SITE+(lang==='ml'?'/':'/ml/')+route;
+ return `<!doctype html><html lang="${lang}" dir="ltr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>${esc(title)}</title><meta name="description" content="${esc(description)}"><link rel="canonical" href="${url}"><link rel="alternate" hreflang="${lang==='ml'?'en-IN':'ml-IN'}" href="${alt}"><link rel="alternate" hreflang="${lang==='ml'?'ml-IN':'en-IN'}" href="${url}"><link rel="alternate" hreflang="x-default" href="${SITE+'/'+route}"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(description)}"><meta property="og:type" content="${route.startsWith('blog/')&&route!=='blog/'?'article':'website'}"><meta property="og:url" content="${url}"><meta property="og:locale" content="${lang==='ml'?'ml_IN':'en_IN'}"><meta property="og:image" content="${SITE}/og-image.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${esc(title)}"><meta name="twitter:description" content="${esc(description)}"><meta name="twitter:image" content="${SITE}/og-image.png"><meta name="theme-color" content="#00a83f"><link rel="icon" href="/favicon.ico" sizes="any"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="manifest" href="${root}manifest.webmanifest"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500${lang==='ml'?'&family=Noto+Sans+Malayalam:wght@400;500;600;700':''}&display=swap" rel="stylesheet"><link rel="stylesheet" href="/assets/site.css?v=20260919">${map?'<link rel="stylesheet" href="/assets/map.css?v=20260919">':''}${schemas.map(s=>`<script type="application/ld+json">${json(s)}</script>`).join('')}${map?'<script src="/assets/legacy.js?v=20260919" defer></script>':''}</head>`;
 }
-splice('DIRECTORY', dir);
-splice('EVENTS', ev);
-splice('FAQ', faq);
-src = src.replace(/(<!-- SEO:LD:START -->)[\s\S]*?(<!-- SEO:LD:END -->)/, (m,a,b) => a + ld + b);
+function header(lang,route){
+ const S=STR[lang],root=lang==='ml'?'/ml/':'/';
+ return `<a class="skip-link" href="#main">${lang==='ml'?'ഉള്ളടക്കത്തിലേക്ക്':'Skip to content'}</a><header class="page-header"><a class="page-brand" href="${root}">${esc(S.brand)}</a><nav class="page-nav" aria-label="${lang==='ml'?'പ്രധാന കണ്ണികൾ':'Main navigation'}">${[['',S.navMap],['directory/',S.navDirectory],['events/',S.navEvents],['blog/',S.navBlog]].map(([p,n])=>`<a href="${root+p}"${route===p?' aria-current="page"':''}>${esc(n)}</a>`).join('')}<a class="language-link" lang="${lang==='ml'?'en':'ml'}" href="${(lang==='ml'?'/':'/ml/')+route}">${S.navLang}</a></nav></header>`;
+}
+function footer(lang){const S=STR[lang],root=lang==='ml'?'/ml/':'/';return `<footer class="page-footer"><p>${lang==='ml'?'കേരളത്തിലെ കാപ്പിയെ കണ്ടെത്താനുള്ള സ്വതന്ത്ര ഭൂപടം.':'An independent map of Kerala’s coffee community.'}</p><nav><a href="${root}">${S.navMap}</a><a href="${root}faq/">${S.faqBtn}</a><a href="mailto:contact@specialtycoffeekerala.com">${S.aboutContact}</a></nav></footer>`;}
+function save(lang,route,html){const root=lang==='ml'?'ml/':'';html=html.replace(/(\/assets\/[^"?]+)\?v=20260919/g,(_,asset)=>asset+'?v='+require('crypto').createHash('sha256').update(fs.readFileSync('.'+asset)).digest('hex').slice(0,12));out(root+route+'index.html',html);pages.push(SITE+'/'+root+route);}
+function schema(type,o){return {'@context':'https://schema.org','@type':type,...o};}
+out('assets/content.js','/* Generated from content/*.json by node seo-generate.js. */\nconst KERALA = '+json({DATA,EVENTS,FAQ,STR,NAMES})+';\n');
+for(const lang of ['en','ml']){
+ const S=STR[lang],root=lang==='ml'?'/ml/':'/',loc=(o,k)=>lang==='ml'?o[k+'_ml']:o[k],dn=n=>lang==='ml'?DATA[n].name_ml:n;
+ const label=(en,ml)=>lang==='ml'?ml:en;
+ const manifest=JSON.parse(fs.readFileSync('manifest.webmanifest','utf8'));
+ manifest.id='/';manifest.lang=lang;manifest.dir='ltr';manifest.start_url=root;
+ manifest.name=S.brand;manifest.short_name=label('Kerala Coffee','കേരള കാപ്പി');
+ manifest.description=label('Explore Kerala’s coffee, district by district.','കേരളത്തിലെ കാപ്പിയെ ജില്ല തിരിച്ച് കണ്ടെത്താം.');
+ manifest.icons=manifest.icons.map(icon=>({...icon,src:'/'+icon.src.replace(/^\//,'')}));
+ out((lang==='ml'?'ml/':'')+'manifest.webmanifest',JSON.stringify(manifest,null,2)+'\n');
+ // Map: the terrain is unchanged; cached deferred assets avoid blocking HTML parsing.
+ const mapDescription=label('Find specialty coffee in Kerala: cafés, roasters, farms, education and events. Explore by district, or read our coffee journal.','കേരളത്തിലെ കാപ്പിശാലകൾ, വറുക്കൽ കേന്ദ്രങ്ങൾ, തോട്ടങ്ങൾ, പഠനം, പരിപാടികൾ എന്നിവ ജില്ല തിരിച്ച് കണ്ടെത്താം.');
+ const shell=`<body class="map-page"><a class="skip-link" href="${root}directory/">${label('Browse the accessible directory','ഇടങ്ങളുടെ പട്ടികയിലേക്ക്')}</a><header class="top"><a class="wordmark" href="${root}" style="color:inherit;text-decoration:none">${lang==='ml'?'കേരള കാപ്പി <span class="wordmark-green">ഭൂപടം</span>':'Specialty Coffee Kerala <span class="wordmark-green">Map</span>'}</a><nav aria-label="${label('Main navigation','പ്രധാന കണ്ണികൾ')}"><a href="${root}blog/">${S.navBlog}</a><button id="navEvents" type="button">${S.navEvents}</button><button id="navAbout" type="button">${S.navAbout}</button><a id="navLang" lang="${lang==='ml'?'en':'ml'}" href="${lang==='ml'?'/':'/ml/'}">${S.navLang}</a></nav></header><div class="bl" aria-label="${S.elevation}"><div class="ramp"></div><div class="lg mono"><span>0 ${S.unit}</span><span>2,695 ${S.unit}</span></div></div><div class="hovername" id="hoverName"></div><div class="map-footer"><div class="hintToast mono" id="hintToast">${S.hint}</div><nav class="chips" id="districtChips" aria-label="${S.districts}"></nav><main class="br" id="signupBlock"><h1>${S.homeTitle}</h1><p class="tagline" id="tagline">${S.tagline}</p><div class="home-links"><a href="${root}directory/">${S.navDirectory} ↗</a><a href="${root}blog/">${S.navBlog} ↗</a><a href="${root}events/">${S.navEvents} ↗</a></div></main></div><aside class="panel" id="panel" role="dialog" aria-modal="false" aria-label="${S.details}" aria-hidden="true" inert><button class="close" id="panelClose" aria-label="${S.close}"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.5"/></svg></button><div id="panelBody"></div></aside><div class="fallback" id="fallback"><div><h2>${S.homeTitle}</h2><p>${label('The 3D map is unavailable in this browser. Every listing is available in the directory.','ഈ ബ്രൗസറിൽ ത്രിമാന ഭൂപടം ലഭ്യമല്ല. ഇടങ്ങളുടെ പട്ടികയിൽ എല്ലാ വിവരങ്ങളും കാണാം.')}</p><a href="${root}directory/">${S.navDirectory} →</a></div></div><noscript><div class="no-script">${label('Explore all cafés, farms and roasters in the directory.','ഇടങ്ങളുടെ പട്ടികയിൽ കാപ്പിശാലകളും തോട്ടങ്ങളും വറുക്കൽ കേന്ദ്രങ്ങളും കാണാം.')}<br><a href="${root}directory/">${S.navDirectory} →</a></div></noscript>${['shared','content','three-r128','terrain-overview','map'].map(n=>`<script src="/assets/${n}.js?v=20260919" defer></script>`).join('')}</body></html>`;
+ save(lang,'',head(lang,'',S.homeTitle,mapDescription,[schema('WebSite',{name:S.brand,url:SITE+root,inLanguage:lang,description:mapDescription})],true)+shell);
+ // Journal index.
+ const intro=label('The Kerala coffee journal.','കേരളത്തിലെ കാപ്പിയെ അടുത്തറിയാം.');
+ const blogDesc=label('Local coffee notes, helpful questions and places to begin. Read at your own pace, then explore the map.','നാട്ടിലെ കാപ്പിയെക്കുറിച്ചുള്ള കുറിപ്പുകളും ഉപകാരപ്പെടുന്ന വിവരങ്ങളും. വായിച്ചറിഞ്ഞ് ഭൂപടത്തിലൂടെ കണ്ടെത്താം.');
+ const cards=POSTS.map((p,i)=>`<article class="story"><div class="story-number" aria-hidden="true">0${i+1}</div><span class="eyebrow">${esc(p.category[lang])}</span><h2><a href="${root}blog/${p.slug}/">${esc(p.title[lang])}</a></h2><p>${esc(p.description[lang])}</p><a class="read-link" href="${root}blog/${p.slug}/">${label('Read the story','ലേഖനം വായിക്കാം')} →</a></article>`).join('');
+ save(lang,'blog/',head(lang,'blog/',label('Kerala Coffee Journal — Guides & Local Stories','കേരള കാപ്പി ലേഖനങ്ങൾ'),blogDesc,[schema('Blog',{name:S.navBlog,url:SITE+root+'blog/',inLanguage:lang,blogPost:POSTS.map(p=>schema('BlogPosting',{headline:p.title[lang],url:SITE+root+'blog/'+p.slug+'/',datePublished:p.date}))})])+`<body>${header(lang,'blog/')}<main class="editorial" id="main"><p class="eyebrow">${S.navBlog}</p><h1>${intro}</h1><p class="lede">${blogDesc}</p><div class="journal-grid">${cards}</div></main>${footer(lang)}</body></html>`);
+ for(const p of POSTS){
+  const route='blog/'+p.slug+'/',url=SITE+root+route;
+  const body=p.sections.map(s=>`<section><h2>${esc(s[lang][0])}</h2>${s[lang].slice(1).map(t=>`<p>${esc(t)}</p>`).join('')}</section>`).join('');
+  const schemas=[schema('BlogPosting',{headline:p.title[lang],description:p.description[lang],datePublished:p.date,dateModified:p.date,inLanguage:lang,author:{'@type':'Organization',name:S.brand,url:SITE+root},publisher:{'@type':'Organization',name:S.brand},mainEntityOfPage:url,image:SITE+'/og-image.png'}),schema('BreadcrumbList',{itemListElement:[{'@type':'ListItem',position:1,name:S.navMap,item:SITE+root},{'@type':'ListItem',position:2,name:S.navBlog,item:SITE+root+'blog/'},{'@type':'ListItem',position:3,name:p.title[lang],item:url}]})];
+  const sources=p.sources.map(s=>`<li><a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s[lang])} ↗</a></li>`).join('');
+  save(lang,route,head(lang,route,p.title[lang],p.description[lang],schemas)+`<body>${header(lang,route)}<main class="editorial article" id="main"><article><p class="eyebrow">${esc(p.category[lang])}</p><h1>${esc(p.title[lang])}</h1><p class="lede">${esc(p.description[lang])}</p><p class="subtle">${S.brand} · <time datetime="${p.date}">${date(p.date,lang)}</time></p><div class="article-body">${body}</div><section class="sources"><h2>${label('Sources & further reading','ഉറവിടങ്ങളും കൂടുതൽ വായനയും')}</h2><ul>${sources}</ul></section><nav class="next-reads"><a href="${root+(p.district?'#map-'+slug(p.district):'')}">${label('Explore the map','ഭൂപടത്തിൽ കാണാം')} →</a><a href="${root}blog/">${label('All stories','എല്ലാ ലേഖനങ്ങളും')} →</a></nav></article></main>${footer(lang)}</body></html>`);
+ }
+ // Directory uses exactly the same dataset as the map.
+ const list=[];
+ const directory=NAMES.map(n=>{
+  const r=DATA[n];let count=0;
+  const groups=cats.map(([key,k])=>{
+   const entries=r[key]||[];count+=entries.length;if(!entries.length)return '';
+   return `<div><h3>${esc(S[k].replace(/\|/g,''))}</h3><ul>${entries.map(e=>{
+    if(key!=='baristas'&&!e.v)list.push({'@type':'ListItem',position:list.length+1,item:{'@type':key==='cafes'?'CafeOrCoffeeShop':'Organization',name:loc(e,'n'),description:loc(e,'m'),...(e.w?{url:e.w}:{})}});
+    return `<li><span class="listing-name">${esc(loc(e,'n'))}</span>${e.v?`<br><span class="status">${S.probable}</span>`:''}<p>${esc(loc(e,'m'))}</p>${e.w?`<a class="listing-source" href="${esc(e.w)}" target="_blank" rel="noopener noreferrer">${e.v?S.source:S.visit}</a>`:''}</li>`;
+   }).join('')}</ul></div>`;
+  }).join('');
+  return `<section class="district-section" id="district-${slug(n)}"><h2>${dn(n)}</h2><p class="subtle">${esc(loc(r,'sub'))}</p><a class="text-link" href="${root}#map-${slug(n)}">${label('View on the map','ഭൂപടത്തിൽ കാണാം')} →</a>${count?`<div class="directory-categories">${groups}</div>`:`<p class="subtle">${S.emptyCat}</p>`}</section>`;
+ }).join('');
+ const dirTitle=label('Kerala coffee, district by district.','കേരളത്തിലെ കാപ്പിയിടങ്ങൾ, ജില്ല തിരിച്ച്.');
+ const dirDesc=label('Cafés, roasters, farms and people from the map, in a simple directory. Confirm access with the business before travelling.','ഭൂപടത്തിലെ കാപ്പിശാലകൾ, തോട്ടങ്ങൾ, വറുക്കൽ കേന്ദ്രങ്ങൾ, കാപ്പി വിദഗ്ധർ എന്നിവ ഒരിടത്ത്. പോകുന്നതിനുമുമ്പ് പ്രവേശനവിവരങ്ങൾ അന്വേഷിക്കുക.');
+ save(lang,'directory/',head(lang,'directory/',dirTitle,dirDesc,[schema('ItemList',{name:dirTitle,inLanguage:lang,url:SITE+root+'directory/',numberOfItems:list.length,itemListElement:list})])+`<body>${header(lang,'directory/')}<main class="editorial" id="main"><p class="eyebrow">${S.navDirectory}</p><h1>${dirTitle}</h1><p class="lede">${dirDesc}</p><nav class="district-index" aria-label="${S.districts}">${NAMES.map(n=>`<a href="#district-${slug(n)}">${dn(n)}</a>`).join('')}</nav>${directory}</main>${footer(lang)}</body></html>`);
+ const events=upcoming(EVENTS),eventTitle=label('Meet over coffee.','കാപ്പിക്കൊപ്പം ഒത്തുചേരാം.');
+ const eventsHtml=events.map(e=>`<article class="event-entry" data-event-end="${e.endDate||e.date}"><p class="event-date mono"><time datetime="${e.date}">${date(e.date,lang)}</time>${e.endDate?' – <time datetime="'+e.endDate+'">'+date(e.endDate,lang)+'</time>':''}</p><h2>${esc(loc(e,'title'))}</h2><p class="venue">${esc(loc(e,'venue'))}</p><p>${esc(loc(e,'blurb'))}</p><a href="${esc(e.url)}" target="_blank" rel="noopener noreferrer">${S.source}</a><p class="subtle">${label('Last checked','അവസാനം പരിശോധിച്ചത്')}: ${date(e.checked,lang)}</p></article>`).join('');
+ const eventSchemas=events.map(e=>schema('Event',{name:loc(e,'title'),description:loc(e,'blurb'),startDate:e.date,...(e.endDate?{endDate:e.endDate}:{}),url:e.url,eventStatus:'https://schema.org/EventScheduled',eventAttendanceMode:'https://schema.org/OfflineEventAttendanceMode',location:{'@type':'Place',name:loc(e,'venue'),address:{'@type':'PostalAddress',addressLocality:e.kind==='trade'?'Angamaly':'Kozhikode',addressRegion:'Kerala',addressCountry:'IN'}}}));
+ save(lang,'events/',head(lang,'events/',label('Coffee Events in Kerala — Festivals, Workshops & Competitions','കേരളത്തിലെ കാപ്പി പരിപാടികൾ — മേളകളും ശിൽപ്പശാലകളും'),S.eventsSub)+`<body>${header(lang,'events/')}<main class="editorial" id="main"><p class="eyebrow">${S.eventsKicker}</p><h1>${eventTitle}</h1><p class="lede">${S.eventsSub}. ${label('Dates and details from the linked organizers. Check the latest announcement before booking.','തീയതികളും വിവരങ്ങളും സംഘാടകരുടെ അറിയിപ്പുകളിൽനിന്നുള്ളതാണ്. പങ്കെടുക്കുന്നതിനുമുമ്പ് പുതിയ അറിയിപ്പ് പരിശോധിക്കുക.')}</p><a class="button-link" href="${root}#submit-event">${S.evAddBtn} →</a><div class="event-list">${eventsHtml}<p id="eventsEmpty"${events.length?' hidden':''}>${S.eventsEmpty}</p></div></main>${footer(lang)}<script id="eventsSchema" type="application/ld+json">${json(eventSchemas)}</script><script src="/assets/shared.js?v=20260919" defer></script><script src="/assets/pages.js?v=20260919" defer></script></body></html>`);
+ const faqHtml=FAQ.map(f=>`<details><summary>${esc(loc(f,'q'))}</summary><p>${esc(loc(f,'a'))}</p></details>`).join('');
+ save(lang,'faq/',head(lang,'faq/',S.faqTitle,S.faqSub)+`<body>${header(lang,'faq/')}<main class="editorial article" id="main"><p class="eyebrow">${S.faqKicker}</p><h1>${S.faqTitle}</h1><p class="lede">${S.faqSub}</p><div class="faq-list">${faqHtml}</div><a class="button-link" href="${root}#add-place">${S.aboutAddBtn} →</a></main>${footer(lang)}</body></html>`);
+}
 
-fs.writeFileSync(path, src);
-console.log(`seo-generate: ${listItems.length} listings, ${upcoming.length} upcoming events, ${FAQ.length} FAQs written to ${path}`);
+out('sitemap.xml','<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+pages.map(url=>`  <url><loc>${esc(url)}</loc></url>`).join('\n')+'\n</urlset>\n');
+out('robots.txt','User-agent: *\nAllow: /\nSitemap: '+SITE+'/sitemap.xml\n');
+out('.nojekyll','');
+console.log(`Generated ${pages.length} HTML pages in English and Malayalam; ${POSTS.length} articles; shared map content and sitemap.`);

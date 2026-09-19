@@ -1,141 +1,78 @@
 # Kerala Specialty Coffee Map
 
-A single-page interactive 3D map of Kerala's specialty coffee scene — cafés, roasters, farms and coffee education, listed district by district.
+Map-first website for https://www.specialtycoffeekerala.com, with complete English and Malayalam pages. Updated from the public `bermito/kerala-map` main branch on 19 September 2026. The live HTML and GitHub HTML matched before editing.
 
-Live at **https://specialtycoffeekerala.com/**
+## Preview
 
----
+From this folder:
 
-## Deploying
+```sh
+python3 -m http.server 8765 --bind 127.0.0.1
+```
 
-Hosted on GitHub Pages from the `main` branch, `/root` folder. There is no build step and no build command.
+Open http://127.0.0.1:8765/. Use an HTTP server: opening index.html directly as a file will not resolve the site's root-relative links correctly.
 
-1. In the repo, **Add file → Upload files**
-2. Drop the changed file(s) into the repo root
-3. Commit to `main`
+## Deploy
 
-Pages redeploys automatically, usually live within a minute. If a change doesn't appear, hard-refresh — the HTML is large and browsers cache it aggressively.
+The generated site is ready for GitHub Pages or the existing Vercel static deployment. No install command or hosted build step is needed.
 
----
+1. Unzip `kerala-coffee-site-2026-09-19.zip`.
+2. Copy **all files and folders inside it** to the root of `bermito/kerala-map`. Preserve the folders, especially `assets`, `blog`, `ml`, `directory`, `events`, and `faq`.
+3. Commit the changes to the branch used by the existing deployment.
+4. Check the homepage, `/ml/`, `/blog/`, `/directory/`, `/events/`, and `/sitemap.xml` on the live domain.
 
-## Files
+Do not upload only `index.html`: scripts are now cached separately and articles have their own URLs. Retain any deployment settings or CNAME file configured outside this snapshot. No domain, DNS, hosting account, or Supabase setting was changed by this update.
 
-| File | Role |
+## What changed
+
+- Removed the animated opening sequence and automatic event popup. The map is the homepage.
+- Moved the guide, directory, events and FAQ out of the old overlay into normal HTML pages. Old `#guide`, `#directory`, `#events-list`, `#guide-faq` and `#district-*` links still resolve to suitable pages.
+- Added three original articles, each in English and Malayalam: specialty coffee explained; a Kochi café guide; and a Wayanad coffee guide.
+- Added Malayalam district and listing names, descriptions, event details, FAQs, forms, errors and accessible labels. Proper names are transliterated. Noto Sans Malayalam, natural line heights and wrapping replace Latin-style letter spacing.
+- Removed Lady Loafella and Coz Coffee from the shared dataset, HTML directory and structured data.
+- Added Third Wave Coffee branches in Panampilly Nagar and Noel Mall, Kakkanad with **opening status unconfirmed**. The recruitment notice is linked; neither is represented as a confirmed open business in the directory schema.
+- Updated the November coffee festival and V60 competition with organizer links. Added BAKE EXPO as a clearly described related industry trade fair.
+- Multi-day events remain visible through their end date using Asia/Kolkata, independent of the visitor's timezone.
+- Preserved the exact production terrain datasets and Three.js library. Detailed terrain downloads on first district selection; the overview remains usable if that download fails. Assets use content-based version strings, idle rendering is limited to 30 frames per second and rendering pauses in background tabs. District movement finishes in 280 ms with smooth animation frames; detail builds after the movement, and reduced-motion preferences skip it.
+- District buttons appear only on mobile, in a horizontally scrollable row with 44 px touch targets. The mobile footer flows naturally in both languages without fixed text offsets.
+- Made panel Close return to the map, with separate Back buttons for subviews. Collapsed categories and closed panels no longer leave hidden links in the keyboard path. The first populated category opens automatically.
+- Added required-field/email/URL validation and past-date prevention for event submissions. Existing Supabase submission configuration remains in use.
+
+## Editing
+
+Edit the source files, then run `node seo-generate.js` before publishing:
+
+| File | Purpose |
 | --- | --- |
-| `index.html` | The entire site. three.js and all map data are inlined. ~1.1 MB. |
-| `favicon.ico` | Browser-tab fallback, 2 frames (16px, 32px). |
-| `apple-touch-icon.png` | 180×180, iOS home screen. |
-| `icon-192.png` / `icon-512.png` | Android/PWA home-screen icons. |
-| `manifest.webmanifest` | Web app manifest, references the two PWA icons. |
-| `robots.txt` | Allows crawling, points to the sitemap. |
-| `sitemap.xml` | Single-page sitemap. |
-| `seo-generate.js` | Optional. Regenerates the static directory / events / FAQ HTML and the JSON-LD from the data in `index.html` (`node seo-generate.js`). Not needed to deploy. |
-| `README.md` | This file. |
-| `THIRD_PARTY_LICENSES.md` | three.js MIT license, fonts, data attribution. |
+| `content/data.json` | Listings, descriptions, Malayalam names and descriptions |
+| `content/events.json` | Public event dates, end dates, translations and source URLs |
+| `content/events-archive.json` | Historic event records retained for reference; not rendered |
+| `content/posts.json` | Article titles, descriptions, paragraphs, translations and sources |
+| `content/faq.json` | English and Malayalam questions and answers |
+| `content/str.json` | Interface translations |
+| `assets/map.js` | Map behavior and forms |
+| `assets/map.css` / `assets/site.css` | Map and reading-page layouts |
+| `seo-generate.js` | Generates 16 HTML pages, shared content, canonical/hreflang metadata, schema and sitemap |
 
----
+The generator uses only Node's built-in modules. No npm dependencies are required. The output can be deployed unchanged.
 
-## The guide & directory layer
+Events are filtered during generation and on the client after the listed end date. Regenerate after changing content and periodically after events finish so the no-JavaScript HTML and initial JSON-LD also stay current. This task did not create a recurring update service.
 
-`index.html` also carries a plain-HTML twin of the map — a written guide to specialty coffee in Kerala, the full directory district by district, the upcoming events and the FAQ — inside `<main id="guide">`. It opens from the **Guide** nav button, the link under the headline, or deep links like `/#directory` and `/#district-kozhikode`. It exists so search engines and AI crawlers, which cannot read the 3D canvas, still see every listing as real text.
+## Verification
 
-The directory, events and FAQ sections in it are generated from `DATA`, `EVENTS` and `FAQ`. After editing those arrays, run `node seo-generate.js` to rewrite the static copies and the `ItemList` / `Event` JSON-LD between the `<!-- SEO:* -->` markers. The prose in the guide is hand-written and edited directly.
-
----
-
-## Editing content
-
-Everything editable lives in the **last `<script>` block** of `index.html`, near the top of that block.
-
-### `DATA` — the listings
-
-Keyed by district name. Each district has `sub` (a one-line description) plus four arrays: `cafes`, `roasters`, `farms`, `education`.
-
-```js
-"Kozhikode":{sub:"Malabar coast · the state's café capital",
-  cafes:[{n:"Place Name", m:"Location · short note", w:"https://example.com/"}],
-  roasters:[], farms:[], education:[]}
+```sh
+node scripts/verify.cjs
+python3 scripts/verify-html.py
 ```
 
-- `n` — name
-- `m` — location and a short note, separated by `·`
-- `w` — optional website
-- `v:"probable"` — optional, renders a small "probable" tag
+Checks cover removal parity, translation coverage, tentative branch status, event end dates and India-midnight boundaries, JavaScript parsing, unchanged terrain hashes, no-WebGL UI initialization, internal file links, duplicate IDs, one H1 per page, valid JSON-LD, canonical URLs and language alternatives.
 
-Eight districts are **intentionally empty** and show "None listed yet" by design. Don't invent entries to fill them.
+Browser checks covered all 14 districts, district-preserving language links, Malayalam panels and form validation, the journal, mobile layouts at 320 × 568 and 390 × 844, and desktop at 1440 × 900. No JavaScript errors were reported during those flows.
 
-Three farm entries are **private / region-only** — Kelachandra, Black Baza (smallholder network) and WSSS. They show a region rather than a street address on purpose. Never add exact addresses or map pins for these.
+No live submissions were sent during testing. Supabase delivery, row-level-security policies and owner email notifications need an authorized end-to-end check in the deployed environment. The existing optional email-notification endpoint remains a placeholder; this update does not claim to repair backend delivery. The current production snapshot had no visible newsletter signup form.
 
-### `EVENTS` — the arrival card
+## Existing terrain limitations
 
-```js
-{date:'2026-11-07', title:'Kerala Coffee Festival', venue:'Venue · dates', blurb:"One or two lines."}
-```
+Elevation is modelled, not survey or DEM data. The inherited district boundary discrepancies described in the historical handoff remain. Private estates and regional producer networks have not been assigned new precise addresses or map pins.
 
-Past dates drop off automatically. No cleanup needed. Add only genuine, confirmed events.
-
-### `STR` — bilingual UI strings
-
-English/Malayalam dictionary with `en` and `ml` keys, read through the `L()` helper. Only interface chrome is translated — place names, brand names and district names stay as-is. Defaults to English; the visitor switches manually via the **ML / EN** toggle. No auto-detection.
-
-### Colour ramps
-
-`OVERSTOPS` (zoomed-out terrain), `STOPS` (zoomed-in terrain), `GSTOPS` (hover tint).
-
----
-
-## Forms
-
-Both forms write to Supabase (`https://uxmkcnavtzejyiptpenj.supabase.co`). The publishable key in the file is safe to expose client-side; row-level security allows inserts only, so visitors cannot read back what others submitted.
-
-| Form | Table | Notes |
-| --- | --- | --- |
-| Email signup | `subscribers` | Duplicate addresses allowed by design — de-dupe on export. |
-| Add a Place | `submissions` | Full payload including submitter email and phone. |
-
-To read either list, open the Supabase dashboard → Table Editor.
-
-**Optional email ping.** `SUBMISSION_NOTIFY_ENDPOINT` will email you whenever someone submits a place. It is currently set to a placeholder (`YOUR_FORM_ID_HERE`) and the code skips the send while that placeholder is present — fire-and-forget, never blocks the Supabase insert, never shows an error to the visitor. To enable it, create a form at formspree.io and swap in the real endpoint.
-
----
-
-## Don't undo these
-
-Several rounds of changes have stacked up in this file. These decisions were made deliberately and reverting them has caused regressions before.
-
-- **Background is pure white** (`#ffffff`). An earlier off-white had a green cast and was rejected.
-- **Brand green is `#00a83f`** — grid checks, the word "Kerala" in the tagline, link hovers.
-- **Overview terrain ramp** runs light green at the coast → tan → brown at the Ghats (`#dff2d4` → `#a0d788` → `#b06a35`). An earlier pastel version was rejected as too dull.
-- **Hover tint** is a soft light green (`#b7e3c4` → `#6ac48a`). An earlier near-neon version was rejected as too bright.
-- **Total lighting must stay near 1.0** — ambient 0.34 + key 0.62 + fill 0.25 + `envMapIntensity` 0.42. Push it much higher and the pale overview colours clip to white, rendering the whole state as blank paper. This bug happened once and took a while to diagnose.
-- **No eyebrow label** above the headline. It collided with other elements on phone screens.
-- **No brand name in metadata.** "Bermito" appears exactly once, as the legitimate name of a listed roaster in the Kozhikode data. It must not appear in the title, H1, meta description, Open Graph tags or JSON-LD.
-- **Background grid** is `uScale` 92 × 62 at line strength 0.55, which renders as roughly 20 rows on screen.
-
----
-
-## Known limitations
-
-- Two district boundaries are off in the upstream census dataset — Idukki reads ~15% large, Ernakulam ~21% small versus official area figures. Not introduced by this build; needs a better source dataset.
-- Elevation is **modelled, not measured** — thin-plate RBF interpolation in log space from ~130 published point elevations plus a sea-level coastline sample, validated against seven held-out points at ~95 m mean error, then clamped per district to published highest points. Replacing it with a real DEM (SRTM / Bhuvan / Cartosat, covering 8.1–12.9° N, 74.8–77.5° E) means re-running the Python elevation model — not hand-editable in the HTML.
-- No Open Graph preview image yet (needs a 1200×630 graphic), so shared links show text only, no thumbnail.
-- Google Fonts is the only external network request. Everything else is inlined. If Fonts is blocked the page falls back to system fonts and nothing breaks.
-- PWA icons are `purpose: "any"`, not `maskable` — some Android launchers that crop to circles may clip the tip of the Kerala shape. Fixing it needs a padded maskable variant, which conflicts with the no-background requirement.
-
----
-
-## Before shipping any change
-
-Verify the file still parses and that earlier work is intact. Silent regressions are the main risk in a file this size.
-
-```bash
-node -e '
-const fs=require("fs");
-const s=fs.readFileSync("index.html","utf8");
-const blocks=[...s.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m=>m[1]);
-blocks.forEach((b,i)=>{ try{ new Function(b); console.log("block",i,"OK"); }
-  catch(e){ console.log("block",i,"FAIL:",e.message); process.exitCode=1; } });
-'
-```
-
-The `</script>` count will exceed the `<script>` count — expected, since JSON-LD blocks carry a `type` attribute and don't match the plain pattern.
+See `CONTENT-SOURCES.md` for verification notes and `THIRD_PARTY_LICENSES.md` for retained licenses.

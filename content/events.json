@@ -1,0 +1,40 @@
+[
+  {
+    "date": "2026-10-09",
+    "endDate": "2026-10-11",
+    "title": "BAKE EXPO 2026",
+    "title_ml": "ബേക്ക് എക്സ്പോ 2026",
+    "venue": "Adlux International Convention & Exhibition Center, Angamaly, Kochi",
+    "venue_ml": "അഡ്ലക്സ് അന്താരാഷ്ട്ര പ്രദർശനകേന്ദ്രം, അങ്കമാലി, കൊച്ചി",
+    "blurb": "A bakery, food and hospitality trade exhibition organised by Bakers Association Kerala. Relevant to café owners sourcing equipment and supplies; this is an industry trade fair, not a specialty coffee festival.",
+    "blurb_ml": "ബേക്കേഴ്സ് അസോസിയേഷൻ കേരള സംഘടിപ്പിക്കുന്ന ബേക്കറി, ഭക്ഷ്യ, ആതിഥേയ വ്യവസായ മേള. ഉപകരണങ്ങളും സാധനങ്ങളും കണ്ടെത്താൻ കാപ്പിശാല ഉടമകൾക്ക് ഉപകാരപ്പെടാം. ഇത് വ്യാപാരമേളയാണ്; പ്രത്യേക കാപ്പിമേളയല്ല.",
+    "url": "https://bakeexpo.in/",
+    "kind": "trade",
+    "checked": "2026-09-19"
+  },
+  {
+    "date": "2026-11-07",
+    "title": "Hario V60 Brewers Cup — Calicut",
+    "title_ml": "ഹാരിയോ വി അറുപത് കാപ്പി തയ്യാറാക്കൽ മത്സരം — കോഴിക്കോട്",
+    "venue": "Aspin Courtyards, Beach Road, Calicut",
+    "venue_ml": "ആസ്പിൻ കോർട്ട്‌യാർഡ്സ്, ബീച്ച് റോഡ്, കോഴിക്കോട്",
+    "blurb": "A regional V60 brewing competition listed in the Kerala Coffee Festival programme. Check the organizer’s competition page for entry conditions, timing and registration availability.",
+    "blurb_ml": "കേരള കാപ്പിമേളയുടെ പരിപാടിപ്പട്ടികയിൽ ഉൾപ്പെടുത്തിയ പ്രാദേശിക കാപ്പി തയ്യാറാക്കൽ മത്സരം. പങ്കെടുക്കാനുള്ള നിബന്ധനകൾ, സമയം, പ്രവേശനലഭ്യത എന്നിവ സംഘാടകരുടെ പേജിൽ പരിശോധിക്കുക.",
+    "url": "https://keralacoffeefestival.com/#section-competitions",
+    "kind": "competition",
+    "checked": "2026-09-19"
+  },
+  {
+    "date": "2026-11-07",
+    "endDate": "2026-11-08",
+    "title": "Kerala Coffee Festival 2026",
+    "title_ml": "കേരള കാപ്പിമേള 2026",
+    "venue": "Aspin Courtyards, Beach Road, Calicut",
+    "venue_ml": "ആസ്പിൻ കോർട്ട്‌യാർഡ്സ്, ബീച്ച് റോഡ്, കോഴിക്കോട്",
+    "blurb": "Two days bringing together coffee growers, roasters, cafés, brewers and coffee lovers. The programme includes workshops, discussions, competitions and a trade exhibition. Entry passes were marked “available soon” when checked on 19 September; follow the organizer for ticket updates.",
+    "blurb_ml": "കാപ്പി കർഷകർ, വറുക്കൽ വിദഗ്ധർ, കാപ്പിശാലകൾ, കാപ്പി തയ്യാറാക്കുന്നവർ, ആസ്വാദകർ എന്നിവരുടെ രണ്ടു ദിവസത്തെ സംഗമം. ശിൽപ്പശാലകൾ, ചർച്ചകൾ, മത്സരങ്ങൾ, വ്യാപാരപ്രദർശനം എന്നിവ ഉൾപ്പെടുന്നു. സെപ്റ്റംബർ പത്തൊൻപതിന് പരിശോധിച്ചപ്പോൾ പ്രവേശനപത്രങ്ങൾ ഉടൻ ലഭ്യമാകുമെന്നാണ് അറിയിപ്പ്. പുതിയ വിവരങ്ങൾക്ക് സംഘാടകരുടെ പേജ് കാണുക.",
+    "url": "https://keralacoffeefestival.com/",
+    "kind": "festival",
+    "checked": "2026-09-19"
+  }
+]
