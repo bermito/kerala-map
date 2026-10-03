@@ -10,7 +10,10 @@
     "blurb_ml": "ബേക്കേഴ്സ് അസോസിയേഷൻ കേരള സംഘടിപ്പിക്കുന്ന ബേക്കറി, ഭക്ഷ്യ, ആതിഥേയ വ്യവസായ മേള. ഉപകരണങ്ങളും സാധനങ്ങളും കണ്ടെത്താൻ കാപ്പിശാല ഉടമകൾക്ക് ഉപകാരപ്പെടാം. ഇത് വ്യാപാരമേളയാണ്; പ്രത്യേക കാപ്പിമേളയല്ല.",
     "url": "https://bakeexpo.in/",
     "kind": "trade",
-    "checked": "2026-09-19"
+    "checked": "2026-09-19",
+    "slug": "bake-expo-2026",
+    "district": "Ernakulam",
+    "locality": "Angamaly"
   },
   {
     "date": "2026-11-07",
@@ -22,7 +25,10 @@
     "blurb_ml": "കേരള കാപ്പിമേളയുടെ പരിപാടിപ്പട്ടികയിൽ ഉൾപ്പെടുത്തിയ പ്രാദേശിക കാപ്പി തയ്യാറാക്കൽ മത്സരം. പങ്കെടുക്കാനുള്ള നിബന്ധനകൾ, സമയം, പ്രവേശനലഭ്യത എന്നിവ സംഘാടകരുടെ പേജിൽ പരിശോധിക്കുക.",
     "url": "https://keralacoffeefestival.com/#section-competitions",
     "kind": "competition",
-    "checked": "2026-09-19"
+    "checked": "2026-09-19",
+    "slug": "hario-v60-brewers-cup-calicut-2026",
+    "district": "Kozhikode",
+    "locality": "Kozhikode"
   },
   {
     "date": "2026-11-07",
@@ -35,6 +41,35 @@
     "blurb_ml": "കാപ്പി കർഷകർ, വറുക്കൽ വിദഗ്ധർ, കാപ്പിശാലകൾ, കാപ്പി തയ്യാറാക്കുന്നവർ, ആസ്വാദകർ എന്നിവരുടെ രണ്ടു ദിവസത്തെ സംഗമം. ശിൽപ്പശാലകൾ, ചർച്ചകൾ, മത്സരങ്ങൾ, വ്യാപാരപ്രദർശനം എന്നിവ ഉൾപ്പെടുന്നു. സെപ്റ്റംബർ പത്തൊൻപതിന് പരിശോധിച്ചപ്പോൾ പ്രവേശനപത്രങ്ങൾ ഉടൻ ലഭ്യമാകുമെന്നാണ് അറിയിപ്പ്. പുതിയ വിവരങ്ങൾക്ക് സംഘാടകരുടെ പേജ് കാണുക.",
     "url": "https://keralacoffeefestival.com/",
     "kind": "festival",
-    "checked": "2026-09-19"
+    "checked": "2026-09-19",
+    "slug": "kerala-coffee-festival-2026",
+    "district": "Kozhikode",
+    "locality": "Kozhikode"
+  },
+  {
+    "slug": "kerala-origins-kochi-2026",
+    "date": "2026-10-10",
+    "startTime": "14:00",
+    "endTime": "18:00",
+    "title": "Kerala Origins — Kochi",
+    "title_ml": "കേരള ഒറിജിൻസ് — കൊച്ചി",
+    "venue": "Cochin Club, Fort Kochi",
+    "venue_ml": "കൊച്ചിൻ ക്ലബ്, ഫോർട്ട് കൊച്ചി",
+    "district": "Ernakulam",
+    "locality": "Fort Kochi",
+    "blurb": "An afternoon with Kerala’s coffee growers and the coffees they produce. Taste different origins and processes at a shared cupping table, and meet the people behind the harvest.",
+    "blurb_ml": "കേരളത്തിലെ കാപ്പി കർഷകരെയും അവരുടെ കാപ്പികളെയും അടുത്തറിയാനുള്ള ഒരു ഉച്ചകഴിഞ്ഞ്. വിവിധ പ്രദേശങ്ങളിൽനിന്നും സംസ്കരണരീതികളിൽനിന്നുമുള്ള കാപ്പികൾ ഒരുമിച്ച് രുചിച്ചറിയാം; അവ വളർത്തുന്നവരുമായി സംസാരിക്കാം.",
+    "url": "https://bermito.com/blogs/events/kerala-origins-kochi-coffee-cupping-10-october-2026",
+    "registrationUrl": "https://forms.gle/MN7cxgS5N3VUBN5B8",
+    "image": "/assets/kerala-origins-kochi.webp",
+    "imageAlt": "Kerala Origins Kochi coffee showcase and cupping poster, 10 October 2026, 2–6 PM, Cochin Club, Fort Kochi.",
+    "imageAlt_ml": "കേരള ഒറിജിൻസ് കൊച്ചി കാപ്പി പ്രദർശനത്തിന്റെയും രുചിപരിശോധനയുടെയും പോസ്റ്റർ. 2026 ഒക്‌ടോബർ 10, ഉച്ചയ്ക്ക് 2 മുതൽ വൈകിട്ട് 6 വരെ, കൊച്ചിൻ ക്ലബ്, ഫോർട്ട് കൊച്ചി.",
+    "qr": "/assets/kerala-origins-registration.svg",
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Cochin+Club+Fort+Kochi",
+    "organizerName": "Bermito Coffee Roasters",
+    "organizerUrl": "https://bermito.com/",
+    "kind": "cupping",
+    "featured": true,
+    "checked": "2026-10-03"
   }
 ]

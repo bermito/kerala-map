@@ -44,5 +44,23 @@ for file,p in parsed.items():
   assert dest.exists(),(file,href,'Missing target')
   if u.fragment and dest in parsed and not u.fragment.startswith('map-') and u.fragment not in ('submit-event','add-place'):
    assert u.fragment in parsed[dest].ids,(file,href,'Missing anchor')
-assert len(files)==16,len(files)
+events=json.loads((root/'content/events.json').read_text())
+assert len(files)==16+2*len(events),len(files)
+for prefix in ('','ml/'):
+ index=parsed[root/(prefix+'events/index.html')]
+ assert not any(s.get('@type')=='Event' for s in index.scripts),'Event markup belongs on detail pages'
+ for event in events:
+  file=root/(prefix+'events/'+event['slug']+'/index.html')
+  detail=parsed[file]
+  schemas=[s for s in detail.scripts if s.get('@type')=='Event']
+  assert len(schemas)==1,(file,'One event per detail page')
+  schema=schemas[0]
+  assert schema['url']==detail.canonical[0],file
+  assert schema['startDate'].startswith(event['date']),file
+  if event.get('registrationUrl'):
+   assert event['registrationUrl'] in detail.links,(file,'Missing registration link')
+   assert event['qr'] in detail.links,(file,'Missing registration QR')
+   assert schema['startDate']=='2026-10-10T14:00:00+05:30',file
+   assert schema['endDate']=='2026-10-10T18:00:00+05:30',file
+   assert schema['location']['address']['addressLocality']=='Fort Kochi',file
 print('PASS:',len(files),'HTML pages, unique IDs, one H1 per page, valid JSON-LD, canonicals, language alternatives, internal links and Malayalam visible text.')

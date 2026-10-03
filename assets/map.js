@@ -32,8 +32,9 @@
      English always; the person switches manually, no auto-detection. */
   const STR = KERALA.STR;
   const LANG=document.documentElement.lang==='ml'?'ml':'en';
-  let mapReady=false;
-  const tr=(item,key)=>LANG==='ml' ? item[key+'_ml'] : item[key];
+  let mapReady=false, selected=-1;
+  let updateMapSelection=null;
+  const tr=(item,key)=>LANG==='ml' ? (item[key+'_ml']||item[key]||'') : (item[key]||'');
   const districtName=name=>LANG==='ml'?DATA[name].name_ml:name;
   const root=LANG==='ml'?'/ml/':'/';
   function L(k){ return STR[LANG][k]; }
@@ -49,8 +50,12 @@
   }
   const esc=function(s){return String(s).replace(/[&<>"]/g,function(c){
     return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
-  function chev(){return '<svg class="chev" width="7" height="10" viewBox="0 0 7 10" fill="none" aria-hidden="true">'+
-    '<path d="M1.5 1 5.5 5l-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';}
+  function icon(type,extraClass){
+    const paths={arrow:'M3 8h10M8 3l5 5-5 5',external:'M4 12 12 4M4 4h8v8',back:'M13 8H3m5-5L3 8l5 5',chevron:'m6 3 5 5-5 5'};
+    return '<svg class="ui-icon '+(extraClass||'')+'" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false"><path d="'+paths[type]+'" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  }
+  function chev(){return icon('chevron','chev');}
+  function text(en,ml){return LANG==='ml'?ml:en;}
   const nf=function(n){return n.toLocaleString('en-IN');};
 
   /* escape the label, then turn the |marked| span into the green keyword */
@@ -76,11 +81,15 @@
         html+='<div class="item"><div class="n">'+esc(tr(it,'n'))+
           (it.v?' <span class="tag mono">'+L('probable')+'</span>':'')+
           '</div><div class="m mono">'+esc(tr(it,'m')||'')+'</div>'+
-          (it.w?'<div class="m mono"><a class="lnk" href="'+esc(it.w)+'" target="_blank" rel="noopener noreferrer">'+(it.v?L('source'):L('visit'))+'</a></div>':'')+
+          (it.w?'<div class="m mono"><a class="lnk" href="'+esc(it.w)+'" target="_blank" rel="noopener noreferrer">'+esc((it.v?L('source'):L('visit')).replace(/[→↗]\s*$/,'').trim())+icon('external')+'</a></div>':'')+
           '</div>'; });
       }else{ html+='<div class="empty mono">'+L('emptyCat')+'</div>'; }
       html+='</div></div></div>';
     });
+    const districtEvents=upcoming().filter(e=>e.district===name);
+    if(districtEvents.length){
+      html+='<section class="district-events"><h3>'+text('Coffee events in this district','ഈ ജില്ലയിലെ കോഫി പരിപാടികൾ')+'</h3>'+districtEvents.map(eventCard).join('')+'</section>';
+    }
     html+='<div class="p-foot mono">'+L('elevationNote')+'</div>';
     panelBody.innerHTML=html; wireRows(); panel.scrollTop=0;
   }
@@ -90,21 +99,39 @@
       mon:d.toLocaleDateString(LANG==='ml'?'ml-IN':'en-IN',{month:'short',timeZone:'Asia/Kolkata'}),
       full:d.toLocaleDateString(LANG==='ml'?'ml-IN':'en-IN',{day:'numeric',month:'long',year:'numeric',timeZone:'Asia/Kolkata'})};
   }
-  function upcoming(){return KERALA_UTIL.upcoming(EVENTS);}
+  function upcoming(){return KERALA_UTIL.upcoming(EVENTS).sort((a,b)=>Number(!!b.featured)-Number(!!a.featured)||a.date.localeCompare(b.date));}
+  function eventTime(e){
+    if(!e.startTime)return '';
+    const format=value=>{
+      const d=new Date(e.date+'T'+value+(value.length===5?':00':'')+'+05:30');
+      return Number.isNaN(d.getTime())?value:d.toLocaleTimeString(LANG==='ml'?'ml-IN':'en-IN',{hour:'numeric',minute:'2-digit',timeZone:'Asia/Kolkata'});
+    };
+    return format(e.startTime)+(e.endTime?' – '+format(e.endTime):'')+' IST';
+  }
+  function eventCard(e){
+    const details=e.slug?root+'events/'+encodeURIComponent(e.slug)+'/':e.url;
+    let html='<article class="ev'+(e.featured?' featured':'')+'">';
+    if(e.image)html+='<a class="ev-poster" href="'+esc(details)+'"><img src="'+esc(e.image)+'" alt="'+esc(tr(e,'imageAlt')||tr(e,'title'))+'" loading="lazy" width="800" height="1000"></a>';
+    html+='<div class="d mono">'+fmtDate(e.date).full+(e.endDate&&e.endDate!==e.date?' – '+fmtDate(e.endDate).full:'')+'</div><h3 class="t">'+esc(tr(e,'title'))+'</h3>'+
+      '<div class="v mono">'+esc(tr(e,'venue'))+'</div>'+(eventTime(e)?'<div class="v mono">'+esc(eventTime(e))+'</div>':'')+
+      '<div class="b">'+esc(tr(e,'blurb'))+'</div><div class="event-actions">';
+    const registrationEnd=Date.parse((e.endDate||e.date)+'T'+(e.endTime||'23:59')+':00+05:30');
+    if(e.registrationUrl&&Date.now()<=registrationEnd)html+='<a class="event-register" href="'+esc(e.registrationUrl)+'" target="_blank" rel="noopener noreferrer">'+text('Register','രജിസ്റ്റർ ചെയ്യുക')+icon('external')+'</a>';
+    if(details)html+='<a class="lnk event-details" href="'+esc(details)+'"'+(e.slug?'':' target="_blank" rel="noopener noreferrer"')+'>'+text(e.slug?'Event details':'Event source',e.slug?'പരിപാടിയുടെ വിവരങ്ങൾ':'പരിപാടിയുടെ ഉറവിടം')+icon(e.slug?'arrow':'external')+'</a>';
+    return html+'</div></article>';
+  }
   function renderEvents(){
     const list=upcoming();
     let html='<div class="p-kicker mono">'+L('eventsKicker')+'</div>'+
-             '<div class="p-titlerow"><h2 class="p-title">'+L('eventsTitle')+'</h2>'+
-               '<button class="ev-add" id="evAddBtn" type="button">'+L('evAddBtn')+'</button></div>'+
+             '<div class="p-titlerow"><h2 class="p-title">'+L('eventsTitle')+'</h2></div>'+
              '<div class="p-sub mono">'+L('eventsSub')+'</div>';
-    if(!list.length){ html+='<div class="empty mono" style="padding-top:8px">'+L('eventsEmpty')+'</div>'; }
-    else list.forEach(function(e){
-      html+='<div class="ev"><div class="d mono">'+fmtDate(e.date).full+(e.endDate?' – '+fmtDate(e.endDate).full:'')+'</div><div class="t">'+esc(tr(e,'title'))+
-            '</div><div class="v mono">'+esc(tr(e,'venue'))+'</div><div class="b">'+esc(tr(e,'blurb'))+'</div><a class="lnk event-source" href="'+esc(e.url)+'" target="_blank" rel="noopener noreferrer">'+L('source')+'</a></div>';
-    });
+    if(!list.length){html+='<div class="empty mono">'+L('eventsEmpty')+'</div>';}
+    else html+=list.map(eventCard).join('');
+    html+='<a class="lnk events-all" href="'+root+'events/">'+text('View all events','എല്ലാ പരിപാടികളും കാണുക')+icon('arrow')+'</a>'+
+      '<button class="ev-add" id="evAddBtn" type="button">'+L('evAddBtn')+'</button>';
     panelBody.innerHTML=html; panel.scrollTop=0;
     const evBtn=document.getElementById('evAddBtn');
-    if(evBtn) evBtn.addEventListener('click',function(){ renderAddEvent(); openPanel('addevent'); });
+    if(evBtn) evBtn.addEventListener('click',function(){renderAddEvent();openPanel('addevent');});
   }
 
   /* Submit an event — same Formspree/Supabase path as Add a Place, tagged
@@ -199,7 +226,7 @@
       '<button class="cta-green" id="aboutAddPlaceBtn" type="button">'+L('aboutAddBtn')+'</button>'+
       '<button class="cta-outline" id="aboutRemoveBtn" type="button">'+L('aboutRemoveBtn')+'</button>'+
       '<div class="p-contact mono">'+L('aboutContact')+' <a href="mailto:contact@specialtycoffeekerala.com">contact@specialtycoffeekerala.com</a></div>'+
-      '<button class="faq-cta" id="aboutFaqBtn" type="button">'+L('faqBtn')+'<span class="arw">→</span></button>'+
+      '<button class="faq-cta" id="aboutFaqBtn" type="button">'+L('faqBtn')+icon('arrow')+'</button>'+
       '<div class="p-foot mono">'+L('aboutFoot')+'</div>';
     panel.scrollTop=0;
     const faqBtn=document.getElementById('aboutFaqBtn');
@@ -396,67 +423,148 @@
       });
     });
   }
-  let panelMode=null;
-  /* Views reached from About (FAQ, Add a Place, Remove a Listing) are one step
-     deeper, so closing them should walk back to About rather than dumping the
-     visitor onto the map. Everything else still closes straight out. */
-  const PANEL_PARENT={faq:'about', add:'about', remove:'about', addevent:'events'};
-  let returnFocus=null;
-  function openPanel(m){
-    if(!panelMode) returnFocus=document.activeElement;
+  let panelMode=null, returnFocus=null;
+  const PANEL_PARENT={faq:'about',add:'about',remove:'about',addevent:'events'};
+  const PANEL_HASH={events:'#events',about:'#about',faq:'#faq',add:'#add-place',remove:'#remove-listing',addevent:'#submit-event'};
+  const chipsEl=document.getElementById('districtChips');
+  const districtSelect=document.getElementById('districtSelect');
+  const backgroundBlocks=Array.from(document.querySelectorAll('.map-footer,.map-controls,.map-event,#fallback'));
+  function routeFor(m){return m==='district'?'#map-'+NAMES[selected].toLowerCase():(PANEL_HASH[m]||'');}
+  function writeRoute(hash,method){
+    document.getElementById('navLang').href=(LANG==='ml'?'/':'/ml/')+hash;
+    if(method==='none'||location.hash===hash)return;
+    const state={keralaRoute:hash,keralaFrom:location.hash};
+    history[method==='replace'?'replaceState':'pushState'](state,'',location.pathname+location.search+hash);
+  }
+  function setBackgroundInert(value){
+    backgroundBlocks.forEach(el=>{
+      el.inert=value;
+      if(value)el.setAttribute('aria-hidden','true');else el.removeAttribute('aria-hidden');
+    });
+  }
+  function openPanel(m,options){
+    options=options||{};
+    const active=document.activeElement;
+    if(!panelMode||(active&&active!==document.body&&!panel.contains(active)))returnFocus=active;
     panelMode=m;
-    if(m!=='district'){
-      const hash=m==='add'?'#add-place':m==='addevent'?'#submit-event':'';
-      document.getElementById('navLang').href=(LANG==='ml'?'/':'/ml/')+hash;
-      history.replaceState(null,'',location.pathname+location.search+hash);
-    }
-    document.body.classList.add('panel-open'); panel.inert=false;
+    writeRoute(routeFor(m),options.route||'push');
+    document.body.classList.add('panel-open');panel.inert=false;
     panel.setAttribute('aria-hidden','false');
-    const old=document.getElementById('panelBack'); if(old) old.remove();
+    const old=document.getElementById('panelBack');if(old)old.remove();
     if(PANEL_PARENT[m]){
-      const back=document.createElement('button');back.id='panelBack';back.className='panel-back';
-      back.textContent='← '+L('back');
+      const back=document.createElement('button');back.id='panelBack';back.className='panel-back';back.type='button';
+      back.innerHTML=icon('back')+'<span>'+esc(L('back'))+'</span>';
       back.addEventListener('click',function(){
-        if(PANEL_PARENT[m]==='events'){renderEvents();openPanel('events');}
-        else{renderAbout();openPanel('about');}
+        const parent=PANEL_PARENT[m];
+        if(history.state&&history.state.keralaFrom===routeFor(parent)){history.back();return;}
+        showPanel(parent,{route:'replace'});
       });panelBody.prepend(back);
     }
     document.getElementById('panelClose').focus({preventScroll:true});
+    setBackgroundInert(true);
   }
-  function closeAllPanels(){
-    document.getElementById('navLang').href=LANG==='ml'?'/':'/ml/';
-    if(location.hash==='#submit-event'||location.hash==='#add-place')history.replaceState(null,'',location.pathname+location.search);
+  function closeAllPanels(options){
+    options=options||{};
+    if(!panelMode&&selected<0)return;
+    const previousDistrict=selected;
     panelMode=null;document.body.classList.remove('panel-open');panel.inert=true;
-    panel.setAttribute('aria-hidden','true');
-    if(mapReady) selectDistrict(-1,true);
-    if(returnFocus&&returnFocus.isConnected)returnFocus.focus({preventScroll:true});
+    panel.setAttribute('aria-hidden','true');setBackgroundInert(false);
+    selectDistrict(-1,{route:'none'});
+    writeRoute('',options.route||'replace');
+    if(options.focus!==false){
+      const chip=chipsEl&&chipsEl.querySelector('[data-d="'+previousDistrict+'"]');
+      const target=[returnFocus,districtSelect,chip,document.getElementById('navEvents')].find(el=>el&&el!==document.body&&el.isConnected&&el.getClientRects().length&&getComputedStyle(el).visibility!=='hidden');
+      if(target)target.focus({preventScroll:true});
+    }
     returnFocus=null;
   }
   function closePanel(){closeAllPanels();}
-  document.getElementById('panelClose').addEventListener('click',closePanel);
-  document.addEventListener('keydown',function(e){
-    if(e.key!=='Escape') return;
-    closePanel(); hideCard();
-  });
-  document.getElementById('navEvents').addEventListener('click',function(){ if(mapReady) selectDistrict(-1,true); renderEvents(); openPanel('events'); });
-  document.getElementById('navAbout').addEventListener('click',function(){ if(mapReady) selectDistrict(-1,true); renderAbout(); openPanel('about'); });
-
-  function applyLang(){
-    document.getElementById('panel').setAttribute('aria-label',L('details'));
-    document.getElementById('panelClose').setAttribute('aria-label',L('close'));
+  function showPanel(mode,options){
+    selectDistrict(-1,{route:'none'});
+    const renderers={events:renderEvents,about:renderAbout,faq:renderFaq,add:renderAddPlace,remove:renderRemove,addevent:renderAddEvent};
+    if(renderers[mode]){renderers[mode]();openPanel(mode,options);}
   }
+  function selectDistrict(i,options){
+    if(i<-1||i>=NAMES.length)return;
+    if(mapReady&&updateMapSelection)updateMapSelection(i);else selected=i;
+    if(i>=0){renderDistrict(i);openPanel('district',options);hideCard();}
+    updateChips();
+  }
+  function entryCount(name){
+    const r=DATA[name];if(!r)return 0;
+    return ['buyroasted','cafes','roasters','farms','education','baristas','equipment'].reduce((n,k)=>n+(r[k]||[]).length,0);
+  }
+  function buildDistrictControls(){
+    if(chipsEl){
+      const order=NAMES.map((n,i)=>({n:n,i:i,c:entryCount(n)})).sort((a,b)=>(b.c-a.c)||a.n.localeCompare(b.n));
+      chipsEl.innerHTML='';
+      order.forEach(o=>{
+        const b=document.createElement('button');b.type='button';
+        b.innerHTML=esc(districtName(o.n))+(o.c>0?'<small>'+o.c+'</small>':'');
+        b.dataset.d=o.i;b.setAttribute('aria-label',districtName(o.n));
+        b.addEventListener('click',()=>selectDistrict(o.i));chipsEl.appendChild(b);
+      });
+    }
+    if(districtSelect){
+      districtSelect.innerHTML='<option value="">'+text('Choose a district','ജില്ല തിരഞ്ഞെടുക്കുക')+'</option>'+NAMES.map((name,i)=>'<option value="'+i+'">'+esc(districtName(name))+'</option>').join('');
+      districtSelect.addEventListener('change',()=>{if(districtSelect.value!=='')selectDistrict(Number(districtSelect.value));});
+    }
+    updateChips();
+  }
+  function updateChips(){
+    if(chipsEl)Array.from(chipsEl.children).forEach(b=>{
+      const active=Number(b.dataset.d)===selected;b.classList.toggle('on',active);b.setAttribute('aria-pressed',String(active));
+    });
+    if(districtSelect)districtSelect.value=selected<0?'':String(selected);
+  }
+  function applyRoute(){
+    const hash=location.hash;
+    if(hash.startsWith('#map-')){
+      const i=NAMES.findIndex(n=>n.toLowerCase()===hash.slice(5).toLowerCase());
+      if(i>=0){selectDistrict(i,{route:'none'});return;}
+    }
+    const mode=Object.keys(PANEL_HASH).find(k=>PANEL_HASH[k]===hash);
+    if(mode)showPanel(mode,{route:'none'});else closeAllPanels({route:'none'});
+  }
+  document.getElementById('panelClose').addEventListener('click',closePanel);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&panelMode){e.preventDefault();closePanel();hideCard();}});
+  document.getElementById('navEvents').addEventListener('click',()=>showPanel('events'));
+  document.getElementById('navAbout').addEventListener('click',()=>showPanel('about'));
+  document.addEventListener('click',e=>{
+    const link=e.target.closest('a[href]');if(!link||e.defaultPrevented||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+    const url=new URL(link.href,location.href);
+    if(url.origin!==location.origin||url.pathname!==location.pathname||!url.hash.startsWith('#map-'))return;
+    const i=NAMES.findIndex(n=>n.toLowerCase()===url.hash.slice(5).toLowerCase());
+    if(i>=0){e.preventDefault();selectDistrict(i);}
+  });
+  let routeQueued=false;
+  function queueRoute(){
+    if(routeQueued)return;routeQueued=true;
+    Promise.resolve().then(()=>{routeQueued=false;applyRoute();});
+  }
+  window.addEventListener('popstate',queueRoute);window.addEventListener('hashchange',queueRoute);
+  function applyLang(){panel.setAttribute('aria-label',L('details'));document.getElementById('panelClose').setAttribute('aria-label',L('close'));}
   function hideCard(){}
-  applyLang();
-  if(location.hash==='#submit-event'){renderAddEvent();openPanel('addevent');}
-  else if(location.hash==='#add-place'){renderAddPlace();openPanel('add');}
+  function measureHeader(){
+    const top=document.querySelector('.top');
+    if(top)document.documentElement.style.setProperty('--map-header-height',Math.ceil(top.getBoundingClientRect().bottom)+'px');
+  }
+  function showMapFallback(){
+    mapReady=false;document.body.classList.add('map-unavailable');
+    const fallback=document.getElementById('fallback');if(fallback)fallback.style.display='grid';
+    measureHeader();
+  }
+  applyLang();buildDistrictControls();measureHeader();applyRoute();
+  window.addEventListener('resize',measureHeader);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(measureHeader);
 
   /* ==========================================================================
      3D map — fourteen separate district objects
      ========================================================================== */
-  if(typeof THREE==='undefined'||typeof IDX==='undefined'){ document.getElementById('fallback').style.display='grid'; return; }
+  if(typeof THREE==='undefined'||typeof IDX==='undefined'){showMapFallback();return;}
   let renderer;
   try{ renderer=new THREE.WebGLRenderer({antialias:true,alpha:false}); }
-  catch(err){ document.getElementById('fallback').style.display='grid'; return; }
+  catch(err){showMapFallback();return;}
 
   const PAPER=0xffffff;
   renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,window.innerWidth<860?1.5:2));
@@ -653,7 +761,7 @@
   const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const districtDuration=reduce?0:280;
   let transitionStarted=0, detailRequest=0, detailTimer;
-  let selected=-1, hovered=-1, spinY=0, userY=0, userX=0;
+  let hovered=-1, spinY=0, userY=0, userX=0;
   const hoverEl=document.getElementById('hoverName');
 
   function setHover(d){
@@ -668,10 +776,19 @@
     }else hoverEl.classList.remove('on');
   }
 
+  let mapSpaceCache=null;
   function mobileMapSpace(){
-    const top=document.querySelector('.top').getBoundingClientRect().bottom;
-    const bottom=document.getElementById('panel').getBoundingClientRect().top;
-    return {height:Math.max(48,bottom-top-24),center:(top+bottom)/2};
+    if(mapSpaceCache)return mapSpaceCache;
+    const header=document.querySelector('.top');
+    let top=header?header.getBoundingClientRect().bottom+16:16;
+    if(isNarrow&&!panelMode){
+      document.querySelectorAll('.map-event,.map-controls').forEach(element=>{
+        if(!element.hidden&&getComputedStyle(element).display!=='none')top=Math.max(top,element.getBoundingClientRect().bottom+16);
+      });
+    }
+    const boundary=isNarrow?(panelMode?panel:document.querySelector('.map-footer')):null;
+    const bottom=boundary?Math.min(H,boundary.getBoundingClientRect().top)-16:H-28;
+    return (mapSpaceCache={height:Math.max(48,bottom-top),center:(top+Math.max(top+48,bottom))/2});
   }
   function fitScaleFor(d){
     const vs=viewSize(), rec=D[d];
@@ -694,8 +811,7 @@
     });
     return detailPromise;
   }
-  function selectDistrict(i,silent){
-    if(i===selected&&!silent) return;
+  function selectVisualDistrict(i){
     if(selected>=0) paint(selected,'base');
     selected=i;
     const request=++detailRequest;
@@ -707,13 +823,9 @@
       if(hovered>=0) paint(hovered,'base');
       hovered=-1;
       paint(i,'base');
-      renderDistrict(i); openPanel('district'); hideCard();
+      hideCard();
     }
-    document.getElementById('navLang').href=(LANG==='ml'?'/':'/ml/')+(i>=0?'#map-'+NAMES[i].toLowerCase():'');
-    if(i>=0)history.replaceState(null,'','#map-'+NAMES[i].toLowerCase());
-    else if(location.hash.startsWith('#map-'))history.replaceState(null,'',location.pathname);
-    updateChips();
-    updateTargets();
+    requestAnimationFrame(updateTargets);
     if(i>=0){
       if(D[i].fine) setDetail(i,true);
       else loadDetail().then(()=>{
@@ -726,36 +838,8 @@
     }
   }
 
-  /* ---------- district chips (mobile) ---------- */
-  const chipsEl=document.getElementById('districtChips');
-  function entryCount(name){
-    const r=DATA[name]; if(!r) return 0;
-    return (r.buyroasted||[]).length+(r.cafes||[]).length+(r.roasters||[]).length+(r.farms||[]).length+(r.education||[]).length+(r.baristas||[]).length+(r.equipment||[]).length;
-  }
-  function buildChips(){
-    const order=NAMES.map(function(n,i){ return {n:n,i:i,c:entryCount(n)}; });
-    order.sort(function(a,b){ return (b.c-a.c)||a.n.localeCompare(b.n); });
-    chipsEl.innerHTML='';
-    order.forEach(function(o){
-      const b=document.createElement('button');
-      b.type='button';
-      b.innerHTML=o.c>0?(districtName(o.n)+'<small>'+o.c+'</small>'):districtName(o.n);
-      b.setAttribute('data-d',o.i);
-      b.setAttribute('aria-label',districtName(o.n));
-      b.addEventListener('click',function(){ selectDistrict(o.i); });
-      chipsEl.appendChild(b);
-    });
-  }
-  function updateChips(){
-    const btns=chipsEl.children;
-    for(let k=0;k<btns.length;k++){
-      const active=+btns[k].getAttribute('data-d')===selected;
-      btns[k].classList.toggle('on',active);btns[k].setAttribute('aria-pressed',String(active));
-    }
-  }
-  buildChips();
-
   function updateTargets(){
+    mapSpaceCache=null;
     transitionStarted=performance.now();
     const vs=viewSize();
     for(let d=0;d<14;d++){
@@ -819,13 +903,21 @@
     updateTargets();
   }
   function viewSize(){ const h=2*Math.tan(camera.fov*Math.PI/360)*camera.position.z; return {h:h,w:h*camera.aspect}; }
-  function mapFit(){ const fit=Math.min(1,(W/H)/0.78);return isNarrow?Math.min(fit,Math.max(.25,(H-360)/H)*1.05):fit; }
-  window.addEventListener('resize',resize); resize();
+  function mapFit(){const fit=Math.min(1,(W/H)/0.78);return Math.min(fit,Math.max(.12,mobileMapSpace().height/H)*1.05);}
+  window.addEventListener('resize',resize);resize();
+  if(typeof ResizeObserver!=='undefined'){
+    let pendingResize=false;
+    const layoutObserver=new ResizeObserver(()=>{
+      if(pendingResize)return;pendingResize=true;
+      requestAnimationFrame(()=>{pendingResize=false;measureHeader();if(mapReady)resize();});
+    });
+    document.querySelectorAll('.top,.map-event,.map-footer,.map-controls').forEach(element=>layoutObserver.observe(element));
+  }
 
   let t=0;
   let lastFrame=0, frameId;
   function frame(now=performance.now()){
-    if(document.hidden){frameId=null;return;}
+    if(document.hidden||!mapReady){frameId=null;return;}
     frameId=requestAnimationFrame(frame);
     const progress=districtDuration?Math.min(1,Math.max(0,(now-transitionStarted)/districtDuration)):1;
     if(progress===1&&now-lastFrame<1000/30)return;
@@ -865,7 +957,7 @@
 
     const par=(open||reduce)?0:1;
     mapGroup.position.x=mouse.x*0.3*par;
-    mapGroup.position.y=(isNarrow&&!open?viewSize().h*70/H:0)-mouse.y*0.22*par;
+    mapGroup.position.y=(!open?viewSize().h*(0.5-mobileMapSpace().center/H):0)-mouse.y*0.22*par;
     mapGroup.scale.setScalar(mapFit());
     grid.position.x=-mouse.x*0.9*par; grid.position.y=mouse.y*0.6*par;
     gridMat.uniforms.uDim.value+=((open?0.45:1.0)-gridMat.uniforms.uDim.value)*(reduce?1:1-Math.exp(-dt/65));
@@ -899,14 +991,19 @@
     renderer.render(scene,camera);
   }
   document.addEventListener('visibilitychange',function(){
-    if(!document.hidden&&!frameId){lastFrame=0;frameId=requestAnimationFrame(frame);}
+    if(mapReady&&!document.hidden&&!frameId){lastFrame=0;frameId=requestAnimationFrame(frame);}
   });
-  mapReady=true;
-  applyLang();
-  const initialHash=location.hash.slice(1);
-  if(initialHash.startsWith('map-')){
-    const index=NAMES.findIndex(n=>n.toLowerCase()===initialHash.slice(4));
-    if(index>=0)selectDistrict(index);
-  }
+  renderer.domElement.addEventListener('webglcontextlost',function(e){
+    e.preventDefault();clearTimeout(detailTimer);++detailRequest;
+    if(frameId)cancelAnimationFrame(frameId);frameId=null;showMapFallback();
+  });
+  renderer.domElement.addEventListener('webglcontextrestored',function(){
+    mapReady=true;document.body.classList.remove('map-unavailable');
+    const fallback=document.getElementById('fallback');if(fallback)fallback.style.display='';
+    selectVisualDistrict(selected);lastFrame=0;if(!frameId)frame();
+  });
+  updateMapSelection=selectVisualDistrict;mapReady=true;
+  document.body.classList.remove('map-unavailable');
+  if(selected>=0)selectVisualDistrict(selected);
   frame();
 })();

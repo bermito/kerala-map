@@ -1,6 +1,6 @@
 # Kerala Specialty Coffee Map
 
-Map-first website for https://www.specialtycoffeekerala.com, with complete English and Malayalam pages. Updated from the public `bermito/kerala-map` main branch on 19 September 2026. The live HTML and GitHub HTML matched before editing.
+Map-first website for https://www.specialtycoffeekerala.com, with complete English and Malayalam pages. Updated from the public `bermito/kerala-map` main branch on 3 October 2026. The supplied index, live HTML and GitHub HTML matched before editing.
 
 ## Preview
 
@@ -16,15 +16,20 @@ Open http://127.0.0.1:8765/. Use an HTTP server: opening index.html directly as 
 
 The generated site is ready for GitHub Pages or the existing Vercel static deployment. No install command or hosted build step is needed.
 
-1. Unzip `kerala-coffee-site-2026-09-19.zip`.
-2. Copy **all files and folders inside it** to the root of `bermito/kerala-map`. Preserve the folders, especially `assets`, `blog`, `ml`, `directory`, `events`, and `faq`.
-3. Commit the changes to the branch used by the existing deployment.
+1. Edit the source files in this repository.
+2. Run `node seo-generate.js` and the verification commands below. Preserve all generated folders and shared assets.
+3. Commit the source and generated files to the branch used by the existing deployment.
 4. Check the homepage, `/ml/`, `/blog/`, `/directory/`, `/events/`, and `/sitemap.xml` on the live domain.
 
 Do not upload only `index.html`: scripts are now cached separately and articles have their own URLs. Retain any deployment settings or CNAME file configured outside this snapshot. No domain, DNS, hosting account, or Supabase setting was changed by this update.
 
 ## What changed
 
+- Refined the original white-and-green interface with clearer type, consistent SVG arrows, stronger text contrast, larger controls and responsive event pages.
+- Added Kerala Origins — Kochi on 10 October 2026, 2–6 PM IST at Cochin Club, Fort Kochi, with the organiser's poster, direct registration link, QR code and English/Malayalam detail pages.
+- Added individual pages for all four current events, a past-events archive and registration expiry at the published closing time.
+- Added directory search and category filters, verified three missing listing links and replaced the empty WebGL failure screen with district navigation.
+- Added desktop district selection, browser-history navigation and focus restoration for map panels.
 - Removed the animated opening sequence and automatic event popup. The map is the homepage.
 - Moved the guide, directory, events and FAQ out of the old overlay into normal HTML pages. Old `#guide`, `#directory`, `#events-list`, `#guide-faq` and `#district-*` links still resolve to suitable pages.
 - Added three original articles, each in English and Malayalam: specialty coffee explained; a Kochi café guide; and a Wayanad coffee guide.
@@ -46,13 +51,14 @@ Edit the source files, then run `node seo-generate.js` before publishing:
 | --- | --- |
 | `content/data.json` | Listings, descriptions, Malayalam names and descriptions |
 | `content/events.json` | Public event dates, end dates, translations and source URLs |
-| `content/events-archive.json` | Historic event records retained for reference; not rendered |
+| `content/events-archive.json` | Historic event records rendered in the past-events archive |
 | `content/posts.json` | Article titles, descriptions, paragraphs, translations and sources |
 | `content/faq.json` | English and Malayalam questions and answers |
 | `content/str.json` | Interface translations |
 | `assets/map.js` | Map behavior and forms |
-| `assets/map.css` / `assets/site.css` | Map and reading-page layouts |
-| `seo-generate.js` | Generates 16 HTML pages, shared content, canonical/hreflang metadata, schema and sitemap |
+| `assets/map.css` / `assets/site.css` / `assets/refinements.css` | Map and reading-page layouts |
+| `assets/pages.js` | Directory filtering, registration expiry and event archive visibility |
+| `seo-generate.js` | Generates 24 HTML pages, shared content, canonical/hreflang metadata, schema and sitemap |
 
 The generator uses only Node's built-in modules. No npm dependencies are required. The output can be deployed unchanged.
 

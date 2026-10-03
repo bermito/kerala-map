@@ -1,4 +1,17 @@
-# Content verification — 19 September 2026
+# Content verification
+
+## Updates checked 3 October 2026
+
+- Kerala Origins — Kochi: the organiser's page confirms **Saturday 10 October 2026, 2–6 PM IST**, at **Cochin Club, Fort Kochi**. https://bermito.com/blogs/events/kerala-origins-kochi-coffee-cupping-10-october-2026
+- Registration destination published by the organiser: https://forms.gle/MN7cxgS5N3VUBN5B8. The website QR encodes that same destination. No test registration was submitted; fees and remaining spaces are not asserted.
+- The organiser's published poster is preserved visually and served as an optimized WebP. Original: https://bermito.com/cdn/shop/articles/kerala-origins-kochi-square-poster-10-oct-2026.png?v=1790942703&width=1200
+- Haneen Cafe, Manjeri: https://www.instagram.com/haneencafe_/
+- Cafe Addict, Kochi: https://cafeaddict.in/ confirms Unnichira, Edappally.
+- Third Wave Coffee, Trivandrum Airport: https://stores.thirdwavecoffeeroasters.com/store-pages/third-wave-coffee-trivandrum-airport-thiruvananthapuram confirms Terminal 2 departures, unit L1-60. The former unverified 24-hour claim was removed.
+
+The four September archive summaries were changed to past tense and translated into Malayalam. Prior claims about registration availability and superlatives were removed.
+
+## Baseline checked 19 September 2026
 
 ## Café changes
 

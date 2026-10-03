@@ -158,7 +158,9 @@
         "n": "Haneen Cafe",
         "m": "Patterkulam, Manjeri · Thurakkal Baputty Bypass Rd · espresso, frappes, food, late night",
         "n_ml": "ഹനീൻ കഫേ",
-        "m_ml": "പട്ടർകുളം, മഞ്ചേരി · തുറക്കൽ ബാപ്പുട്ടി ബൈപ്പാസ് റോഡ് · എസ്പ്രെസ്സോ, തണുത്ത പാനീയങ്ങൾ, ഭക്ഷണം; രാത്രിയിലും പ്രവർത്തനം"
+        "m_ml": "പട്ടർകുളം, മഞ്ചേരി · തുറക്കൽ ബാപ്പുട്ടി ബൈപ്പാസ് റോഡ് · എസ്പ്രെസ്സോ, തണുത്ത പാനീയങ്ങൾ, ഭക്ഷണം; രാത്രിയിലും പ്രവർത്തനം",
+        "w": "https://www.instagram.com/haneencafe_/",
+        "checked": "2026-10-03"
       }
     ],
     "roasters": [],
@@ -238,7 +240,9 @@
         "n": "Cafe Addict Kochi",
         "m": "Edappally · Pookattupady Road, Unnichira · coffee, art and community",
         "n_ml": "കഫേ അഡിക്ട് കൊച്ചി",
-        "m_ml": "ഇടപ്പള്ളി · ഉണിച്ചിറ, പൂക്കാട്ടുപടി റോഡ് · കാപ്പി, കല, കൂട്ടായ്മ"
+        "m_ml": "ഇടപ്പള്ളി · ഉണിച്ചിറ, പൂക്കാട്ടുപടി റോഡ് · കാപ്പി, കല, കൂട്ടായ്മ",
+        "w": "https://cafeaddict.in/",
+        "checked": "2026-10-03"
       },
       {
         "n": "Third Wave Coffee — Panampilly Nagar",
@@ -382,9 +386,11 @@
     "cafes": [
       {
         "n": "Third Wave Coffee — Airport",
-        "m": "Chackai · Thiruvananthapuram International Airport, L1-60 · open 24 hours",
+        "m": "Chackai · Thiruvananthapuram International Airport, Terminal 2 departures, L1-60",
         "n_ml": "തേർഡ് വേവ് കോഫി — വിമാനത്താവളം",
-        "m_ml": "ചാക്ക · തിരുവനന്തപുരം അന്താരാഷ്ട്ര വിമാനത്താവളം, എൽ ഒന്ന്–അറുപത് · ഇരുപത്തിനാലു മണിക്കൂറും പ്രവർത്തനം"
+        "m_ml": "ചാക്ക · തിരുവനന്തപുരം അന്താരാഷ്ട്ര വിമാനത്താവളം, ടെർമിനൽ 2 പുറപ്പെടൽ മേഖല, എൽ 1–60",
+        "w": "https://stores.thirdwavecoffeeroasters.com/store-pages/third-wave-coffee-trivandrum-airport-thiruvananthapuram",
+        "checked": "2026-10-03"
       }
     ],
     "roasters": [],

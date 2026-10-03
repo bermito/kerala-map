@@ -26,13 +26,46 @@ assert.equal(upcoming(events,new Date('2027-01-01T00:00:00Z')).length,0);
 for(const f of fs.readdirSync('assets').filter(n=>n.endsWith('.js')))new vm.Script(fs.readFileSync('assets/'+f,'utf8'),{filename:f});
 const expected={'three-r128.js':'16330db1e46081a42a3ef4a921a33b3e3f801f0fa76c8f3e0d31d9d489f444f2','terrain-overview.js':'a35710c17a70d809c899a5c211b2448e7c905d69efe73ad4d594754d2008c2cc','terrain-detail.js':'35996e12ab51fbd0d26ff4d1a1f47528ff02308420d7bedbad3769ec1252bdc4'};
 for(const [f,hash] of Object.entries(expected))assert.equal(crypto.createHash('sha256').update(fs.readFileSync('assets/'+f)).digest('hex'),hash,'Production terrain must be preserved');
-// The UI must initialize safely without WebGL, and keep About/Events usable.
-const elements=new Map();
-function el(id){if(!elements.has(id))elements.set(id,{id,style:{},listeners:{},setAttribute(){},addEventListener(t,fn){this.listeners[t]=fn},focus(){},prepend(){},remove(){},isConnected:true});return elements.get(id);}
-const context={console,Intl,Date,document:{documentElement:{lang:'ml'},getElementById:el,activeElement:el('navAbout'),addEventListener(){},body:{classList:{add(){},remove(){}}},createElement(){return el('dynamic')}},location:{hash:'',pathname:'/ml/',search:''},history:{replaceState(){}}};
-vm.createContext(context);vm.runInContext(fs.readFileSync('assets/content.js','utf8'),context);vm.runInContext(fs.readFileSync('assets/shared.js','utf8').replace("typeof window==='undefined'?{}:window","this"),context);vm.runInContext(fs.readFileSync('assets/map.js','utf8'),context);
-assert.equal(el('fallback').style.display,'grid');
+// The UI must initialize safely without WebGL, and keep its real routes usable.
+const elements=new Map(),windowListeners={},documentListeners={};
+let dynamicIndex=0;
+function classList(){const values=new Set();return {add(...names){names.forEach(n=>values.add(n));},remove(...names){names.forEach(n=>values.delete(n));},contains(n){return values.has(n);},toggle(n,force){const next=force===undefined?!values.has(n):force;if(next)values.add(n);else values.delete(n);return next;}};}
+function el(id){
+ const existing=[...elements.values()].find(e=>e.id===id);if(existing)return existing;
+ const node={id,style:{setProperty(){}},dataset:{},listeners:{},attributes:{},classList:classList(),children:[],isConnected:true,value:'',
+  setAttribute(k,v){this.attributes[k]=v;},removeAttribute(k){delete this.attributes[k];},addEventListener(t,fn){this.listeners[t]=fn;},
+  focus(){context.document.activeElement=this;},prepend(child){this.children.unshift(child);},appendChild(child){this.children.push(child);},
+  remove(){this.isConnected=false;elements.delete(id);},contains(target){return this.children.includes(target);},
+  getBoundingClientRect(){return {top:0,bottom:id==='top'?88:700,height:88};},getClientRects(){return [{}];},
+  querySelectorAll(){return [];},querySelector(){return null;}
+ };elements.set(id,node);return node;
+}
+const blocks=['map-footer','map-controls','map-event','fallback'].map(el);
+const location={hash:'',pathname:'/ml/',search:''};
+const history={state:null,replaceState(state,unused,url){this.state=state;location.hash=url.includes('#')?'#'+url.split('#')[1]:'';},pushState(state,unused,url){this.replaceState(state,unused,url);}};
+const context={console,Intl,Date,URL,getComputedStyle(){return {visibility:'visible'};},window:{addEventListener(t,fn){windowListeners[t]=fn;}},
+ document:{documentElement:{lang:'ml',style:{setProperty(){}}},getElementById:el,activeElement:el('navAbout'),
+  addEventListener(t,fn){documentListeners[t]=fn;},body:el('body'),createElement(){return el('dynamic-'+(++dynamicIndex));},
+  querySelector(){return el('top');},querySelectorAll(){return blocks;}}
+ ,location,history};
+vm.createContext(context);vm.runInContext(fs.readFileSync('assets/content.js','utf8'),context);
+vm.runInContext(fs.readFileSync('assets/shared.js','utf8').replace("typeof window==='undefined'?{}:window","this"),context);
+vm.runInContext(fs.readFileSync('assets/map.js','utf8'),context);
+assert.equal(el('fallback').style.display,'grid');assert(context.document.body.classList.contains('map-unavailable'));
+assert.equal(el('districtChips').children.length,14,'All districts must be reachable without WebGL');
+assert(el('districtSelect').innerHTML.includes(data.Ernakulam.name_ml),'Keyboard selector must include Ernakulam');
 el('navAbout').listeners.click();assert(el('panelBody').innerHTML.includes(str.ml.aboutP1));
+assert(blocks.every(e=>e.inert),'Hidden homepage controls must not remain tabbable');
 el('panelClose').listeners.click();assert.equal(el('panel').inert,true);
+assert(blocks.every(e=>!e.inert),'Closing must restore homepage controls');assert.equal(context.document.activeElement.id,'navAbout');
 el('navEvents').listeners.click();assert(el('panelBody').innerHTML.includes(festival.title_ml));
-console.log('PASS: content removals, cautious opening status, full translation coverage, IST event expiry, JavaScript syntax, original terrain hashes, no-WebGL navigation.');
+assert(el('panelBody').innerHTML.includes('/ml/events/'),'Events drawer must link to the events page');
+const featured=events.find(e=>e.featured);
+assert(el('panelBody').innerHTML.includes('/ml/events/'+featured.slug+'/'),'Featured event must link to its own details');
+el('panelClose').listeners.click();
+const districtIndex=read('names').indexOf('Ernakulam');
+el('districtSelect').value=String(districtIndex);el('districtSelect').listeners.change();
+assert.equal(location.hash,'#map-ernakulam');assert(el('panelBody').innerHTML.includes(data.Ernakulam.name_ml));
+assert(el('panelBody').innerHTML.includes(featured.title_ml),'District drawer must include its featured event without WebGL');
+documentListeners.keydown({key:'Escape',preventDefault(){}});assert.equal(el('panel').inert,true);assert.equal(location.hash,'');
+console.log('PASS: content removals, cautious opening status, full translation coverage, IST event expiry, JavaScript syntax, original terrain hashes, no-WebGL navigation, district selection, event links, focus and background interactivity.');
