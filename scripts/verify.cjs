@@ -1,24 +1,46 @@
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),vm=require('node:vm'),crypto=require('node:crypto');
-const {todayIST,upcoming}=require('../assets/shared.js');
+const {todayIST,upcoming,eventTime}=require('../assets/shared.js');
 const read=n=>JSON.parse(fs.readFileSync(`content/${n}.json`,'utf8'));
 const data=read('data'),str=read('str'),events=read('events');
 const entries=Object.values(data).flatMap(d=>Object.values(d).filter(Array.isArray).flat());
 assert.equal(entries.length,30);
 assert(!entries.some(e=>/Lady Loafella|Coz Coffee/i.test(e.n)));
 const branches=entries.filter(e=>/^Third Wave Coffee — (Panampilly|Noel)/.test(e.n));
-assert.equal(branches.length,2);assert(branches.every(e=>e.v==='unconfirmed'&&e.w.startsWith('https://')));
+assert.equal(branches.length,2);assert(branches.every(e=>!e.v&&e.w.startsWith('https://stores.thirdwavecoffeeroasters.com/')));
+const cafes=Object.values(data).flatMap(d=>d.cafes||[]);
+assert.equal(cafes.length,17);
+for(const e of cafes){
+ assert(e.address&&e.address_ml&&e.mapUrl,`Missing café address or directions: ${e.n}`);
+ const u=new URL(e.mapUrl);
+ assert(['www.google.com','maps.app.goo.gl'].includes(u.hostname),`Invalid maps host: ${e.n}`);
+ if(u.hostname==='www.google.com')assert(u.searchParams.get('api')==='1'&&u.searchParams.get('query'),`Missing map search: ${e.n}`);
+ for(const field of ['hours','visitNote'])if(e[field])assert(e[field+'_ml'],`Missing translation for ${field}: ${e.n}`);
+ if(e.phone)assert(/^\+91\d{10}$/.test(e.phone),`Invalid phone: ${e.n}`);
+}
 assert.deepEqual(Object.keys(str.en).sort(),Object.keys(str.ml).sort());
 for(const [district,d] of Object.entries(data)){
  assert(d.name_ml&&d.sub_ml,`District translation missing: ${district}`);
  for(const e of Object.values(d).filter(Array.isArray).flat())assert(e.n_ml&&e.m_ml,`Listing translation missing: ${e.n}`);
 }
 for(const e of events)assert(e.title_ml&&e.venue_ml&&e.blurb_ml&&e.url);
+const archive=read('events-archive');
+assert(archive.every(e=>e.archived&&e.slug&&!e.registrationUrl),'Archives must not have active registration');
+assert.equal(new Set([...events,...archive].map(e=>e.slug)).size,events.length+archive.length);
+for(const e of [...events,...archive]){
+ if(e.details)assert.equal(e.details.length,e.details_ml.length);
+ for(const field of ['organizerName','registrationLabel','timeNote','entry','sourceNote','sourceLabel'])if(e[field])assert(e[field+'_ml'],`Missing ${field} translation: ${e.slug}`);
+ if(e.image)assert(fs.existsSync('.'+e.image)&&e.imageAlt&&e.imageAlt_ml&&e.posterSourceUrl);
+ if(e.qr)assert(e.registrationUrl&&fs.existsSync('.'+e.qr));
+}
 for(const f of read('faq'))assert(f.q_ml&&f.a_ml);
 for(const p of read('posts')){assert(p.title.ml&&p.description.ml);for(const s of p.sections)assert.equal(s.en.length,s.ml.length);}
 assert.equal(todayIST(new Date('2026-11-08T18:29:59Z')),'2026-11-08');
 assert.equal(todayIST(new Date('2026-11-08T18:30:00Z')),'2026-11-09');
 const festival=events.find(e=>e.kind==='festival'),competition=events.find(e=>e.kind==='competition');
+assert.equal(eventTime(competition),'9 AM–5 PM IST');
+assert(!/[a-z]/i.test(eventTime(competition,'ml')));
+assert(festival.ticketUrl&&!festival.registrationUrl,'Unconfirmed festival tickets must not be presented as registration');
 assert(upcoming(events,new Date('2026-11-08T18:29:59Z')).includes(festival),'Festival must stay visible throughout day two');
 assert(!upcoming(events,new Date('2026-11-08T18:30:00Z')).includes(festival),'Festival must expire at Kerala midnight');
 assert(!upcoming(events,new Date('2026-11-08T00:00:00Z')).includes(competition),'Single-day event must expire');
@@ -66,6 +88,7 @@ el('panelClose').listeners.click();
 const districtIndex=read('names').indexOf('Ernakulam');
 el('districtSelect').value=String(districtIndex);el('districtSelect').listeners.change();
 assert.equal(location.hash,'#map-ernakulam');assert(el('panelBody').innerHTML.includes(data.Ernakulam.name_ml));
+for(const e of data.Ernakulam.cafes){assert(el('panelBody').innerHTML.includes(e.address_ml));assert(el('panelBody').innerHTML.includes(e.mapUrl.replace(/&/g,'&amp;')));}
 assert(el('panelBody').innerHTML.includes(featured.title_ml),'District drawer must include its featured event without WebGL');
 documentListeners.keydown({key:'Escape',preventDefault(){}});assert.equal(el('panel').inert,true);assert.equal(location.hash,'');
-console.log('PASS: content removals, cautious opening status, full translation coverage, IST event expiry, JavaScript syntax, original terrain hashes, no-WebGL navigation, district selection, event links, focus and background interactivity.');
+console.log('PASS: 17 café addresses and map links, official branch sources, bilingual event details, archived registration safety, IST event times/expiry, JavaScript syntax, terrain hashes and no-WebGL navigation.');

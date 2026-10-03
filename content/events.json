@@ -10,10 +10,37 @@
     "blurb_ml": "ബേക്കേഴ്സ് അസോസിയേഷൻ കേരള സംഘടിപ്പിക്കുന്ന ബേക്കറി, ഭക്ഷ്യ, ആതിഥേയ വ്യവസായ മേള. ഉപകരണങ്ങളും സാധനങ്ങളും കണ്ടെത്താൻ കാപ്പിശാല ഉടമകൾക്ക് ഉപകാരപ്പെടാം. ഇത് വ്യാപാരമേളയാണ്; പ്രത്യേക കാപ്പിമേളയല്ല.",
     "url": "https://bakeexpo.in/",
     "kind": "trade",
-    "checked": "2026-09-19",
+    "checked": "2026-10-03",
     "slug": "bake-expo-2026",
     "district": "Ernakulam",
-    "locality": "Angamaly"
+    "locality": "Angamaly",
+    "registrationUrl": "https://ticketforevents.com/event/bake-expo-2026",
+    "registrationLabel": "Visitor passes",
+    "registrationLabel_ml": "സന്ദർശക പ്രവേശനപത്രങ്ങൾ",
+    "entry": "Pass categories, eligibility and current prices are on the booking page. Check trade-visitor access before booking.",
+    "entry_ml": "പ്രവേശനപത്രങ്ങളുടെ വിഭാഗങ്ങളും അർഹതയും നിലവിലെ നിരക്കുകളും ബുക്കിങ് പേജിലുണ്ട്. വ്യാപാര സന്ദർശകർക്കുള്ള നിബന്ധനകൾ പരിശോധിക്കുക.",
+    "details": [
+      "Meet bakery, food and hospitality suppliers, with equipment, ingredients and packaging on display.",
+      "Useful for café and bakery owners comparing supplies and meeting exhibitors."
+    ],
+    "details_ml": [
+      "ബേക്കറി, ഭക്ഷ്യ, ആതിഥേയ മേഖലകളിലെ വിതരണക്കാരെ പരിചയപ്പെടാം. ഉപകരണങ്ങൾ, ചേരുവകൾ, പാക്കേജിങ് ഉത്പന്നങ്ങൾ എന്നിവ പ്രദർശനത്തിലുണ്ടാകും.",
+      "സാധനങ്ങൾ താരതമ്യം ചെയ്യാനും പ്രദർശകരെ പരിചയപ്പെടാനും കാപ്പിശാല, ബേക്കറി ഉടമകൾക്ക് ഉപകാരപ്പെടും."
+    ],
+    "timeNote": "See the organiser’s daily programme for visiting hours.",
+    "timeNote_ml": "സന്ദർശനസമയം സംഘാടകരുടെ അതത് ദിവസത്തെ പരിപാടിപ്പട്ടികയിൽ പരിശോധിക്കുക.",
+    "image": "/assets/bake-expo-2026.webp",
+    "imageWidth": 1120,
+    "imageHeight": 1597,
+    "imageAlt": "Official BAKE EXPO 2026 poster, 9–11 October at Adlux International Convention Center, Kochi.",
+    "imageAlt_ml": "2026 ഒക്‌ടോബർ 9–11 കൊച്ചി അഡ്ലക്സ് അന്താരാഷ്ട്ര പ്രദർശനകേന്ദ്രത്തിൽ നടക്കുന്ന ബേക്ക് എക്സ്പോയുടെ ഔദ്യോഗിക പോസ്റ്റർ.",
+    "posterSourceUrl": "https://ticketforevents.com/event/bake-expo-2026",
+    "qr": "/assets/bake-expo-registration.svg",
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Adlux+International+Convention+Centre+Karukutty+Angamaly",
+    "organizerName": "Bakers Association Kerala",
+    "organizerName_ml": "ബേക്കേഴ്സ് അസോസിയേഷൻ കേരള",
+    "organizerUrl": "https://bakeexpo.in/",
+    "phone": "+918606712299"
   },
   {
     "date": "2026-11-07",
@@ -21,14 +48,41 @@
     "title_ml": "ഹാരിയോ വി അറുപത് കാപ്പി തയ്യാറാക്കൽ മത്സരം — കോഴിക്കോട്",
     "venue": "Aspin Courtyards, Beach Road, Calicut",
     "venue_ml": "ആസ്പിൻ കോർട്ട്‌യാർഡ്സ്, ബീച്ച് റോഡ്, കോഴിക്കോട്",
-    "blurb": "A regional V60 brewing competition listed in the Kerala Coffee Festival programme. Check the organizer’s competition page for entry conditions, timing and registration availability.",
-    "blurb_ml": "കേരള കാപ്പിമേളയുടെ പരിപാടിപ്പട്ടികയിൽ ഉൾപ്പെടുത്തിയ പ്രാദേശിക കാപ്പി തയ്യാറാക്കൽ മത്സരം. പങ്കെടുക്കാനുള്ള നിബന്ധനകൾ, സമയം, പ്രവേശനലഭ്യത എന്നിവ സംഘാടകരുടെ പേജിൽ പരിശോധിക്കുക.",
-    "url": "https://keralacoffeefestival.com/#section-competitions",
+    "blurb": "The Calicut chapter of Hario’s national V60 brewing competition, hosted during Kerala Coffee Festival. Brewers of all skill levels can check the rules and apply on Hario’s official page.",
+    "blurb_ml": "കേരള കാപ്പിമേളയിൽ നടക്കുന്ന ഹാരിയോയുടെ ദേശീയ വി അറുപത് കാപ്പി തയ്യാറാക്കൽ മത്സരത്തിന്റെ കോഴിക്കോട് ഘട്ടം. വ്യത്യസ്ത പരിചയനിലകളിലുള്ളവർക്ക് നിയമങ്ങൾ പരിശോധിച്ച് ഹാരിയോയുടെ ഔദ്യോഗിക പേജിൽ അപേക്ഷിക്കാം.",
+    "url": "https://harioindia.com/v60-brewers-cup/calicut",
     "kind": "competition",
-    "checked": "2026-09-19",
+    "checked": "2026-10-03",
     "slug": "hario-v60-brewers-cup-calicut-2026",
     "district": "Kozhikode",
-    "locality": "Kozhikode"
+    "locality": "Kozhikode",
+    "registrationUrl": "https://harioindia.com/v60-brewers-cup/calicut#register",
+    "registrationLabel": "Competition entry",
+    "registrationLabel_ml": "മത്സരത്തിൽ പേര് ചേർക്കാം",
+    "startTime": "09:00",
+    "endTime": "17:00",
+    "entry": "Competitor registration is listed at ₹1,499. Check the competition rules and current availability on Hario’s page; this is a competition entry, not a festival audience pass.",
+    "entry_ml": "മത്സരാർത്ഥികളുടെ രജിസ്ട്രേഷൻ നിരക്ക് ₹1,499 എന്നാണ് അറിയിപ്പ്. നിയമങ്ങളും നിലവിലെ ലഭ്യതയും ഹാരിയോയുടെ പേജിൽ പരിശോധിക്കുക. ഇത് മത്സരത്തിലേക്കുള്ള പ്രവേശനമാണ്; മേളയുടെ കാണികൾക്കുള്ള പാസല്ല.",
+    "details": [
+      "A regional chapter in the V60 Brewers Cup India circuit.",
+      "Read the brewing format, equipment requirements and judging rules before entering."
+    ],
+    "details_ml": [
+      "ഇന്ത്യയിലെ വി അറുപത് കാപ്പി തയ്യാറാക്കൽ മത്സരപരമ്പരയുടെ പ്രാദേശിക ഘട്ടം.",
+      "പങ്കെടുക്കുന്നതിനുമുമ്പ് മത്സരരീതി, ഉപകരണങ്ങൾ സംബന്ധിച്ച നിബന്ധനകൾ, വിധിനിർണയ നിയമങ്ങൾ എന്നിവ വായിക്കുക."
+    ],
+    "image": "/assets/hario-calicut-artwork.webp",
+    "imageWidth": 1200,
+    "imageHeight": 800,
+    "imageKind": "artwork",
+    "imageAlt": "Official Hario Calicut chapter artwork featuring a Kerala-style gateway.",
+    "imageAlt_ml": "കേരളീയ കവാടത്തിന്റെ രൂപമുള്ള ഹാരിയോ കോഴിക്കോട് ഘട്ടത്തിന്റെ ഔദ്യോഗിക ചിത്രരൂപം.",
+    "posterSourceUrl": "https://harioindia.com/v60-brewers-cup/calicut",
+    "qr": "/assets/hario-calicut-registration.svg",
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Aspin+Courtyards+Beach+Road+Kozhikode",
+    "organizerName": "Hario India",
+    "organizerName_ml": "ഹാരിയോ ഇന്ത്യ",
+    "organizerUrl": "https://harioindia.com/"
   },
   {
     "date": "2026-11-07",
@@ -37,14 +91,45 @@
     "title_ml": "കേരള കാപ്പിമേള 2026",
     "venue": "Aspin Courtyards, Beach Road, Calicut",
     "venue_ml": "ആസ്പിൻ കോർട്ട്‌യാർഡ്സ്, ബീച്ച് റോഡ്, കോഴിക്കോട്",
-    "blurb": "Two days bringing together coffee growers, roasters, cafés, brewers and coffee lovers. The programme includes workshops, discussions, competitions and a trade exhibition. Entry passes were marked “available soon” when checked on 19 September; follow the organizer for ticket updates.",
-    "blurb_ml": "കാപ്പി കർഷകർ, വറുക്കൽ വിദഗ്ധർ, കാപ്പിശാലകൾ, കാപ്പി തയ്യാറാക്കുന്നവർ, ആസ്വാദകർ എന്നിവരുടെ രണ്ടു ദിവസത്തെ സംഗമം. ശിൽപ്പശാലകൾ, ചർച്ചകൾ, മത്സരങ്ങൾ, വ്യാപാരപ്രദർശനം എന്നിവ ഉൾപ്പെടുന്നു. സെപ്റ്റംബർ പത്തൊൻപതിന് പരിശോധിച്ചപ്പോൾ പ്രവേശനപത്രങ്ങൾ ഉടൻ ലഭ്യമാകുമെന്നാണ് അറിയിപ്പ്. പുതിയ വിവരങ്ങൾക്ക് സംഘാടകരുടെ പേജ് കാണുക.",
+    "blurb": "A two-day gathering of coffee growers, roasters, cafés, brewers and coffee lovers, with workshops, discussions, competitions and a trade exhibition.",
+    "blurb_ml": "കാപ്പി കർഷകർ, വറുക്കൽ വിദഗ്ധർ, കാപ്പിശാലകൾ, കാപ്പി തയ്യാറാക്കുന്നവർ, ആസ്വാദകർ എന്നിവരുടെ രണ്ടു ദിവസത്തെ സംഗമം. ശിൽപ്പശാലകൾ, ചർച്ചകൾ, മത്സരങ്ങൾ, വ്യാപാരപ്രദർശനം എന്നിവ ഉൾപ്പെടുന്നു.",
     "url": "https://keralacoffeefestival.com/",
     "kind": "festival",
-    "checked": "2026-09-19",
+    "checked": "2026-10-03",
     "slug": "kerala-coffee-festival-2026",
     "district": "Kozhikode",
-    "locality": "Kozhikode"
+    "locality": "Kozhikode",
+    "ticketUrl": "https://keralacoffeefestival.com/",
+    "entry": "A direct festival ticket link has not been confirmed. Check the organiser’s website for pass availability and prices. Hario competition registration is separate.",
+    "entry_ml": "മേളയിലേക്കുള്ള നേരിട്ടുള്ള ടിക്കറ്റ് കണ്ണി സ്ഥിരീകരിച്ചിട്ടില്ല. പ്രവേശനപത്രങ്ങളുടെ ലഭ്യതയും നിരക്കും സംഘാടകരുടെ വെബ്സൈറ്റിൽ പരിശോധിക്കുക. ഹാരിയോ മത്സരത്തിന്റെ രജിസ്ട്രേഷൻ വേറെയാണ്.",
+    "timeNote": "Daily programme and visiting hours to be confirmed by the organiser.",
+    "timeNote_ml": "അതത് ദിവസത്തെ പരിപാടിപ്പട്ടികയും സന്ദർശനസമയവും സംഘാടകർ സ്ഥിരീകരിക്കണം.",
+    "details": [
+      "Explore coffees and meet people across Kerala’s coffee community.",
+      "The Hario V60 Brewers Cup Calicut chapter is scheduled at the venue on 7 November."
+    ],
+    "details_ml": [
+      "കാപ്പികൾ പരിചയപ്പെടാനും കേരളത്തിലെ കാപ്പി സമൂഹത്തിലെ ആളുകളെ കാണാനും അവസരം.",
+      "നവംബർ 7ന് ഇതേ വേദിയിൽ ഹാരിയോ വി അറുപത് കാപ്പി തയ്യാറാക്കൽ മത്സരത്തിന്റെ കോഴിക്കോട് ഘട്ടവും നിശ്ചയിച്ചിട്ടുണ്ട്."
+    ],
+    "mapUrl": "https://www.google.com/maps/search/?api=1&query=Aspin+Courtyards+Beach+Road+Vellayil+Kozhikode",
+    "organizerName": "Kerala Coffee Festival",
+    "organizerName_ml": "കേരള കാപ്പിമേള",
+    "organizerUrl": "https://keralacoffeefestival.com/",
+    "sourceNote": "Dates and venue are corroborated by the festival listing and Hario’s Calicut chapter page. Festival ticket details remain unconfirmed.",
+    "sourceNote_ml": "മേളയുടെ അറിയിപ്പും ഹാരിയോയുടെ കോഴിക്കോട് ഘട്ടത്തിന്റെ പേജും തീയതിയും വേദിയും രേഖപ്പെടുത്തുന്നു. മേളയുടെ ടിക്കറ്റ് വിവരങ്ങൾ സ്ഥിരീകരിച്ചിട്ടില്ല.",
+    "sources": [
+      {
+        "url": "https://www.calicutcafeteria.com/events/kerala-coffee-festival-2026",
+        "label": "Festival listing",
+        "label_ml": "മേളയുടെ അറിയിപ്പ്"
+      },
+      {
+        "url": "https://harioindia.com/v60-brewers-cup/calicut",
+        "label": "Hario Calicut chapter",
+        "label_ml": "ഹാരിയോ കോഴിക്കോട് ഘട്ടം"
+      }
+    ]
   },
   {
     "slug": "kerala-origins-kochi-2026",
@@ -70,6 +155,22 @@
     "organizerUrl": "https://bermito.com/",
     "kind": "cupping",
     "featured": true,
-    "checked": "2026-10-03"
+    "checked": "2026-10-03",
+    "organizerName_ml": "ബെർമിറ്റോ കോഫി റോസ്റ്റേഴ്സ്",
+    "imageWidth": 1080,
+    "imageHeight": 1080,
+    "posterSourceUrl": "https://bermito.com/blogs/events/kerala-origins-kochi-coffee-cupping-10-october-2026",
+    "details": [
+      "Taste and compare Kerala-grown coffees at a shared cupping table.",
+      "Meet coffee growers and hear about their farms and harvests.",
+      "Explore the origins, varieties and processing methods behind each cup."
+    ],
+    "details_ml": [
+      "കേരളത്തിൽ വളരുന്ന വിവിധ കാപ്പികൾ ഒരുമിച്ച് രുചിച്ചറിയാം.",
+      "കാപ്പി കർഷകരെ പരിചയപ്പെടാം; അവരുടെ തോട്ടങ്ങളെയും വിളവിനെയും കുറിച്ച് അറിയാം.",
+      "ഓരോ കാപ്പിയുടെയും ഉത്ഭവം, ഇനം, സംസ്കരണരീതി എന്നിവ മനസ്സിലാക്കാം."
+    ],
+    "entry": "Use the organiser’s registration form for availability, participation details and any attendance requirements.",
+    "entry_ml": "ലഭ്യത, പങ്കെടുക്കാനുള്ള വിവരങ്ങൾ, പ്രവേശന നിബന്ധനകൾ എന്നിവയ്ക്ക് സംഘാടകരുടെ രജിസ്ട്രേഷൻ അപേക്ഷ കാണുക."
   }
 ]

@@ -6,7 +6,17 @@
     return `${get('year')}-${get('month')}-${get('day')}`;
   };
   const upcoming=(events,now=new Date())=>events.filter(e=>(e.endDate||e.date)>=todayIST(now)).sort((a,b)=>a.date.localeCompare(b.date));
-  const api={todayIST,upcoming};
+  const eventTime=(event,lang='en')=>{
+    if(!event.startTime)return '';
+    const format=value=>{
+      const [hour,minute]=value.split(':').map(Number);
+      const clock=String(hour%12||12)+(minute?':'+String(minute).padStart(2,'0'):'');
+      if(lang==='ml')return (hour===0?'അർധരാത്രി':hour<12?'രാവിലെ':hour<15?'ഉച്ചയ്ക്ക്':hour<19?'വൈകിട്ട്':'രാത്രി')+' '+clock;
+      return clock+' '+(hour<12?'AM':'PM');
+    };
+    return format(event.startTime)+(event.endTime?(lang==='ml'?' മുതൽ ':'–')+format(event.endTime):'')+(lang==='ml'?(event.endTime?' വരെ':''):' IST');
+  };
+  const api={todayIST,upcoming,eventTime};
   if(typeof module!=='undefined')module.exports=api;
   else root.KERALA_UTIL=api;
 })(typeof window==='undefined'?{}:window);

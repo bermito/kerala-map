@@ -65,6 +65,17 @@
     for(let i=0;i<parts.length;i++) out+= (i%2) ? '<em>'+parts[i]+'</em>' : parts[i];
     return out;
   }
+  function placeDetails(it){
+    let html='';
+    if(it.address)html+='<dl class="listing-details"><div><dt>'+text('Address','വിലാസം')+'</dt><dd>'+esc(tr(it,'address'))+'</dd></div>'+(it.hours?'<div><dt>'+text('Hours','സമയം')+'</dt><dd>'+esc(tr(it,'hours'))+'</dd></div>':'')+'</dl>';
+    if(it.visitNote)html+='<p class="listing-note">'+esc(tr(it,'visitNote'))+'</p>';
+    html+='<div class="listing-actions">';
+    if(it.mapUrl)html+='<a class="listing-map" href="'+esc(it.mapUrl)+'" target="_blank" rel="noopener noreferrer">'+text('Google Maps','ഗൂഗിൾ ഭൂപടം')+icon('external')+'</a>';
+    if(it.w)html+='<a href="'+esc(it.w)+'" target="_blank" rel="noopener noreferrer">'+(it.v?L('source'):it.w.includes('instagram.com')?text('Instagram','ഇൻസ്റ്റാഗ്രാം'):text('Website','വെബ്സൈറ്റ്'))+icon('external')+'</a>';
+    if(it.phone)html+='<a class="listing-phone" href="tel:'+esc(it.phone)+'">'+text('Call','വിളിക്കാം')+' <span dir="ltr">'+esc(it.phone)+'</span></a>';
+    if(it.locationSourceUrl&&it.locationSourceUrl!==it.w)html+='<a class="listing-source" href="'+esc(it.locationSourceUrl)+'" target="_blank" rel="noopener noreferrer">'+text('Listing source','വിവരങ്ങളുടെ ഉറവിടം')+icon('external')+'</a>';
+    return html+'</div>';
+  }
   function renderDistrict(i){
     const name=NAMES[i], rec=DATA[name]||{sub:'',buyroasted:[], cafes:[],roasters:[],farms:[],education:[],baristas:[], equipment:[]};
     const er=(typeof ERANGE!=='undefined'&&ERANGE[name])?ERANGE[name]:null;
@@ -81,7 +92,7 @@
         html+='<div class="item"><div class="n">'+esc(tr(it,'n'))+
           (it.v?' <span class="tag mono">'+L('probable')+'</span>':'')+
           '</div><div class="m mono">'+esc(tr(it,'m')||'')+'</div>'+
-          (it.w?'<div class="m mono"><a class="lnk" href="'+esc(it.w)+'" target="_blank" rel="noopener noreferrer">'+esc((it.v?L('source'):L('visit')).replace(/[→↗]\s*$/,'').trim())+icon('external')+'</a></div>':'')+
+          placeDetails(it)+
           '</div>'; });
       }else{ html+='<div class="empty mono">'+L('emptyCat')+'</div>'; }
       html+='</div></div></div>';
@@ -101,22 +112,18 @@
   }
   function upcoming(){return KERALA_UTIL.upcoming(EVENTS).sort((a,b)=>Number(!!b.featured)-Number(!!a.featured)||a.date.localeCompare(b.date));}
   function eventTime(e){
-    if(!e.startTime)return '';
-    const format=value=>{
-      const d=new Date(e.date+'T'+value+(value.length===5?':00':'')+'+05:30');
-      return Number.isNaN(d.getTime())?value:d.toLocaleTimeString(LANG==='ml'?'ml-IN':'en-IN',{hour:'numeric',minute:'2-digit',timeZone:'Asia/Kolkata'});
-    };
-    return format(e.startTime)+(e.endTime?' – '+format(e.endTime):'')+' IST';
+    return KERALA_UTIL.eventTime(e,LANG);
   }
   function eventCard(e){
     const details=e.slug?root+'events/'+encodeURIComponent(e.slug)+'/':e.url;
     let html='<article class="ev'+(e.featured?' featured':'')+'">';
-    if(e.image)html+='<a class="ev-poster" href="'+esc(details)+'"><img src="'+esc(e.image)+'" alt="'+esc(tr(e,'imageAlt')||tr(e,'title'))+'" loading="lazy" width="800" height="1000"></a>';
+    if(e.image)html+='<a class="ev-poster" href="'+esc(details)+'"><img src="'+esc(e.image)+'" alt="'+esc(tr(e,'imageAlt')||tr(e,'title'))+'" loading="lazy" width="'+(e.imageWidth||1080)+'" height="'+(e.imageHeight||1080)+'"></a>';
     html+='<div class="d mono">'+fmtDate(e.date).full+(e.endDate&&e.endDate!==e.date?' – '+fmtDate(e.endDate).full:'')+'</div><h3 class="t">'+esc(tr(e,'title'))+'</h3>'+
       '<div class="v mono">'+esc(tr(e,'venue'))+'</div>'+(eventTime(e)?'<div class="v mono">'+esc(eventTime(e))+'</div>':'')+
       '<div class="b">'+esc(tr(e,'blurb'))+'</div><div class="event-actions">';
     const registrationEnd=Date.parse((e.endDate||e.date)+'T'+(e.endTime||'23:59')+':00+05:30');
-    if(e.registrationUrl&&Date.now()<=registrationEnd)html+='<a class="event-register" href="'+esc(e.registrationUrl)+'" target="_blank" rel="noopener noreferrer">'+text('Register','രജിസ്റ്റർ ചെയ്യുക')+icon('external')+'</a>';
+    if(e.registrationUrl&&Date.now()<=registrationEnd)html+='<a class="event-register" href="'+esc(e.registrationUrl)+'" target="_blank" rel="noopener noreferrer">'+esc(tr(e,'registrationLabel')||text('Register','രജിസ്റ്റർ ചെയ്യുക'))+icon('external')+'</a>';
+    if(e.ticketUrl&&Date.now()<=registrationEnd)html+='<a class="lnk" href="'+esc(e.ticketUrl)+'" target="_blank" rel="noopener noreferrer">'+text('Ticket updates','ടിക്കറ്റ് അറിയിപ്പുകൾ')+icon('external')+'</a>';
     if(details)html+='<a class="lnk event-details" href="'+esc(details)+'"'+(e.slug?'':' target="_blank" rel="noopener noreferrer"')+'>'+text(e.slug?'Event details':'Event source',e.slug?'പരിപാടിയുടെ വിവരങ്ങൾ':'പരിപാടിയുടെ ഉറവിടം')+icon(e.slug?'arrow':'external')+'</a>';
     return html+'</div></article>';
   }

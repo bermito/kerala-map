@@ -44,7 +44,7 @@ for file,p in parsed.items():
   assert dest.exists(),(file,href,'Missing target')
   if u.fragment and dest in parsed and not u.fragment.startswith('map-') and u.fragment not in ('submit-event','add-place'):
    assert u.fragment in parsed[dest].ids,(file,href,'Missing anchor')
-events=json.loads((root/'content/events.json').read_text())
+events=json.loads((root/'content/events.json').read_text())+json.loads((root/'content/events-archive.json').read_text())
 assert len(files)==16+2*len(events),len(files)
 for prefix in ('','ml/'):
  index=parsed[root/(prefix+'events/index.html')]
@@ -59,8 +59,9 @@ for prefix in ('','ml/'):
   assert schema['startDate'].startswith(event['date']),file
   if event.get('registrationUrl'):
    assert event['registrationUrl'] in detail.links,(file,'Missing registration link')
-   assert event['qr'] in detail.links,(file,'Missing registration QR')
-   assert schema['startDate']=='2026-10-10T14:00:00+05:30',file
-   assert schema['endDate']=='2026-10-10T18:00:00+05:30',file
-   assert schema['location']['address']['addressLocality']=='Fort Kochi',file
+   if event.get('qr'):assert event['qr'] in detail.links,(file,'Missing registration QR')
+  if event.get('startTime'):assert schema['startDate']==event['date']+'T'+event['startTime']+':00+05:30',file
+  if event.get('endTime'):assert schema['endDate']==event.get('endDate',event['date'])+'T'+event['endTime']+':00+05:30',file
+  if event.get('mapUrl'):assert event['mapUrl'] in detail.links,(file,'Missing venue directions')
+  if event.get('image'):assert detail.links.count(event['image'])>=2,(file,'Missing poster or full-size link')
 print('PASS:',len(files),'HTML pages, unique IDs, one H1 per page, valid JSON-LD, canonicals, language alternatives, internal links and Malayalam visible text.')

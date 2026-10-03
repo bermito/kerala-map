@@ -238,6 +238,49 @@ body.panel-open .map-event, body.panel-open .map-controls { visibility: hidden; 
 .listing-actions a { display: inline-flex; align-items: center; min-height: 36px; color: var(--green-text); font-size: 14px; }
 .status { color: #694c1d; background: #f7f1e5; }
 
+/* Practical details share the same hierarchy in the directory and map drawer. */
+.listing-details { display: grid; gap: 10px; margin: 18px 0 12px; }
+.listing-details > div { display: grid; grid-template-columns: 62px minmax(0, 1fr); gap: 12px; }
+.listing-details dt { color: var(--muted); font-size: 13px; line-height: 1.75; }
+.listing-details dd { margin: 0; font-size: 15px; line-height: 1.7; overflow-wrap: anywhere; }
+.directory-categories li .listing-note, .panel .listing-note { margin: 14px 0; padding-left: 12px; border-left: 2px solid #bad9c5; color: var(--muted); font-size: 14px; line-height: 1.75; }
+.listing-actions .listing-phone { gap: 6px; }
+.listing-actions a { min-height: 44px; text-decoration-thickness: 1px; }
+.listing-actions .listing-source { color: var(--muted); font-size: 13px; }
+.panel .listing-details { margin-top: 15px; }
+.panel .listing-actions { gap: 4px 18px; }
+.panel .listing-actions a { line-height: 1.65; }
+html[lang=ml] .listing-details > div { grid-template-columns: 68px minmax(0, 1fr); }
+
+.event-card.has-poster { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 32px; align-items: start; }
+.event-card-copy { min-width: 0; }
+.event-card-poster { display: block; background: #f6f9f6; }
+.event-card-poster img { display: block; width: 100%; height: auto; max-height: 290px; object-fit: contain; }
+.event-card .event-card-top .event-date { margin-top: 0; }
+.event-layout { grid-template-areas: 'intro aside' 'body aside'; grid-template-rows: auto 1fr; gap: 16px 64px; }
+.event-intro { grid-area: intro; min-width: 0; }
+.event-intro h1 { font-size: clamp(36px, 4.3vw, 54px); line-height: 1.12; }
+.event-intro .lede { font-size: 18px; line-height: 1.75; margin-bottom: 12px; }
+.event-intro .event-status { margin: 0 0 18px; }
+.event-body { grid-area: body; min-width: 0; }
+.event-body .event-meta { margin: 10px 0 34px; }
+.event-meta .event-venue { grid-column: 1 / -1; }
+.event-aside { grid-area: aside; }
+.event-poster figcaption { margin-top: 14px; font-size: 13px; }
+.poster-links { display: flex; flex-wrap: wrap; gap: 4px 20px; margin-top: 4px; }
+.poster-links a { display: inline-flex; align-items: center; min-height: 36px; color: var(--green-text); }
+.poster-unavailable { margin-bottom: 26px; padding: 26px; border: 1px solid var(--hair); background: #f8fbf8; }
+.poster-unavailable p { margin: 0; color: var(--muted); font-size: 16px; line-height: 1.75; }
+.poster-unavailable a { display: inline-flex; align-items: center; margin-top: 14px; min-height: 40px; font-size: 14px; line-height: 1.7; color: var(--green-text); }
+.past-event-notice { padding: 20px 0; border-top: 1px solid var(--hair); }
+.event-layout .past-event-notice h2 { margin-top: 0; }
+.event-layout .past-event-notice p { font-size: 16px; }
+.event-sources { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--hair); }
+.event-sources > p { color: var(--muted); font-size: 14px; line-height: 1.8; margin: 0 0 8px; }
+.event-sources .listing-actions { gap: 4px 18px; }
+.event-ended { padding: 12px 16px; border: 1px solid var(--hair); font-size: 15px; line-height: 1.75; }
+html[lang=ml] .event-intro h1 { font-size: clamp(30px, 3.7vw, 43px); line-height: 1.6; }
+
 /* Useful district navigation when WebGL is not available. */
 body.map-unavailable .bl, body.map-unavailable .hintToast, body.map-unavailable .hovername { display: none; }
 body.map-unavailable .map-controls { display: none; }
@@ -341,6 +384,11 @@ html[lang=ml] .event-card h2, html[lang=ml] .event-card h3 { font-size: 25px; li
   .event-card, .event-entry { padding: 26px 0; }
   .event-card h2, .event-card h3, .event-entry h2 { font-size: 25px; }
   .event-layout { grid-template-columns: 1fr; gap: 38px; margin-top: 32px; }
+  .event-layout { grid-template-areas: 'intro' 'aside' 'body'; gap: 28px; }
+  .event-card.has-poster { grid-template-columns: 1fr; gap: 20px; }
+  .event-card-poster { max-width: 220px; }
+  .event-intro h1 { font-size: clamp(34px, 8vw, 45px); }
+  .event-intro .lede { margin-bottom: 0; }
   .event-aside { max-width: 480px; width: 100%; }
   .event-layout .article-body h2 { font-size: 25px; }
   .registration-box { padding: 22px; }

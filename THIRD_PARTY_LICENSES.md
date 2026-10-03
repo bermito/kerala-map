@@ -38,7 +38,7 @@ THE SOFTWARE.
 
 ## Fonts
 
-Loaded from Google Fonts. Submission forms separately use the existing Supabase configuration. If Google Fonts is unreachable, the page falls back to system fonts and nothing breaks.
+Downloaded from Google Fonts and served locally in `assets/fonts/`. Complete SIL Open Font License files for Inter Tight, IBM Plex Mono and Noto Sans Malayalam are included there. Font loading no longer requires a Google Fonts network request. Submission forms separately use the existing Supabase configuration.
 
 ### Inter Tight
 
@@ -75,4 +75,4 @@ Private-estate and regional-network entries retain their existing broad location
 
 ## Noto Sans Malayalam
 
-Malayalam typography uses Noto Sans Malayalam through Google Fonts, under the SIL Open Font License 1.1. Upstream: https://github.com/notofonts/malayalam. A Malayalam-capable system font is used if the font cannot be loaded.
+Malayalam typography uses locally served Noto Sans Malayalam under the SIL Open Font License 1.1. The full license is in `assets/fonts/notosansmalayalam-OFL.txt`. Upstream: https://github.com/notofonts/malayalam. A Malayalam-capable system font is used if the font cannot be loaded.
