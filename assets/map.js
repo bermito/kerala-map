@@ -2,12 +2,7 @@
 (function(){
   "use strict";
 
-  /* ==========================================================================
-     EDIT HERE — Kannur, Wayanad, Kozhikode, Palakkad, Ernakulam and
-     Thiruvananthapuram hold real, sourced listings. The other eight districts
-     are genuinely empty under this curated scope, not missing data — add
-     entries here as they're confirmed.
-     ========================================================================== */
+  /* Districts without entries are coverage gaps, not evidence that no cafés exist. */
   const DATA = KERALA.DATA;
 
   /* Events — the next one whose date hasn't passed is shown automatically.
@@ -35,7 +30,7 @@
   let mapReady=false, selected=-1;
   let updateMapSelection=null;
   const tr=(item,key)=>LANG==='ml' ? (item[key+'_ml']||item[key]||'') : (item[key]||'');
-  const districtName=name=>LANG==='ml'?DATA[name].name_ml:name;
+  const districtName=name=>LANG==='ml'?DATA[name].name_ml:(KERALA.DISTRICT_LABELS[name]||name);
   const root=LANG==='ml'?'/ml/':'/';
   function L(k){ return STR[LANG][k]; }
 
@@ -70,17 +65,19 @@
     if(it.address)html+='<dl class="listing-details"><div><dt>'+text('Address','വിലാസം')+'</dt><dd>'+esc(tr(it,'address'))+'</dd></div>'+(it.hours?'<div><dt>'+text('Hours','സമയം')+'</dt><dd>'+esc(tr(it,'hours'))+'</dd></div>':'')+'</dl>';
     if(it.visitNote)html+='<p class="listing-note">'+esc(tr(it,'visitNote'))+'</p>';
     html+='<div class="listing-actions">';
-    if(it.mapUrl)html+='<a class="listing-map" href="'+esc(it.mapUrl)+'" target="_blank" rel="noopener noreferrer">'+text('Google Maps','ഗൂഗിൾ ഭൂപടം')+icon('external')+'</a>';
-    if(it.w)html+='<a href="'+esc(it.w)+'" target="_blank" rel="noopener noreferrer">'+(it.v?L('source'):it.w.includes('instagram.com')?text('Instagram','ഇൻസ്റ്റാഗ്രാം'):text('Website','വെബ്സൈറ്റ്'))+icon('external')+'</a>';
+    if(it.mapUrl)html+='<a class="listing-map" href="'+esc(it.mapUrl)+'" target="_blank" rel="noopener noreferrer">'+text(it.mapUrl.includes('/maps/search')?'Search Google Maps':'Google Maps','ഗൂഗിൾ ഭൂപടം')+icon('external')+'</a>';
+    if(it.w)html+='<a href="'+esc(it.w)+'" target="_blank" rel="noopener noreferrer">'+(it.v?L('source'):it.w.includes('instagram.com')?text('Instagram','ഇൻസ്റ്റാഗ്രാം'):it.w.includes('google')?text('Google Maps','ഗൂഗിൾ ഭൂപടം'):text('Website','വെബ്സൈറ്റ്'))+icon('external')+'</a>';
     if(it.phone)html+='<a class="listing-phone" href="tel:'+esc(it.phone)+'">'+text('Call','വിളിക്കാം')+' <span dir="ltr">'+esc(it.phone)+'</span></a>';
     if(it.locationSourceUrl&&it.locationSourceUrl!==it.w)html+='<a class="listing-source" href="'+esc(it.locationSourceUrl)+'" target="_blank" rel="noopener noreferrer">'+text('Listing source','വിവരങ്ങളുടെ ഉറവിടം')+icon('external')+'</a>';
-    return html+'</div>';
+    if(it.id)html+='<a class="profile-link" href="'+root+'places/'+encodeURIComponent(it.id)+'/">'+text('Profile & connections','വിവരങ്ങളും ബന്ധങ്ങളും')+icon('arrow')+'</a>';
+    return html+'</div>'+(it.checked?'<p class="listing-checked">'+text('Details checked: ','വിവരങ്ങൾ പരിശോധിച്ചത്: ')+esc(it.checked)+'</p>':'');
   }
   function renderDistrict(i){
     const name=NAMES[i], rec=DATA[name]||{sub:'',buyroasted:[], cafes:[],roasters:[],farms:[],education:[],baristas:[], equipment:[]};
     const er=(typeof ERANGE!=='undefined'&&ERANGE[name])?ERANGE[name]:null;
     let html='<div class="p-kicker mono">'+L('districtKicker')+'</div><h2 class="p-title">'+esc(districtName(name))+'</h2>'+
       '<div class="p-sub mono">'+esc(tr(rec,'sub')||'')+(er?'<br>'+L('elevation')+' '+nf(er[0])+'–'+nf(er[1])+' '+L('unit'):'')+'</div>';
+    html+='<p class="district-count">'+entryCount(name)+' '+text('unique places','വ്യത്യസ്ത ഇടങ്ങൾ')+' <a href="'+root+'directory/?district='+encodeURIComponent(name)+'">'+text('Browse directory','ഡയറക്ടറി കാണാം')+icon('arrow')+'</a></p>';
     const firstNonEmpty=getCats().findIndex(cat=>(rec[cat.k]||[]).length);
     getCats().forEach(function(cat,idx){
       const list=rec[cat.k]||[];
@@ -89,7 +86,7 @@
         '<span class="t">'+catHTML(cat.t)+'</span><span class="c mono">'+String(list.length).padStart(2,'0')+'</span>'+chev()+
         '</button><div class="row-body"'+(idx===firstNonEmpty&&list.length?'':' hidden')+'><div>';
       if(list.length){ list.forEach(function(it){
-        html+='<div class="item"><div class="n">'+esc(tr(it,'n'))+
+        html+='<div class="item"><div class="n"><a href="'+root+'places/'+encodeURIComponent(it.id)+'/">'+esc(tr(it,'n'))+'</a>'+
           (it.v?' <span class="tag mono">'+L('probable')+'</span>':'')+
           '</div><div class="m mono">'+esc(tr(it,'m')||'')+'</div>'+
           placeDetails(it)+
@@ -499,7 +496,7 @@
   }
   function entryCount(name){
     const r=DATA[name];if(!r)return 0;
-    return ['buyroasted','cafes','roasters','farms','education','baristas','equipment'].reduce((n,k)=>n+(r[k]||[]).length,0);
+    return KERALA_UTIL.uniquePlaces(r).length;
   }
   function buildDistrictControls(){
     if(chipsEl){
