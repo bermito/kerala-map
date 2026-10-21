@@ -37,7 +37,7 @@
   /* ---------- panel ---------- */
   const panel=document.getElementById('panel'), panelBody=document.getElementById('panelBody');
   function getCats(){
-    return [{k:'cafes',t:L('catCafes')},{k:'roasters',t:L('catRoasters')},
+    return [{k:'roasters',t:L('catRoasters')},{k:'cafes',t:L('catCafes')},
             {k:'buyroasted',t:L('catBuyRoasted')},
             {k:'farms',t:L('catFarms')},{k:'education',t:L('catEducation')},
             {k:'baristas',t:L('catBaristas')},

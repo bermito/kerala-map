@@ -2,7 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://www.specialtycoffeekerala.com/</loc></url>
   <url><loc>https://www.specialtycoffeekerala.com/about/our-standards/</loc></url>
-  <url><loc>https://www.specialtycoffeekerala.com/blog/</loc><lastmod>2026-10-20</lastmod></url>
+  <url><loc>https://www.specialtycoffeekerala.com/blog/</loc></url>
+  <url><loc>https://www.specialtycoffeekerala.com/blog/kerala-coffee-festivals-events/</loc></url>
+  <url><loc>https://www.specialtycoffeekerala.com/blog/kerala-coffee-guide/</loc></url>
+  <url><loc>https://www.specialtycoffeekerala.com/blog/kerala-coffee-producers/</loc></url>
+  <url><loc>https://www.specialtycoffeekerala.com/blog/kozhikode-specialty-coffee-culture/</loc></url>
   <url><loc>https://www.specialtycoffeekerala.com/blog/specialty-coffee-kochi/</loc></url>
   <url><loc>https://www.specialtycoffeekerala.com/blog/wayanad-coffee-guide/</loc></url>
   <url><loc>https://www.specialtycoffeekerala.com/blog/what-is-specialty-coffee/</loc></url>
@@ -23,7 +27,11 @@
   <url><loc>https://www.specialtycoffeekerala.com/faq/</loc></url>
   <url><loc>https://www.specialtycoffeekerala.com/ml/</loc></url>
   <url><loc>https://www.specialtycoffeekerala.com/ml/about/our-standards/</loc></url>
-  <url><loc>https://www.specialtycoffeekerala.com/ml/blog/</loc><lastmod>2026-10-20</lastmod></url>
+  <url><loc>https://www.specialtycoffeekerala.com/ml/blog/</loc></url>
+  <url><loc>https://www.specialtycoffeekerala.com/ml/blog/kerala-coffee-festivals-events/</loc></url>
+  <url><loc>https://www.specialtycoffeekerala.com/ml/blog/kerala-coffee-guide/</loc></url>
+  <url><loc>https://www.specialtycoffeekerala.com/ml/blog/kerala-coffee-producers/</loc></url>
+  <url><loc>https://www.specialtycoffeekerala.com/ml/blog/kozhikode-specialty-coffee-culture/</loc></url>
   <url><loc>https://www.specialtycoffeekerala.com/ml/blog/specialty-coffee-kochi/</loc></url>
   <url><loc>https://www.specialtycoffeekerala.com/ml/blog/wayanad-coffee-guide/</loc></url>
   <url><loc>https://www.specialtycoffeekerala.com/ml/blog/what-is-specialty-coffee/</loc></url>
@@ -108,10 +116,4 @@
   <url><loc>https://www.specialtycoffeekerala.com/places/urban-hippie/</loc></url>
   <url><loc>https://www.specialtycoffeekerala.com/places/windermere-estate/</loc></url>
   <url><loc>https://www.specialtycoffeekerala.com/places/wishlist-coffee/</loc></url>
-  <url><loc>https://www.specialtycoffeekerala.com/blog/kerala-coffee-guide/</loc><lastmod>2026-10-20</lastmod></url>
-  <url><loc>https://www.specialtycoffeekerala.com/ml/blog/kerala-coffee-guide/</loc><lastmod>2026-10-20</lastmod></url>
-  <url><loc>https://www.specialtycoffeekerala.com/blog/kerala-coffee-festivals-events/</loc><lastmod>2026-10-20</lastmod></url>
-  <url><loc>https://www.specialtycoffeekerala.com/ml/blog/kerala-coffee-festivals-events/</loc><lastmod>2026-10-20</lastmod></url>
-  <url><loc>https://www.specialtycoffeekerala.com/blog/kerala-coffee-producers/</loc><lastmod>2026-10-20</lastmod></url>
-  <url><loc>https://www.specialtycoffeekerala.com/ml/blog/kerala-coffee-producers/</loc><lastmod>2026-10-20</lastmod></url>
 </urlset>

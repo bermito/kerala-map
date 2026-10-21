@@ -38,6 +38,10 @@
       const chip=document.querySelector('.district-index a[href="#'+section.id+'"]');
       if(chip)chip.hidden=section.hidden;
     });
+    const roasterGroup=document.getElementById('coffee-roasters');
+    if(roasterGroup)roasterGroup.hidden=!rows.some(row=>!row.hidden&&row.dataset.category.split(' ').includes('roasters'));
+    const roasterLink=document.querySelector('.district-index a[href="#coffee-roasters"]');
+    if(roasterLink)roasterLink.hidden=!!roasterGroup?.hidden;
     const message=document.getElementById('directoryResult');
     const count=visible.size;
     if(message)message.textContent=ml?count+' വ്യത്യസ്ത ഇടങ്ങൾ':count+' unique '+(count===1?'place':'places')+(filtering?' found':' in the directory');
