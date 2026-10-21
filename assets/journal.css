@@ -1,0 +1,50 @@
+/* Journal-only additions. Existing typography, colours and assets are reused. */
+.journal-article,.journal-index{overflow-wrap:anywhere}
+.journal-breadcrumbs{display:flex;flex-wrap:wrap;gap:8px 14px;margin:0 0 32px;font-size:12px;line-height:1.8;color:#526556}
+.journal-breadcrumbs a{text-decoration:none}
+.journal-article .eyebrow,.journal-index .eyebrow,.journal-article .journal-toc h2{color:#00752c}
+.journal-article h1{text-wrap:balance}
+.journal-meta{margin:24px 0 30px;font-size:13px;line-height:1.9;color:#526556}
+.journal-meta a{font-weight:550}
+.journal-toc{border-top:2px solid var(--green);border-bottom:1px solid var(--hair);padding:22px 0 24px;margin:32px 0 42px}
+.journal-toc h2{font-family:'IBM Plex Mono',monospace;font-size:11px;line-height:1.6;text-transform:uppercase;letter-spacing:.1em;color:var(--green);margin:0 0 14px}
+.journal-toc ol{margin:0;padding-left:24px;display:grid;gap:10px}
+.journal-toc li{padding-left:4px;font-size:15px;line-height:1.6}
+.journal-toc li::marker{color:#526556;font-size:12px}
+.journal-toc a{text-decoration:none}
+.journal-toc a:hover{text-decoration:underline}
+.journal-article section[id],.journal-article li[id]{scroll-margin-top:28px}
+.journal-article .article-body h3{font-size:21px;line-height:1.45;font-weight:600;letter-spacing:-.015em;margin:30px 0 12px}
+.journal-article .article-body strong{font-weight:600}
+.journal-article .article-body ol{padding-left:24px}
+.journal-article .source-ref{font-family:'IBM Plex Mono',monospace;font-size:12px;white-space:nowrap}
+.journal-table{width:100%;overflow-x:auto;margin:28px 0 30px;border:1px solid var(--hair);border-radius:3px}
+.journal-table table{border-collapse:collapse;width:100%;min-width:520px;font-size:15px;line-height:1.65;text-align:left}
+.journal-table caption{text-align:left;font-size:12px;color:#526556;padding:14px 18px;border-bottom:1px solid var(--hair);background:#f7faf7}
+.journal-table th,.journal-table td{padding:16px 18px;vertical-align:top;min-width:145px}
+.journal-table thead th{font-size:12px;font-weight:600;background:#f7faf7;border-bottom:1px solid var(--hair)}
+.journal-table tbody th{font-weight:550;width:30%}
+.journal-table tbody tr+tr{border-top:1px solid var(--hair)}
+.journal-callout{padding:20px 22px;border-left:3px solid var(--green);background:#f4f9f5}
+.journal-article .article-body .journal-callout{font-size:16px;line-height:1.8;margin:24px 0}
+.journal-article .sources ol{padding-left:22px}
+.journal-article .sources li{padding-left:5px;overflow-wrap:anywhere}
+.journal-article .editorial-note{margin-top:20px;color:#526556;font-size:13px;line-height:1.9}
+.journal-article .next-reads a{display:inline-flex;align-items:center;gap:8px}
+.journal-index .story-date{font-family:'IBM Plex Mono',monospace;font-size:11px;margin:0 0 10px;color:#526556}
+.journal-index .journal-grid{row-gap:48px}
+html[lang=ml] .journal-article h1{font-size:clamp(28px,3.4vw,44px);line-height:1.55}
+html[lang=ml] .journal-toc h2,html[lang=ml] .journal-index .story-date{font-family:'Noto Sans Malayalam','Kartika',sans-serif}
+html[lang=ml] .journal-toc li{font-size:14px;line-height:1.9}
+html[lang=ml] .journal-table table{font-size:14px;line-height:1.95}
+html[lang=ml] .journal-article .article-body h3{font-size:20px;line-height:1.8}
+@media(max-width:760px){
+.journal-breadcrumbs{margin-bottom:24px}
+.journal-toc{margin:26px 0 34px;padding:20px 0}
+.journal-toc li{font-size:14px}
+.journal-article .article-body h3{font-size:20px}
+.journal-table th,.journal-table td{padding:14px}
+.journal-callout{padding:16px 18px}
+.journal-meta{font-size:12px}
+.journal-index .journal-grid{row-gap:36px}
+}
