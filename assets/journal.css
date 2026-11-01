@@ -38,6 +38,27 @@ html[lang=ml] .journal-toc h2,html[lang=ml] .journal-index .story-date{font-fami
 html[lang=ml] .journal-toc li{font-size:14px;line-height:1.9}
 html[lang=ml] .journal-table table{font-size:14px;line-height:1.95}
 html[lang=ml] .journal-article .article-body h3{font-size:20px;line-height:1.8}
+.journal-photo{margin:32px 0 38px}
+.journal-photo img{display:block;width:100%;height:auto;border-radius:4px;background:#eef3ee}
+.journal-photo figcaption{display:grid;gap:6px;margin-top:12px;font-size:13px;line-height:1.7;color:#526556}
+.journal-photo .photo-credit{font-size:11px}
+.journal-photo .photo-credit a{text-underline-offset:3px}
+.journal-reviewer{padding:24px 26px;margin:44px 0 32px;border:1px solid var(--hair);border-left:3px solid var(--green);background:#f7faf7;border-radius:3px}
+.journal-reviewer .eyebrow{margin:0 0 10px}
+.journal-reviewer h2{font-size:24px;margin:0 0 8px;line-height:1.4}
+.journal-reviewer h2 a{text-decoration:none}
+.journal-reviewer p:last-child{font-size:15px;line-height:1.75;margin:0;color:#526556}
+.journal-review-line{font-size:13px;line-height:1.9;color:#526556;margin:22px 0 0}
+.journal-review-line a{font-weight:600;text-underline-offset:3px}
+.journal-index .story-thumbnail{display:block;width:100%;margin:0 0 20px;overflow:hidden;border-radius:4px;background:#eef3ee}
+.journal-index .story-thumbnail img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover}
+.journal-index .story-number{font-size:13px;margin:0 0 14px;color:#526556;letter-spacing:.08em}
+.reviewer-profile{max-width:900px;min-height:60vh}
+.reviewer-profile .reviewer-focus{font-family:'IBM Plex Mono',monospace;color:#00752c;font-size:12px;line-height:1.8;letter-spacing:.025em}
+.reviewer-profile .reviewer-profile-links{display:flex;gap:20px 28px;flex-wrap:wrap;margin-top:32px}
+.reviewer-profile-links a{display:inline-flex;align-items:center;gap:8px;font-size:14px}
+html[lang=ml] .journal-photo figcaption,html[lang=ml] .journal-review-line{line-height:1.9}
+html[lang=ml] .reviewer-profile .reviewer-focus{font-family:'Noto Sans Malayalam',sans-serif;line-height:1.9}
 @media(max-width:760px){
 .journal-breadcrumbs{margin-bottom:24px}
 .journal-toc{margin:26px 0 34px;padding:20px 0}
@@ -47,4 +68,8 @@ html[lang=ml] .journal-article .article-body h3{font-size:20px;line-height:1.8}
 .journal-callout{padding:16px 18px}
 .journal-meta{font-size:12px}
 .journal-index .journal-grid{row-gap:36px}
+.journal-photo{margin:26px 0 30px}
+.journal-photo figcaption{font-size:12px}
+.journal-reviewer{padding:20px;margin:32px 0 26px}
+.journal-review-line{font-size:12px}
 }

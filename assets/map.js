@@ -67,7 +67,8 @@
     html+='<div class="listing-actions">';
     if(it.mapUrl)html+='<a class="listing-map" href="'+esc(it.mapUrl)+'" target="_blank" rel="noopener noreferrer">'+text(it.mapUrl.includes('/maps/search')?'Search Google Maps':'Google Maps','ഗൂഗിൾ ഭൂപടം')+icon('external')+'</a>';
     if(it.w)html+='<a href="'+esc(it.w)+'" target="_blank" rel="noopener noreferrer">'+(it.v?L('source'):it.w.includes('instagram.com')?text('Instagram','ഇൻസ്റ്റാഗ്രാം'):it.w.includes('google')?text('Google Maps','ഗൂഗിൾ ഭൂപടം'):text('Website','വെബ്സൈറ്റ്'))+icon('external')+'</a>';
-    if(it.phone)html+='<a class="listing-phone" href="tel:'+esc(it.phone)+'">'+text('Call','വിളിക്കാം')+' <span dir="ltr">'+esc(it.phone)+'</span></a>';
+    if(it.instagram&&it.instagram!==it.w)html+='<a href="'+esc(it.instagram)+'" target="_blank" rel="noopener noreferrer">'+text('Instagram','ഇൻസ്റ്റാഗ്രാം')+icon('external')+'</a>';
+    if(it.phone)html+='<a class="listing-phone" href="tel:'+esc(it.phone)+'">'+text('Call','വിളിക്കാം')+' <span dir="ltr">'+esc(it.phoneDisplay||it.phone)+'</span></a>';
     if(it.locationSourceUrl&&it.locationSourceUrl!==it.w)html+='<a class="listing-source" href="'+esc(it.locationSourceUrl)+'" target="_blank" rel="noopener noreferrer">'+text('Listing source','വിവരങ്ങളുടെ ഉറവിടം')+icon('external')+'</a>';
     if(it.id)html+='<a class="profile-link" href="'+root+'places/'+encodeURIComponent(it.id)+'/">'+text('Profile & connections','വിവരങ്ങളും ബന്ധങ്ങളും')+icon('arrow')+'</a>';
     return html+'</div>'+(it.checked?'<p class="listing-checked">'+text('Details checked: ','വിവരങ്ങൾ പരിശോധിച്ചത്: ')+esc(it.checked)+'</p>':'');
@@ -121,6 +122,7 @@
     const registrationEnd=Date.parse((e.endDate||e.date)+'T'+(e.endTime||'23:59')+':00+05:30');
     if(e.registrationUrl&&Date.now()<=registrationEnd)html+='<a class="event-register" href="'+esc(e.registrationUrl)+'" target="_blank" rel="noopener noreferrer">'+esc(tr(e,'registrationLabel')||text('Register','രജിസ്റ്റർ ചെയ്യുക'))+icon('external')+'</a>';
     if(e.ticketUrl&&Date.now()<=registrationEnd)html+='<a class="lnk" href="'+esc(e.ticketUrl)+'" target="_blank" rel="noopener noreferrer">'+text('Ticket updates','ടിക്കറ്റ് അറിയിപ്പുകൾ')+icon('external')+'</a>';
+    if(e.enquiryPhone&&Date.now()<=registrationEnd)html+='<a class="lnk" href="tel:'+esc(e.enquiryPhone)+'">'+esc(tr(e,'enquiryLabel')||text('Call for details','വിവരങ്ങൾക്ക് വിളിക്കാം'))+icon('arrow')+'</a>';
     if(details)html+='<a class="lnk event-details" href="'+esc(details)+'"'+(e.slug?'':' target="_blank" rel="noopener noreferrer"')+'>'+text(e.slug?'Event details':'Event source',e.slug?'പരിപാടിയുടെ വിവരങ്ങൾ':'പരിപാടിയുടെ ഉറവിടം')+icon(e.slug?'arrow':'external')+'</a>';
     return html+'</div></article>';
   }

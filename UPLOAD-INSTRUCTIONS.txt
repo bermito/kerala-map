@@ -1,0 +1,47 @@
+SPECIALTY COFFEE KERALA — LATEST WEBSITE UPDATE
+Prepared 1 November 2026
+65 files total, including this guide.
+
+NEW IN THIS UPDATE
+- Omakasé with Naser, 7 November 2026: organiser-supplied poster,
+  Rs.1,999 per person, two sessions of six seats, and visible credits to
+  Sukoru, Bermito Coffee Roasters and Crafted Coffee Experience.
+- English and Malayalam event pages, calendar cards and map listing.
+- Links between the event and the Sukoru and Bermito business profiles.
+- Bermito's description leads with the attributed first-roastery wording.
+- Bermito's official business phone: +91 98475 99828, with tap-to-call links.
+
+SESSION AND BOOKING DETAILS
+The poster does not include exact session times, the event venue or a
+registration link. These are clearly marked for confirmation with Bermito.
+No booking URL, session time or exact venue has been invented.
+The event automatically moves out of upcoming after 7 November in Kerala.
+
+PREVIOUS CHANGES INCLUDED
+The two refreshed Kochi Third Wave Coffee listings, official Instagram links,
+all previous blog and photo updates, Lex Hamood reviewer profiles and credits,
+and the earlier homepage/directory changes are included in this ZIP.
+
+UPLOAD
+1. Back up your current website files, then extract this ZIP.
+2. Upload the CONTENTS into the website folder containing your current
+   index.html. Merge folders and replace matching files.
+3. Keep other existing website files. This is an update, not a complete site.
+4. Save/commit the upload and wait for the hosting deployment to finish.
+
+Do not upload the ZIP itself or nest its contents inside an extra outer folder.
+
+VERIFY AFTER PUBLICATION
+- /events/ includes Omakasé with Naser, 7 November 2026.
+- /events/omakase-naser-kozhikode-2026/ shows the full poster and the date, price and seating.
+- The event links to Sukoru and Bermito; both profiles link back to the event.
+- Bermito's profile and map entry show Call +91 98475 99828.
+- The corresponding Malayalam pages show the same details.
+- The journal retains the licensed photographs and Lex Hamood reviewer credits.
+- Both Kochi Third Wave Coffee profiles retain their official Instagram links.
+
+Keep the photographer/licence credits and assets/journal/PHOTO-CREDITS.txt.
+The Omakasé poster is the supplied event announcement, converted to WebP
+without cropping or changing its design.
+
+Saved for manual upload. No website deployment was performed.
