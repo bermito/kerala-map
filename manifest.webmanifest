@@ -1,7 +1,7 @@
 {
-  "name": "Specialty Coffee Kerala Map",
-  "short_name": "Kerala Coffee",
-  "description": "Explore Kerala’s coffee, district by district.",
+  "name": "Specialty Coffee Keralam Map",
+  "short_name": "Keralam Coffee",
+  "description": "Explore Keralam’s coffee, district by district.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

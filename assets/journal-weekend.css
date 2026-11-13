@@ -9,3 +9,7 @@
 .journal-article h2[id]{scroll-margin-top:28px}
 .journal-article .journal-toc p{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#00752c;margin-bottom:16px}
 @media(max-width:480px){.brand-list{gap:0 18px}.brand-list li{font-size:14px}.journal-article .article-body h2{font-size:25px}}
+
+/* Keep announcement artwork legible without cropping the event details. */
+.journal-article .festival-announcement{max-width:560px;margin:32px auto 40px}
+.poster-thumbnail{background:#fffef6}.poster-thumbnail img{object-fit:contain!important;object-position:center!important}
