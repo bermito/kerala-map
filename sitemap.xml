@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://www.specialtycoffeekerala.com/</loc></url>
   <url><loc>https://www.specialtycoffeekerala.com/about/lex-hamood/</loc></url>
   <url><loc>https://www.specialtycoffeekerala.com/about/our-standards/</loc></url>
   <url><loc>https://www.specialtycoffeekerala.com/blog/</loc></url>
   <url><loc>https://www.specialtycoffeekerala.com/blog/kerala-coffee-festivals-events/</loc></url>
-  <url><loc>https://www.specialtycoffeekerala.com/blog/kerala-coffee-guide/</loc></url>
+  <url><loc>https://www.specialtycoffeekerala.com/blog/kerala-coffee-guide/</loc><lastmod>2026-11-13</lastmod></url>
   <url><loc>https://www.specialtycoffeekerala.com/blog/kerala-coffee-producers/</loc></url>
   <url><loc>https://www.specialtycoffeekerala.com/blog/kozhikode-specialty-coffee-culture/</loc></url>
   <url><loc>https://www.specialtycoffeekerala.com/blog/specialty-coffee-kochi/</loc></url>
@@ -120,4 +120,4 @@
   <url><loc>https://www.specialtycoffeekerala.com/places/urban-hippie/</loc></url>
   <url><loc>https://www.specialtycoffeekerala.com/places/windermere-estate/</loc></url>
   <url><loc>https://www.specialtycoffeekerala.com/places/wishlist-coffee/</loc></url>
-</urlset>
+<url><loc>https://www.specialtycoffeekerala.com/blog/kerala-coffee-festival-2026/</loc><lastmod>2026-11-13</lastmod></url></urlset>

@@ -1,0 +1,11 @@
+/* Scoped additions for the November 2026 journal feature. */
+.brand-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 24px;list-style:none;padding:0!important;border-top:1px solid var(--hair)}
+.brand-list li{padding:11px 0;border-bottom:1px solid var(--hair);font-size:15px;line-height:1.5;break-inside:avoid}
+.programme-list{padding-left:22px;line-height:1.8}.programme-list li{margin-bottom:16px}
+.journal-article .weekend-poster{max-width:500px;margin:32px auto 40px}
+.journal-article .weekend-reporting{border-top:1px solid var(--hair);padding-top:20px;margin-top:40px}
+.journal-article .weekend-reporting h2{font-size:19px;margin-top:8px}
+.journal-article .weekend-reporting p{font-size:14px;line-height:1.8}
+.journal-article h2[id]{scroll-margin-top:28px}
+.journal-article .journal-toc p{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#00752c;margin-bottom:16px}
+@media(max-width:480px){.brand-list{gap:0 18px}.brand-list li{font-size:14px}.journal-article .article-body h2{font-size:25px}}
