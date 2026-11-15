@@ -73,3 +73,7 @@ html[lang=ml] .reviewer-profile .reviewer-focus{font-family:'Noto Sans Malayalam
 .journal-reviewer{padding:20px;margin:32px 0 26px}
 .journal-review-line{font-size:12px}
 }
+
+/* November photo edition: preserve the complete frame. */
+.journal-article .researched-photo img{max-height:720px;object-fit:contain;background:#f1f4ef}
+@media(max-width:760px){.journal-article .researched-photo img{max-height:560px}}
