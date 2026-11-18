@@ -69,23 +69,28 @@
     if(it.w)html+='<a href="'+esc(it.w)+'" target="_blank" rel="noopener noreferrer">'+(it.v?L('source'):it.w.includes('instagram.com')?text('Instagram','ഇൻസ്റ്റാഗ്രാം'):it.w.includes('google')?text('Google Maps','ഗൂഗിൾ ഭൂപടം'):text('Website','വെബ്സൈറ്റ്'))+icon('external')+'</a>';
     if(it.instagram&&it.instagram!==it.w)html+='<a href="'+esc(it.instagram)+'" target="_blank" rel="noopener noreferrer">'+text('Instagram','ഇൻസ്റ്റാഗ്രാം')+icon('external')+'</a>';
     if(it.phone)html+='<a class="listing-phone" href="tel:'+esc(it.phone)+'">'+text('Call','വിളിക്കാം')+' <span dir="ltr">'+esc(it.phoneDisplay||it.phone)+'</span></a>';
+    if(it.email)html+='<a href="mailto:'+esc(it.email)+'">'+text('Email','ഇമെയിൽ')+'</a>';
     if(it.locationSourceUrl&&it.locationSourceUrl!==it.w)html+='<a class="listing-source" href="'+esc(it.locationSourceUrl)+'" target="_blank" rel="noopener noreferrer">'+text('Listing source','വിവരങ്ങളുടെ ഉറവിടം')+icon('external')+'</a>';
     if(it.id)html+='<a class="profile-link" href="'+root+'places/'+encodeURIComponent(it.id)+'/">'+text('Profile & connections','വിവരങ്ങളും ബന്ധങ്ങളും')+icon('arrow')+'</a>';
-    return html+'</div>'+(it.checked?'<p class="listing-checked">'+text('Details checked: ','വിവരങ്ങൾ പരിശോധിച്ചത്: ')+esc(it.checked)+'</p>':'');
+    return html+'</div>'+(it.checked&&!it.contactChecked?'<p class="listing-checked">'+text('Details checked: ','വിവരങ്ങൾ പരിശോധിച്ചത്: ')+esc(it.checked)+'</p>':'')+(it.contactChecked?'<p class="listing-checked">'+text('Contact details checked: ','ബന്ധപ്പെടാനുള്ള വിവരങ്ങൾ പരിശോധിച്ചത്: ')+'<time datetime="'+esc(it.contactChecked)+'">'+esc(fmtDate(it.contactChecked).full)+'</time></p>':'');
   }
   function renderDistrict(i){
     const name=NAMES[i], rec=DATA[name]||{sub:'',buyroasted:[], cafes:[],roasters:[],farms:[],education:[],baristas:[], equipment:[]};
     const er=(typeof ERANGE!=='undefined'&&ERANGE[name])?ERANGE[name]:null;
     let html='<div class="p-kicker mono">'+L('districtKicker')+'</div><h2 class="p-title">'+esc(districtName(name))+'</h2>'+
       '<div class="p-sub mono">'+esc(tr(rec,'sub')||'')+(er?'<br>'+L('elevation')+' '+nf(er[0])+'–'+nf(er[1])+' '+L('unit'):'')+'</div>';
-    html+='<p class="district-count">'+entryCount(name)+' '+text('unique places','വ്യത്യസ്ത ഇടങ്ങൾ')+' <a href="'+root+'directory/?district='+encodeURIComponent(name)+'">'+text('Browse directory','ഡയറക്ടറി കാണാം')+icon('arrow')+'</a></p>';
-    const firstNonEmpty=getCats().findIndex(cat=>(rec[cat.k]||[]).length);
-    getCats().forEach(function(cat,idx){
+    const count=entryCount(name);
+    if(count)html+='<p class="district-count">'+count+' '+text(count===1?'place':'unique places',count===1?'ഇടം':'വ്യത്യസ്ത ഇടങ്ങൾ')+' <a href="'+root+'directory/?district='+encodeURIComponent(name)+'">'+text('Browse directory','ഡയറക്ടറി കാണാം')+icon('arrow')+'</a></p>';
+    const visibleCategories=getCats().filter(cat=>(rec[cat.k]||[]).length);
+    if(!visibleCategories.length){
+      html+='<div class="empty"><p>'+text('We haven’t verified a place in this district yet. Know a café, roaster or producer we should check?','ഈ ജില്ലയിൽ ഇതുവരെ ഒരു ഇടവും സ്ഥിരീകരിച്ചിട്ടില്ല. ഇവിടെ ഉൾപ്പെടുത്തേണ്ട കഫേയോ റോസ്റ്ററിയോ കാപ്പി ഉത്പാദകരോ ഉണ്ടോ?')+'</p><p><a class="lnk" href="'+root+'#add-place?district='+encodeURIComponent(name)+'">'+text('Suggest a place','ഒരു ഇടം നിർദേശിക്കാം')+icon('arrow')+'</a></p><p><a class="lnk" href="'+root+'directory/">'+text('Explore other districts','മറ്റു ജില്ലകളിലെ ഇടങ്ങൾ കാണാം')+icon('arrow')+'</a></p></div>';
+    }
+    visibleCategories.forEach(function(cat,idx){
       const list=rec[cat.k]||[];
-      html+='<div class="row'+(idx===firstNonEmpty&&list.length?' open':'')+'">'+
-        '<button class="row-head" type="button" aria-expanded="'+(idx===firstNonEmpty&&list.length?'true':'false')+'">'+
+      html+='<div class="row'+(idx===0?' open':'')+'">'+
+        '<button class="row-head" type="button" aria-controls="list-'+cat.k+'" aria-expanded="'+(idx===0?'true':'false')+'">'+
         '<span class="t">'+catHTML(cat.t)+'</span><span class="c mono">'+String(list.length).padStart(2,'0')+'</span>'+chev()+
-        '</button><div class="row-body"'+(idx===firstNonEmpty&&list.length?'':' hidden')+'><div>';
+        '</button><div id="list-'+cat.k+'" class="row-body"'+(idx===0?'':' hidden')+'><div>';
       if(list.length){ list.forEach(function(it){
         html+='<div class="item"><div class="n"><a href="'+root+'places/'+encodeURIComponent(it.id)+'/">'+esc(tr(it,'n'))+'</a>'+
           (it.v?' <span class="tag mono">'+L('probable')+'</span>':'')+
@@ -242,7 +247,8 @@
     const remBtn=document.getElementById('aboutRemoveBtn');
     if(remBtn) remBtn.addEventListener('click',function(){ renderRemove(); openPanel('remove'); });
   }
-  function renderAddPlace(){
+  function renderAddPlace(district){
+    suggestedDistrict=NAMES.includes(district)?district:null;
     panelBody.innerHTML='<div class="p-kicker mono">'+L('contributeKicker')+'</div><h2 class="p-title">'+L('addPlaceTitle')+'</h2>'+
       '<div class="p-sub mono" id="apSub">'+L('addPlaceSub')+'</div>'+
       '<form id="addPlaceForm" class="add-form" novalidate>'+
@@ -258,7 +264,7 @@
         '<label class="af-label mono" for="ap-city">'+L('lblCity')+'</label>'+
         '<input class="af-input" id="ap-city" name="city" type="text" required />'+
         '<label class="af-label mono" for="ap-district">'+L('lblDistrict')+'</label>'+
-        '<input class="af-input" id="ap-district" name="district" type="text" required />'+
+        '<input class="af-input" id="ap-district" name="district" type="text" value="'+esc(suggestedDistrict?(LANG==='ml'?DATA[suggestedDistrict].name_ml:suggestedDistrict):'')+'" required />'+
         '<label class="af-label mono" id="lab-addr" for="ap-addr">'+L('lblAddr')+'</label>'+
         '<input class="af-input" id="ap-addr" name="address_or_maps_link" type="text" required />'+
         '<label class="af-label mono" id="lab-web" for="ap-web">'+L('lblWeb')+'</label>'+
@@ -429,13 +435,23 @@
       });
     });
   }
-  let panelMode=null, returnFocus=null;
+  let panelMode=null, returnFocus=null, suggestedDistrict=null;
   const PANEL_PARENT={faq:'about',add:'about',remove:'about',addevent:'events'};
   const PANEL_HASH={events:'#events',about:'#about',faq:'#faq',add:'#add-place',remove:'#remove-listing',addevent:'#submit-event'};
   const chipsEl=document.getElementById('districtChips');
   const districtSelect=document.getElementById('districtSelect');
   const backgroundBlocks=Array.from(document.querySelectorAll('.map-footer,.map-controls,.map-event,#fallback'));
-  function routeFor(m){return m==='district'?'#map-'+NAMES[selected].toLowerCase():(PANEL_HASH[m]||'');}
+  function routeFor(m){
+    if(m==='district')return '#map-'+NAMES[selected].toLowerCase();
+    if(m==='add'&&suggestedDistrict)return '#add-place?district='+encodeURIComponent(suggestedDistrict);
+    return PANEL_HASH[m]||'';
+  }
+  function districtForSuggestion(hash){
+    const split=hash.indexOf('?');
+    if(split<0||hash.slice(0,split)!==PANEL_HASH.add)return null;
+    const name=new URLSearchParams(hash.slice(split+1)).get('district');
+    return NAMES.includes(name)?name:null;
+  }
   function writeRoute(hash,method){
     document.getElementById('navLang').href=(LANG==='ml'?'/':'/ml/')+hash;
     if(method==='none'||location.hash===hash)return;
@@ -456,11 +472,21 @@
     writeRoute(routeFor(m),options.route||'push');
     document.body.classList.add('panel-open');panel.inert=false;
     panel.setAttribute('aria-hidden','false');
+    const title=panelBody.querySelector('h2');
+    if(title){title.id='panelHeading';panel.setAttribute('aria-labelledby','panelHeading');}
+    else panel.removeAttribute('aria-labelledby');
     const old=document.getElementById('panelBack');if(old)old.remove();
     if(PANEL_PARENT[m]){
       const back=document.createElement('button');back.id='panelBack';back.className='panel-back';back.type='button';
-      back.innerHTML=icon('back')+'<span>'+esc(L('back'))+'</span>';
+      const district=m==='add'?suggestedDistrict:null;
+      back.innerHTML=icon('back')+'<span>'+esc(district?districtName(district):L('back'))+'</span>';
+      if(district)back.setAttribute('aria-label',text('Back to '+districtName(district),districtName(district)+' ജില്ലയിലേക്ക് മടങ്ങുക'));
       back.addEventListener('click',function(){
+        if(district){
+          const to='#map-'+district.toLowerCase();
+          if(history.state&&history.state.keralaFrom===to){history.back();return;}
+          selectDistrict(NAMES.indexOf(district),{route:'replace'});return;
+        }
         const parent=PANEL_PARENT[m];
         if(history.state&&history.state.keralaFrom===routeFor(parent)){history.back();return;}
         showPanel(parent,{route:'replace'});
@@ -488,7 +514,7 @@
   function showPanel(mode,options){
     selectDistrict(-1,{route:'none'});
     const renderers={events:renderEvents,about:renderAbout,faq:renderFaq,add:renderAddPlace,remove:renderRemove,addevent:renderAddEvent};
-    if(renderers[mode]){renderers[mode]();openPanel(mode,options);}
+    if(renderers[mode]){renderers[mode](mode==='add'&&options?options.district:null);openPanel(mode,options);}
   }
   function selectDistrict(i,options){
     if(i<-1||i>=NAMES.length)return;
@@ -523,24 +549,38 @@
     });
     if(districtSelect)districtSelect.value=selected<0?'':String(selected);
   }
+  function districtFromHash(hash){
+    let value;
+    try{value=decodeURIComponent(hash.slice(5)).trim().toLowerCase();}catch{return -1;}
+    return NAMES.findIndex(name=>[name,DATA[name].name_ml,...(KERALA.DISTRICT_ALIASES[name]||[])].some(alias=>alias&&alias.toLowerCase()===value));
+  }
   function applyRoute(){
     const hash=location.hash;
     if(hash.startsWith('#map-')){
-      const i=NAMES.findIndex(n=>n.toLowerCase()===hash.slice(5).toLowerCase());
+      const i=districtFromHash(hash);
       if(i>=0){selectDistrict(i,{route:'none'});return;}
     }
+    const district=districtForSuggestion(hash);
+    if(district){showPanel('add',{route:'none',district});return;}
     const mode=Object.keys(PANEL_HASH).find(k=>PANEL_HASH[k]===hash);
     if(mode)showPanel(mode,{route:'none'});else closeAllPanels({route:'none'});
   }
   document.getElementById('panelClose').addEventListener('click',closePanel);
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&panelMode){e.preventDefault();closePanel();hideCard();}});
-  document.getElementById('navEvents').addEventListener('click',()=>showPanel('events'));
-  document.getElementById('navAbout').addEventListener('click',()=>showPanel('about'));
+  [['navEvents','events'],['navAbout','about']].forEach(([id,mode])=>{
+    document.getElementById(id).addEventListener('click',event=>{
+      if(event.defaultPrevented||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+      event.preventDefault();showPanel(mode);
+    });
+  });
   document.addEventListener('click',e=>{
     const link=e.target.closest('a[href]');if(!link||e.defaultPrevented||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
-    const url=new URL(link.href,location.href);
-    if(url.origin!==location.origin||url.pathname!==location.pathname||!url.hash.startsWith('#map-'))return;
-    const i=NAMES.findIndex(n=>n.toLowerCase()===url.hash.slice(5).toLowerCase());
+    const url=new URL(link.getAttribute('href'),location.href);
+    if(url.origin!==location.origin||url.pathname!==location.pathname||url.search!==location.search)return;
+    const district=districtForSuggestion(url.hash);
+    if(district){e.preventDefault();showPanel('add',{district});return;}
+    if(!url.hash.startsWith('#map-'))return;
+    const i=districtFromHash(url.hash);
     if(i>=0){e.preventDefault();selectDistrict(i);}
   });
   let routeQueued=false;
